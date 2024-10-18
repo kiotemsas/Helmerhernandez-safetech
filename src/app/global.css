@@ -288,6 +288,10 @@
 }
 
 
+.dialog-form.extended .MuiDialog-paper {
+    margin: 50vh 340px 0;
+}
+
 .dialog-form .MuiDialog-paper {
     height: 84vh;
     max-width: 512px;

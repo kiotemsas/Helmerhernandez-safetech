@@ -28,7 +28,15 @@ import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLab
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide class="dialog-form" direction="right" ref={ref} {...props} />;
+
+  const customizer = useSelector((state) => state.customizer);
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+
+
+  return <Slide class={hideMenu ? 'dialog-form' : 'dialog-form extended'} direction="right" ref={ref} {...props} />;
+
+
 });
 
 const TransitionDialog = () => {
@@ -207,6 +215,8 @@ const TransitionDialog = () => {
 
       </Box>
 
+
+
       <Dialog
         variant="content"
         open={open}
@@ -223,6 +233,7 @@ const TransitionDialog = () => {
               <path d="M32 3.22286L28.7771 0L16 12.7771L3.22286 0L0 3.22286L12.7771 16L0 28.7771L3.22286 32L16 19.2229L28.7771 32L32 28.7771L19.2229 16L32 3.22286Z" fill="#202022" />
             </svg>
           </Button>
+
           <DialogTitle>{"NEW VEHICLE"} <Typography class="DialogSubTitle">12/08/2024  10:08 PM</Typography></DialogTitle>
 
 
@@ -296,6 +307,7 @@ const TransitionDialog = () => {
           </Stack>
         </DialogContent>
       </Dialog>
+
     </>
   );
 };
