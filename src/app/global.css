@@ -1,0 +1,399 @@
+#techboxlogin{
+    background-color: #CACACA;
+    padding: 0 80px;
+}
+
+#techboxlogin .muitech fieldset {    
+    border-radius: 0;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background-color: #ffffff;
+    border: 0;
+    border-bottom: 1px solid #000;
+}
+
+#techboxlogin .muitech input {
+    padding: 36px 16px 8px;    
+    color: #000;
+    z-index: 2;
+}
+
+#techboxlogin .muitech label{
+    position: absolute;
+    top: 6px;
+    padding: 0 16px 0;
+    margin: 0;
+    color: #000;
+    z-index: 5;
+}
+
+
+.mui-1wcaknn {
+    border-radius: 0;
+    margin: 0 auto 20px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+#techboxlogin .muitech {
+    border-radius: 0;
+    margin: 0 auto 20px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+
+
+#techboxlogin .muitech a[type="submit"] {
+    width: 46%;
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 60px;
+    background: linear-gradient(94.07deg, #00BBC9 0%, #00747C 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-box-shadow: 0px 8px 16px -10px rgba(0,0,0,0.43);
+    -moz-box-shadow: 0px 8px 16px -10px rgba(0,0,0,0.43);
+    box-shadow: 0px 8px 16px -10px rgba(0,0,0,0.43);
+}
+
+#techboxlogin .muitech .passtech{
+    color: #424242;
+    font-size: 1.1rem;
+}
+
+
+.mui-j7yf57-MuiButtonBase-root-MuiListItemButton-root.Mui-selected{
+    background: linear-gradient(94.07deg, #00BBC9 0%, #00747C 100%);
+}
+
+.mui-j7yf57-MuiButtonBase-root-MuiListItemButton-root {
+    border-radius: unset;
+    justify-content: center;
+    padding: 15px 20px;
+}
+
+.mui-tlelie-MuiListItemText-root {
+    margin-left: 20px;
+}
+
+.mui-j7yf57-MuiButtonBase-root-MuiListItemButton-root.Mui-selected svg path{
+    fill: #fff;
+}
+
+.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root {
+    padding: 0;
+    margin: 30px auto 30px;
+    text-align: center;
+    width: 100%;
+    -webkit-border-radius: unset;
+    -moz-border-radius: unset;
+    border-radius: unset;
+}
+
+.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root svg{
+    margin-right: 10px;
+}
+
+.mui-autyzp {
+    margin: 0 auto;
+    background-color: unset;
+    padding: 16px 10px;
+}
+
+.mui-qos69-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    position: absolute;
+    background-color: #0000;
+    box-shadow: unset;
+    overflow: visible;
+}
+
+
+.bubble-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: unset;
+    background-color: #0000;
+    width: fit-content;
+}
+
+.bubble-list.wipe{
+    bottom: 5%;
+    left: 100px !important;
+    top: auto !important;
+}
+
+.bubble-list.strip{
+    bottom: 5%;
+    left: 300px !important;
+    top: auto !important;
+}
+
+
+.mui-1ekrh7y {
+    flex-direction: column;
+}
+
+.bubble-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bubble-link {
+    padding: 20px;
+    background-color: #cacaca;
+    border-radius: 40px;
+    margin: 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 240px;
+    box-shadow: unset;
+    border: unset;
+    cursor: pointer;
+}
+
+
+.bubble-link:hover{
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+}
+
+.bubble-link:hover h6{
+    color: #fff;
+}
+
+.mui-1xvzlbr-MuiAvatar-root {
+    width: 60px;
+    height: auto;
+}
+
+
+.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root:hover {
+    background-color:unset;
+}
+
+
+.mui-43uny0-MuiPaper-root-MuiDrawer-paper {
+    width: 84px;
+}
+
+
+.plus-menu button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 26px;
+    cursor: pointer;    
+    background-color: inherit;
+    color: #2a3547;
+    width: 100%;
+    outline: 0;
+    border: 0;
+    margin: 0;
+    -webkit-border-radius: unset;
+    -moz-border-radius: unset;
+    border-radius: unset;
+    justify-content: flex-start;
+    min-width: auto;
+    width: auto;
+}
+
+
+.plus-menu button h6 {
+    margin-left: 30px;
+}
+
+.plus-menu:hover{
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+}
+
+.plus-menu:hover button h6{
+    color: #fff;
+}
+
+
+
+.plus-menu:hover button svg path{
+    fill: #fff;
+}
+
+.safetechWrapper.bg-custom{
+    background-color: #000;
+}
+
+.safetechWrapper header{
+    background-color: transparent;
+}
+
+.searchtoptech fieldset{
+    background-color: #CACACA;
+    z-index: 0;
+    border-radius: 50px;
+    padding: 0;
+    margin: 0;
+    border: unset;
+    top: 0;
+}
+
+.searchtoptech input, .searchtoptech  svg{
+    z-index: 1;
+}
+
+.searchtoptech fieldset legend{
+    line-height: 0;
+}
+
+.safetechcheck .MuiCheckbox-root span  {
+    width: 26px;
+    height: 26px;
+    background-color: #666666;
+    border-radius: unset;
+    margin: 0;
+}
+
+
+.safetechcheck .MuiFormControlLabel-labelPlacementStart{
+    display: flex;
+    align-items: center;
+}
+
+
+.safetechcheck .MuiFormControlLabel-label{
+    display: block;
+    line-height: 0;
+}
+
+.safetechcheck .MuiCheckbox-root span:before {
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+}
+
+
+.dialog-form .MuiDialog-paper {
+    height: 84vh;
+    max-width: 512px;
+    margin: 50vh 130px 0;
+    transform: translateY(-50%);
+    background-color: #cacaca;
+    -webkit-box-shadow: 0px 5px 0px 0px #00BBC9;
+    -moz-box-shadow: 0px 5px 0px 0px #00BBC9;
+    box-shadow: 0px 5px 0px 0px #00BBC9;
+}
+
+.dialog-form .dialog-form-content{
+    padding: 20px 60px;
+}
+
+
+.dialog-form .dialog-form-content .close-dialog-form {
+    position: absolute;
+    left: 10px;
+    background: transparent;
+    border: unset;
+    cursor: pointer;
+}
+
+
+.dialog-form .dialog-form-content h2 {
+    font-size: 24px;
+    line-height: 10px;
+    font-weight: bold;
+    color: rgb(32, 32, 34);
+    padding: 20px 0;
+}
+
+.dialog-form .dialog-form-content h2 .DialogSubTitle {
+    font-size: 14px;
+    line-height: 14px;
+    color: #202022;
+    font-weight: 100;
+    margin: 10px 0;
+}
+
+.dialog-form .muitech {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+
+.dialog-form .muitech label{
+    position: absolute;
+    top: 4px;
+    padding: 0 16px;
+    margin: 0;
+    color: #000;
+    z-index: 5;
+}
+
+
+
+.dialog-form .muitech input{
+    padding: 30px 16px 8px;
+    color: #000;
+    z-index: 2;
+}
+
+
+.dialog-form .muitech-confirm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.dialog-form .muitech-confirm a{
+    width: 46%;
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 60px;
+    background: linear-gradient(94.07deg, #00BBC9 0%, #00747C 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-box-shadow: 0 8px 16px -10px #0000006e;
+    -moz-box-shadow: 0 8px 16px -10px #0000006e;
+    box-shadow: 0 8px 16px -10px #0000006e;
+}
+
+
+.dialog-form .muitech-confirm a.lineal{
+    background: #fff;
+    border: 2px solid #00BBC9;
+    color: #202022;
+}
+
+.dialog-form .muitech fieldset{
+    border-radius: 0;
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 1px solid #000;
+}
+
