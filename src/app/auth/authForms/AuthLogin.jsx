@@ -15,7 +15,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
   const handleLogin = async () => {
     await Parse.User.logIn('admin', 'secret');
     const loggedIn = Parse.User.current();
-    console.log(loggedIn);
+    console.log('User', loggedIn);
   };
 
   return (
