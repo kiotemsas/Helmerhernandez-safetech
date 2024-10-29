@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,40 +11,64 @@ import CustomTextField from '@/app/components/forms/theme-elements/CustomTextFie
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import Parse from '../../../utils/parse';
 
-const AuthLogin = ({ title, subtitle, subtext }) => {
+const AuthLogin = ({ title, subtitle, subtext, onSuccess }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = async () => {
-    await Parse.User.logIn('admin', 'secret');
-    const loggedIn = Parse.User.current();
-    console.log('User', loggedIn);
+    try {
+      await Parse.User.logIn(username, password);
+      const loggedIn = Parse.User.current();
+      console.log('User', loggedIn);
+      if (loggedIn) {
+        onSuccess(); // Llama la función onSuccess en caso de login exitoso
+      }
+    } catch (error) {
+      setErrorMessage("Error en el inicio de sesión");
+      console.error("Error de inicio de sesión:", error);
+    }
   };
 
   return (
     <>
-      {title ? (
+      {title && (
         <Typography fontWeight="700" variant="h3" mb={1}>
           {title}
         </Typography>
-      ) : null}
+      )}
 
       {subtext}
-
-
 
       <Stack>
         <Box className="muitech">
           <CustomFormLabel className="nametech" htmlFor="username">Username</CustomFormLabel>
-          <CustomTextField id="username" placeholder="Username" variant="outlined" fullWidth />
+          <CustomTextField
+            id="username"
+            placeholder="Username"
+            variant="outlined"
+            fullWidth
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </Box>
         <Box className="muitech">
           <CustomFormLabel className="nametech" htmlFor="password">Password</CustomFormLabel>
-          <CustomTextField id="password" placeholder="password" type="password" variant="outlined" fullWidth />
+          <CustomTextField
+            id="password"
+            placeholder="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Box>
         <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
           <FormGroup>
             <FormControlLabel
               control={<CustomCheckbox defaultChecked />}
-              label="Remeber this Device"
+              label="Remember this Device"
             />
           </FormGroup>
           <Typography
@@ -55,40 +80,19 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
               color: 'primary.main',
             }}
           >
-            
+            Forgot your password?
           </Typography>
         </Stack>
       </Stack>
-      
 
-      
-      <Box className="muitech"><Typography
-                      component={Link}
-                      href="/auth/auth1/forgot-password"
-                      fontWeight="500"
-                      class="passtech"
-                      sx={{
-                        textDecoration: 'none',
-                        color: 'primary.main',
-                      }}
-                    >
-                      ¿Forgot your password?
-                    </Typography>  
-      </Box>
       <Box className="muitech">
-
-
-        
-        <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          fullWidth
-          onClick={handleLogin}
-        >
+        <Button color="primary" variant="contained" size="large" fullWidth onClick={handleLogin}>
           Login
         </Button>
       </Box>
+      {errorMessage && (
+        <Typography color="error.main" mt={2}>{errorMessage}</Typography>
+      )}
       {subtitle}
     </>
   );

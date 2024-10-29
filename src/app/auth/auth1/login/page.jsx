@@ -1,19 +1,20 @@
-"use client"
-import Link from 'next/link';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import PageContainer from '@/app/components/container/PageContainer';
-import Logo from '@/app/(DashboardLayout)/layout/shared/logo/Logo';
-import AuthLogin from '../../authForms/AuthLogin';
+"use client";
+import { useRouter } from 'next/navigation';
+import { Box, Grid, Typography, Button, Stack } from '@mui/material';
 import Image from 'next/image';
+import PageContainer from '@/app/components/container/PageContainer';
+import AuthLogin from '../../authForms/AuthLogin';
 
-export default function Login() {
+const Login = () => {
+  const router = useRouter();
+
+  const handleLoginSuccess = () => {
+    router.push("/");
+  };
+
   return (
     <PageContainer title="Login Page" description="this is Sample page">
       <Grid container spacing={0} justifyContent="center" sx={{ height: '100vh' }}>
-       
         <Grid
           item
           xs={12}
@@ -25,11 +26,8 @@ export default function Login() {
           alignItems="center"
           id="techboxlogin"
         >
-
           <Box p={4}>
-
             <Box position="relative">
-              
               <Box
                 alignItems="center"
                 justifyContent="center"
@@ -41,8 +39,10 @@ export default function Login() {
                 }}
               >
                 <Image
-                  src={"/images/logos/dark-logo.svg"}
-                  alt="bg" width={300} height={250}
+                  src="/images/logos/dark-logo.svg"
+                  alt="bg"
+                  width={300}
+                  height={250}
                   style={{
                     width: '100%',
                     maxWidth: '300px',
@@ -53,17 +53,11 @@ export default function Login() {
             </Box>
             
             <AuthLogin
-            
-              subtitle={
-                <Stack direction="row" spacing={1} mt={3}>
-                  
-                  
-                </Stack>
-              }
+              title="Login"
+              onSuccess={handleLoginSuccess}
             />
           </Box>
         </Grid>
-
         <Grid
           item
           xs={12}
@@ -85,7 +79,6 @@ export default function Login() {
           }}
         >
           <Box position="relative">
-            
             <Box
               alignItems="center"
               justifyContent="center"
@@ -98,8 +91,10 @@ export default function Login() {
               }}
             >
               <Image
-                src={"/images/backgrounds/login-bg.svg"}
-                alt="bg" width={800} height={500}
+                src="/images/backgrounds/login-bg.svg"
+                alt="bg"
+                width={800}
+                height={500}
                 style={{
                   width: '100%',
                   maxWidth: '800px',
@@ -111,7 +106,7 @@ export default function Login() {
         </Grid>
       </Grid>
     </PageContainer>
-  )
+  );
 };
 
-
+export default Login;
