@@ -3,11 +3,11 @@ import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import PageContainer from '@/app/components/container/PageContainer';
-import Logo from '@/app/(DashboardLayout)/layout/shared/logo/Logo';
 import AuthLogin from '../../authForms/AuthLogin';
 import Image from 'next/image';
+import Typography from '@mui/material/Typography';
+
 
 export default function Login() {
   return (
@@ -54,12 +54,20 @@ export default function Login() {
             
             <AuthLogin
             
-              subtitle={
-                <Stack direction="row" spacing={1} mt={3}>
-                  
-                  
-                </Stack>
-              }
+            title=""
+            subtext={
+              <Typography variant="subtitle1" color="textSecondary" mb={1}>
+             
+              </Typography>
+            }
+            subtitle={
+              <Stack direction="row" spacing={1} mt={3}>
+                <Typography color="textSecondary" variant="h6" fontWeight="500">
+                 
+                </Typography>
+                
+              </Stack>
+            }
             />
           </Box>
         </Grid>
