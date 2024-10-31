@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
   const customizer = useSelector((state) => state.customizer);
   const theme = useTheme();
   const { data: session } = useSession()
-  if (session) {
+
     return (
       <MainWrapper>
         {/* ------------------------------------------- */}
@@ -83,10 +83,6 @@ export default function RootLayout({ children }) {
         </PageWrapper>
       </MainWrapper>
     );
-  }
-  return (
-    <>
-      {redirect('/auth/auth1/login')}
-    </>
-  )
+ 
+
 }

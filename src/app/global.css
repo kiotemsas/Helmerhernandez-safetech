@@ -271,10 +271,11 @@
 
 .dialog-form.extended .MuiDialog-paper {
     margin: 50vh 340px 0;
+    height: auto;
 }
 
 .dialog-form .MuiDialog-paper {
-    height: 84vh;
+    height: auto;
     max-width: 512px;
     margin: 50vh 130px 0;
     transform: translateY(-50%);
