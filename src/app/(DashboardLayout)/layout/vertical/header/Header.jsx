@@ -45,7 +45,7 @@ const Header = () => {
   }));
 
   return (
-    <AppBarStyled position="sticky" color="default">
+    <AppBarStyled className="header-tech" position="sticky" color="default">
       <ToolbarStyled>
        
 
