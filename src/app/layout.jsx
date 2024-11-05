@@ -3,7 +3,7 @@ import React from "react";
 import { Providers } from "@/store/providers";
 import MyApp from './app';
 import "./global.css";
-
+import { UserProvider } from '@/app/context/UserContext';
 
 export const metadata = {
   title: 'SafeTech',
@@ -14,9 +14,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
-          <MyApp>{children}</MyApp>
-        </Providers>
+        <UserProvider>
+          <Providers>
+            <MyApp>{children}</MyApp>
+          </Providers>
+        </UserProvider>
       </body>
     </html>
   );
