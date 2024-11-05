@@ -13,8 +13,11 @@ import {
   toggleSidebar,
   toggleMobileSidebar,
 } from "@/store/customizer/CustomizerSlice";
-import { IconMenu2 } from "@tabler/icons-react";
-
+import { IconMenu2 } from "@tabler/icons-react"; 
+import Vendor from '@/app/components/crud-modal/vendor';
+import Drivers from '@/app/components/crud-modal/drivers';
+import Vehicles from '@/app/components/crud-modal/vehicles';
+import Routes from '@/app/components/crud-modal/routes';
 
 const Sidebar = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.down('lg'));
@@ -84,7 +87,7 @@ const Sidebar = () => {
                 
               {customizer.isCollapse ? 
               
-                <IconButton color="inherit" aria-label="menu" 
+                <IconButton className='toggle-tech' color="inherit" aria-label="menu" 
                   onClick={
                     lgDown
                       ? () => dispatch(toggleSidebar())
@@ -96,7 +99,7 @@ const Sidebar = () => {
               
               : 
               
-                <IconButton color="inherit" aria-label="menu"
+                <IconButton className='toggle-tech collapse' color="inherit" aria-label="menu"
                   onClick={
                     lgDown
                       ? () => dispatch(toggleSidebar())
@@ -116,7 +119,15 @@ const Sidebar = () => {
                 {/* ------------------------------------------- */}
                 {/* Sidebar Items */}
                 {/* ------------------------------------------- */}
-                <SidebarItems />
+                 {/*<SidebarItems />*/}
+                 {/*SidebarItems />*/}
+                  {/*<MaxWidthDialog />*/}
+
+                <Vehicles/>
+                 <Drivers/>
+                 <Vendor/>                 
+                 <Routes/>
+
               </Scrollbar>
               <Profile />
             </Box>
