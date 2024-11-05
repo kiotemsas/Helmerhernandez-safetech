@@ -1,11 +1,11 @@
 "use client";
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Grid, Typography, Button, Stack } from '@mui/material';
 import Image from 'next/image';
 import PageContainer from '@/app/components/container/PageContainer';
 import AuthLogin from '../../authForms/AuthLogin';
 import { useUser } from '../../../context/UserContext';
-import { useState } from 'react';
 
 const Login = () => {
   const router = useRouter();
