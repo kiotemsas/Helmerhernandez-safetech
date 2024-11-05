@@ -61,6 +61,7 @@ export default function NavItem({ item, level, pathDirect, hideMenu, onClick }) 
   return (
     <List component="li" disablePadding key={item?.id && item.title}>
       <Link href={item.href}>
+      
         <ListItemStyled
           disabled={item?.disabled}
           selected={pathDirect === item?.href}

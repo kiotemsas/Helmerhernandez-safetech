@@ -3,6 +3,14 @@
     padding: 0 80px;
 }
 
+.page-wrapper{
+    background-color: #000;
+}
+
+.header-tech{
+    background-color: unset;
+}
+
 #techboxlogin .muitech fieldset {    
     border-radius: 0;
     -webkit-border-top-left-radius: 6px;
@@ -90,7 +98,7 @@
     fill: #fff;
 }
 
-.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root {
+.toggle-tech {
     padding: 0;
     margin: 30px auto 30px;
     text-align: center;
@@ -100,23 +108,16 @@
     border-radius: unset;
 }
 
-.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root svg{
+.toggle-tech.collapse svg{
     margin-right: 10px;
 }
 
-.mui-autyzp {
-    margin: 0 auto;
-    background-color: unset;
-    padding: 16px 10px;
-}
-
-.mui-qos69-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+#msgs-menu .MuiMenu-paper {
     position: absolute;
     background-color: #0000;
     box-shadow: unset;
     overflow: visible;
 }
-
 
 .bubble-list {
     position: relative;
@@ -138,11 +139,6 @@
     bottom: 5%;
     left: 300px !important;
     top: auto !important;
-}
-
-
-.mui-1ekrh7y {
-    flex-direction: column;
 }
 
 .bubble-list{
@@ -174,21 +170,6 @@
     color: #fff;
 }
 
-.mui-1xvzlbr-MuiAvatar-root {
-    width: 60px;
-    height: auto;
-}
-
-
-.mui-1u9qgf6-MuiButtonBase-root-MuiIconButton-root:hover {
-    background-color:unset;
-}
-
-
-.mui-43uny0-MuiPaper-root-MuiDrawer-paper {
-    width: 84px;
-}
-
 
 .plus-menu button{
     display: flex;
@@ -218,7 +199,7 @@
 
 
 .plus-menu button h6 {
-    margin-left: 30px;
+    margin-left: 15px;
 }
 
 .plus-menu:hover{
@@ -290,10 +271,11 @@
 
 .dialog-form.extended .MuiDialog-paper {
     margin: 50vh 340px 0;
+    height: auto;
 }
 
 .dialog-form .MuiDialog-paper {
-    height: 84vh;
+    height: auto;
     max-width: 512px;
     margin: 50vh 130px 0;
     transform: translateY(-50%);
@@ -318,24 +300,24 @@
 
 
 .dialog-form .dialog-form-content h2 {
-    font-size: 24px;
-    line-height: 10px;
+    font-size: 18px;
+    line-height: 18px;
     font-weight: bold;
-    color: rgb(32, 32, 34);
-    padding: 20px 0;
+    color: #202022;
+    padding: 0 0 14px;
 }
 
 .dialog-form .dialog-form-content h2 .DialogSubTitle {
-    font-size: 14px;
-    line-height: 14px;
+    font-size: 12px;
+    line-height: 12px;
     color: #202022;
     font-weight: 100;
-    margin: 10px 0;
+    margin: 0 0 5px;
 }
 
 .dialog-form .muitech {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 
@@ -346,14 +328,18 @@
     margin: 0;
     color: #000;
     z-index: 5;
+    font-size: 12px;
+    line-height: 12px;
 }
 
 
 
 .dialog-form .muitech input{
-    padding: 30px 16px 8px;
+    padding: 22px 16px 6px;
     color: #000;
     z-index: 2;
+    font-size: 14px;
+    line-height: 14px;
 }
 
 
@@ -401,3 +387,283 @@
     border-bottom: 1px solid #000;
 }
 
+button.btn-techmenu {
+    background: transparent;
+    border: unset;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.simplebar-content{
+    height: 100%;
+}
+
+.group-card{
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.group-card .title-item-card{
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    color: #202022;
+    padding: 0 0 20px;
+    text-align: center;
+}
+
+
+.card-box{
+    background: unset;
+    border: unset;
+    box-shadow: unset;
+}
+
+.side-card {
+    padding: 25px 15px;
+    background-color: #EEEEEE;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-decoration-line: grammar-error;
+    height: 100vh;
+}
+
+.simplebar-content .close-Drawer{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: unset;
+    cursor: pointer;
+}
+
+.Drawer-safetech .MuiDrawer-paper{
+    height: 90vh;
+    bottom: 0px;
+    top: auto;
+    -webkit-border-top-left-radius: 20px;
+    -moz-border-radius-topleft: 20px;
+    border-top-left-radius: 20px;
+    -webkit-box-shadow: 0 -5px #00bbc9;
+    -moz-box-shadow: 0 -5px #00bbc9;
+    box-shadow: 0 -5px #00bbc9;
+}
+
+.card-flex {
+    border-radius: 20px;
+    background-color: #fff;
+    margin-bottom: 25px;
+}
+
+.card-flex svg{
+    cursor: pointer;
+}
+
+.card-flex.red{
+    border: 3px solid #D62109;
+    box-shadow: 0px 4px 4px 0px #D6210940;
+
+}
+
+.card-flex.green{
+    border: 3px solid #03AB00;
+    box-shadow: 0px 1px 4px 0px #00000040;
+}
+
+.card-flex.green .vehicle-img{ 
+    border-left: 12px solid #03AB00;
+}
+
+.card-flex.red .vehicle-img{ 
+    border-left: 12px solid #D62109;
+}
+
+.card-flex h6{
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: bold;
+}
+
+.card-flex h5{
+    font-size: 12px;
+    line-height: normal;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+.card-flex button{
+    width: 46%;
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 60px;
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-box-shadow: 0 8px 16px -10px #0000006e;
+    -moz-box-shadow: 0 8px 16px -10px #0000006e;
+    box-shadow: 0 8px 16px -10px #0000006e;
+}
+
+.card-flex  .group-btn{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 30px 0;
+}
+
+.body-card{
+    padding: 30px;
+}
+
+
+.card-flex .header-card{
+    padding: 0 12px;
+    display: block;
+}
+
+
+.card-flex .group-btn-card {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.card-flex  .group-btn-card button {
+    width: 125px;
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 10px;
+    text-align: center;
+    border-radius: 60px;
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-box-shadow: 0 8px 16px -10px #0000006e;
+    -moz-box-shadow: 0 8px 16px -10px #0000006e;
+    box-shadow: 0 8px 16px -10px #0000006e;
+}
+
+
+.card-flex  .group-btn-card button.lineal {
+    background: #fff;
+    border: 2px solid #00bbc9;
+    color: #202022;
+    cursor: pointer;
+}
+
+.card-flex .avatar img{
+    width: 60px;
+    border-radius: 160px;
+    height: 60px;
+}
+
+.card-flex  .vehicle-img{
+    color: transparent;
+    width: 100%;
+    border-left: 12px solid #000;
+}
+
+.btn-menu{
+    list-style: none;
+    margin: 0;
+    position: relative;
+    border-radius: unset;
+    padding: 15px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: unset;
+    background: unset;
+    cursor: pointer;
+}
+
+.btn-menu.wipe{
+    display: block;
+}
+
+.btn-menu:hover{
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+}
+
+.btn-menu:hover h6{
+    color: #fff;
+}
+
+.btn-menu:hover svg path{
+    fill: #fff;
+}
+
+
+.btn-menu h6{
+    margin-left: 20px;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.334rem;
+    font-family: '__Plus_Jakarta_Sans_3e240d', Helvetica, Arial, sans-serif;
+    display: block;
+}
+
+.mui-10klw3m {
+    overflow: hidden;
+}
+
+.table-modal{
+    width: 100%;
+}
+
+
+.crud-dialog {
+    padding: 20px 60px;
+    height: 80vh;
+}
+
+.crud-dialog .close-dialog-crud{
+    position: absolute;
+    left: 10px;
+    background: none;
+    border: unset;
+    cursor: pointer;
+} 
+
+.crud-dialog h2{
+    font-size: 24px;
+    line-height: 10px;
+    font-weight: bold;
+    color: #202022;
+    padding: 20px 0;
+}
+
+.crud-dialog  h2 p {
+    font-size: 14px;
+    line-height: 14px;
+    color: #202022;
+    font-weight: 100;
+    margin: 10px 0;
+}
+
+
+.crud-dialog  .btn-modal{
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 60px;
+    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    -webkit-box-shadow: 0 8px 16px -10px #0000006e;
+    -moz-box-shadow: 0 8px 16px -10px #0000006e;
+    box-shadow: 0 8px 16px -10px #0000006e;
+    width: 100%;
+    border: unset;
+}
