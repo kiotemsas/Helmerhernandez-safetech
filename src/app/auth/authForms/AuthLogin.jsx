@@ -10,23 +10,38 @@ import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import Parse from '../../../utils/parse';
+import { useRouter } from 'next/navigation';
 
 const AuthLogin = ({ title, subtitle, subtext, onSuccess }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter();
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [userData, setUserData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const url = "https://parseapi.back4app.com/login";
+    const headers = {
+      "X-Parse-Application-Id": "NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR",
+      "X-Parse-REST-API-Key": "deWxXGwOYr6ena7rovZkoLgrDtZhaw9w3cFsA4s1",
+      "X-Parse-Revocable-Session": "1",
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+    const body = new URLSearchParams(credentials);
+
     try {
-      await Parse.User.logIn(username, password);
-      const loggedIn = Parse.User.current();
-      console.log('User', loggedIn);
-      if (loggedIn) {
-        onSuccess(); // Llama la función onSuccess en caso de login exitoso
+      const response = await fetch(url, { method: "POST", headers, body });
+      if (response.ok) {
+        const data = await response.json();
+        setUserData(data); 
+        router.push("/"); 
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || "Error, los datos de acceso son incorrectos");
       }
     } catch (error) {
-      setErrorMessage("Error en el inicio de sesión");
-      console.error("Error de inicio de sesión:", error);
+      setErrorMessage("Unexpected error");
+      console.error("Error:", error);
     }
   };
 
@@ -48,8 +63,8 @@ const AuthLogin = ({ title, subtitle, subtext, onSuccess }) => {
             placeholder="Username"
             variant="outlined"
             fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={credentials.username}
+            onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
           />
         </Box>
         <Box className="muitech">
@@ -60,8 +75,8 @@ const AuthLogin = ({ title, subtitle, subtext, onSuccess }) => {
             type="password"
             variant="outlined"
             fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={credentials.password}
+            onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           />
         </Box>
         <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
