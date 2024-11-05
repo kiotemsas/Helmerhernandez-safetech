@@ -60,5 +60,6 @@
     "eslint": "latest",
     "eslint-config-next": "latest",
     "typescript": "5.3.3"
-  }
+  },
+  "homepage": "https://paso.kiotem.solutions/"
 }
