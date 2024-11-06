@@ -4,14 +4,14 @@ import Breadcrumb from '@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcr
 import PageContainer from '@/app/components/container/PageContainer';
 import ParentCard from '@/app/components/shared/ParentCard';
 import ChildCard from '@/app/components/shared/ChildCard';
-import SimpleDialog from '@/app/components/ui-components/dialog/SimpleDialog';
+/* import SimpleDialog from '@/app/components/ui-components/dialog/SimpleDialog';
 import AlertDialog from '@/app/components/ui-components/dialog/AlertDialog';
 import TransitionDialog from '@/app/components/ui-components/dialog/TransitionDialog';
 import FormDialog from '@/app/components/ui-components/dialog/FormDialog';
 import FullscreenDialog from '@/app/components/ui-components/dialog/FullscreenDialog';
 import MaxWidthDialog from '@/app/components/ui-components/dialog/MaxWidthDialog';
 import ScrollContentDialog from '@/app/components/ui-components/dialog/ScrollContentDialog';
-import ResponsiveDialog from '@/app/components/ui-components/dialog/ResponsiveDialog';
+import ResponsiveDialog from '@/app/components/ui-components/dialog/ResponsiveDialog'; */
 
 const BCrumb = [
   {
