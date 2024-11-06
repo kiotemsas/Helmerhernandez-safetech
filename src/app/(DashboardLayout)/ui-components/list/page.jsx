@@ -5,12 +5,12 @@ import PageContainer from '@/app/components/container/PageContainer';
 import ParentCard from '@/app/components/shared/ParentCard';
 import ChildCard from '@/app/components/shared/ChildCard';
 
-import SimpleList from '@/app/components/ui-components/lists/SimpleList';
+/* import SimpleList from '@/app/components/ui-components/lists/SimpleList';
 import NestedList from '@/app/components/ui-components/lists/NestedList';
 import FolderList from '@/app/components/ui-components/lists/FolderList';
 import SelectedList from '@/app/components/ui-components/lists/SelectedList';
 import ControlsList from '@/app/components/ui-components/lists/ControlsList';
-import SwitchList from '@/app/components/ui-components/lists/SwitchList';
+import SwitchList from '@/app/components/ui-components/lists/SwitchList'; */
 import React from 'react';
 
 const BCrumb = [
