@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { IconBackground, IconPower } from '@tabler/icons-react';
 import Link from 'next/link';
 
+import { useSession, signOut } from "next-auth/react"
 import { useState } from "react";
 import Createvehicle from '@/app/components/create/vehicle/index';
 import Createroute from '@/app/components/create/route/index';
@@ -25,6 +26,7 @@ export const Profile = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const { data: session } = useSession()
 
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
@@ -149,7 +151,9 @@ export const Profile = () => {
                     href="/auth/auth1/login"
                     aria-label="logout"
                     size="small"
+                    onClick={() => signOut()}
                   >
+                    
                     <IconPower size="20" />
                   </IconButton>
                 </Tooltip>

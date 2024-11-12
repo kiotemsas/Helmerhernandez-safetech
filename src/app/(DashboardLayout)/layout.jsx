@@ -11,7 +11,8 @@ import HorizontalHeader from "./layout/horizontal/header/Header";
 import { useSelector } from 'react-redux';
 import { useSession } from "next-auth/react"
 import { redirect } from 'next/navigation'
-
+import { MapProvider } from "@/store/providers/map-provider";
+import { MapComponent } from "@/app/components/map";
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
@@ -29,14 +30,20 @@ const PageWrapper = styled("div")(() => ({
 }));
 
 export default function RootLayout({ children }) {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const customizer = useSelector((state) => state.customizer);
   const theme = useTheme();
   const { data: session } = useSession()
+  if (session) {
 
     return (
+
+      
       <MainWrapper>
+
+
+
+
+
         {/* ------------------------------------------- */}
         {/* Sidebar */}
         {/* ------------------------------------------- */}
@@ -54,6 +61,12 @@ export default function RootLayout({ children }) {
             }),
           }}
         >
+
+<MapProvider>
+      <MapComponent/>
+    </MapProvider>
+
+    
           {/* ------------------------------------------- */}
           {/* Header */}
           {/* ------------------------------------------- */}
@@ -69,6 +82,11 @@ export default function RootLayout({ children }) {
             {/* PageContent */}
             {/* ------------------------------------------- */}
 
+
+
+            
+
+
             <Box sx={{ minHeight: "calc(100vh - 170px)" }}>
               {/* <Outlet /> */}
               {children}
@@ -83,6 +101,11 @@ export default function RootLayout({ children }) {
         </PageWrapper>
       </MainWrapper>
     );
- 
+  }
+  return (
+    <>
+      {redirect('/auth/auth1/login')}
+    </>
+  )
 
 }
