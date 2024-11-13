@@ -4,7 +4,7 @@ we need to make this component client rendered as well*/
 
 import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; //Map component Component from library
-import Parse from 'parse';
+import Parse from '../../utils/parse';
 
 const parseClient = new Parse.LiveQueryClient({
   applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
