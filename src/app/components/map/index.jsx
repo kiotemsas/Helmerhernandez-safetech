@@ -2,8 +2,17 @@
 we need to make this component client rendered as well*/
 'use client'
 
-//Map component Component from library
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import React, { useEffect, useState } from 'react';
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";//Map component Component from library
+import Parse from "@app/utils/parse";
+
+const parseClient = new Parse.LiveQueryClient({
+  applicationId: "NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR",
+  serverURL: "wss://safetech.b4a.io", // Asegúrate de usar 'wss://' para conexiones seguras
+  javascriptKey: "1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ"
+});
+parseClient.open();
+
 
 //Map's styling
 const defaultMapContainerStyle = {
@@ -62,35 +71,59 @@ const defaultMapOptions = {
       }]
 };
 
-
-const location = {
-  lat: 9.3023769,
-  lng: -75.3994999
-};
-
-
-
 const MapComponent = () => {
-    return (
-        <div className="w-full">
-            <GoogleMap
-                mapContainerStyle={defaultMapContainerStyle}
-                center={defaultMapCenter}
-                zoom={defaultMapZoom}
-                options={defaultMapOptions}
-            >
+  const [events, setEvents] = useState([]);
 
-<Marker
+  useEffect(() => {
+    const query = new Parse.Query("Event");
+    const subscription = parseClient.subscribe(query);
 
-options={{
-  icon: '/images/svgs/marker.svg'
-}}
+    subscription.on('open', () => {
+      console.log('LiveQuery connection opened');
+    });
 
-position={location} />
+    subscription.on('create', (event) => {
+      console.log('New event:', event);
+      if (event.attributes.type === "commandResult") {        
+        setEvents((prevEvents) => [
+          ...prevEvents,
+          {
+            id: event.id,
+            lat: event.attributes.latitude,
+            lng: event.attributes.longitude
+          }
+        ]);
+      }
+    });
 
-            </GoogleMap>
-        </div>
-    )
+    subscription.on('error', (error) => {
+      console.error('LiveQuery error:', error);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+      parseClient.close();
+    };
+  }, []);
+
+  return (
+    <div className="w-full">
+      <GoogleMap
+        mapContainerStyle={defaultMapContainerStyle}
+        center={defaultMapCenter}
+        zoom={defaultMapZoom}
+        options={defaultMapOptions}
+      >
+        {events.map((event) => (
+          <Marker
+            key={event.id}
+            position={{ lat: event.lat, lng: event.lng }}
+            options={{ icon: '/images/svgs/marker.svg' }}
+          />
+        ))}
+      </GoogleMap>
+    </div>
+  );
 };
 
 export { MapComponent };
