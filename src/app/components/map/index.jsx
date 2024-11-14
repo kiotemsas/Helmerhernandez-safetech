@@ -15,55 +15,68 @@ parseClient.open();
 
 //Map's styling
 const defaultMapContainerStyle = {
-  width: '100%',
-  height: '100vh',
+    width: '100%',
+    height: '100vh',
 };
 
 //K2's coordinates
 const defaultMapCenter = {
-  lat: 9.3023769,
-  lng: -75.3994999,
-};
+    lat: 9.3023769,
+    lng: -75.3994999
+}
+
 
 //Default zoom level, can be adjusted
-const defaultMapZoom = 17;
+const defaultMapZoom = 17
 
 //Map options
 const defaultMapOptions = {
-  zoomControl: false,
-  tilt: 0,
-  mapTypeControl: false,
-  zoomControl: false,
-  mapTypeControl: false,
-  scaleControl: false,
-  streetViewControl: false,
-  rotateControl: false,
-  fullscreenControl: false,
-  gestureHandling: 'auto',
-  mapTypeId: 'roadmap',
-  styles: [
-    {
-      featureType: 'all',
-      elementType: 'all',
-      stylers: [{ invert_lightness: true }],
-    },
-    {
-      featureType: 'road',
-      elementType: 'all',
-      stylers: [{ hue: '#00BBC9' }],
-    },
-    {
-      featureType: 'poi',
-      elementType: 'all',
-      stylers: [{ hue: '#00BBC9' }],
-    },
-    {
-      featureType: 'water',
-      elementType: 'all',
-      stylers: [{ hue: '#00BBC9' }],
-    },
-  ],
+    zoomControl: false,
+    tilt: 0,
+    mapTypeControl: false,
+    zoomControl: false,
+    mapTypeControl:false,
+    scaleControl: false,
+    streetViewControl:false,
+    rotateControl:false,
+    fullscreenControl:false,
+    gestureHandling: 'auto',
+    mapTypeId: 'roadmap',
+    styles: [
+      {
+        featureType: "all",
+        elementType: "all",
+        stylers: [
+          { invert_lightness: true }
+        ]
+      },{
+        featureType: "road",
+        elementType: "all",
+        stylers: [
+          { hue: "#00BBC9" }
+        ]
+      },{
+        featureType: "poi",
+        elementType: "all",
+        stylers: [
+          { hue: "#00BBC9" }
+        ]
+      },{
+        featureType: "water",
+        elementType: "all",
+        stylers: [
+          { hue: "#00BBC9" }
+        ]
+      }]
 };
+
+
+const location = {
+  lat: 9.3023769,
+  lng: -75.3994999
+};
+
+
 
 const MapComponent = () => {
   const [events, setEvents] = useState([]);
