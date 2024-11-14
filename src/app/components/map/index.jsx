@@ -78,6 +78,16 @@ const MapComponent = () => {
 
     subscription.on('create', (event) => {
       console.log('New event:', event);
+
+      const latitude = event.attributes.latitude;
+      const longitude = event.attributes.longitude;
+      if (latitude && longitude) {
+        console.log(`  - Latitude: ${latitude}`);
+        console.log(`  - Longitude: ${longitude}`);
+      } else {
+        console.log('  - No latitude or longitude found in event data.');
+      }
+
       if (event.attributes.type === 'commandResult') {
         setEvents((prevEvents) => [
           ...prevEvents,
@@ -108,13 +118,20 @@ const MapComponent = () => {
         zoom={defaultMapZoom}
         options={defaultMapOptions}
       >
-        {events.map((event) => (
-          <Marker
-            key={event.id}
-            position={{ lat: event.lat, lng: event.lng }}
-            options={{ icon: '/images/svgs/marker.svg' }}
-          />
-        ))}
+        {events.map((event) => {
+          const latitude = parseFloat(event.lat);
+          const longitude = parseFloat(event.lng);
+          return (
+            <Marker
+              key={event.id}
+              position={{
+                lat: isNaN(latitude) ? defaultMapCenter.lat : latitude,
+                lng: isNaN(longitude) ? defaultMapCenter.lng : longitude,
+              }}
+              options={{ icon: '/images/svgs/marker.svg' }}
+            />
+          );
+        })}
       </GoogleMap>
     </div>
   );
