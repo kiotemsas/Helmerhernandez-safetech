@@ -89,12 +89,11 @@ const MapComponent = () => {
       }
 
       if (event.attributes.type === 'commandResult') {
-        setEvents((prevEvents) => [
-          ...prevEvents,
+        setEvents([
           {
             id: event.id,
-            lat: event.attributes.resultObject.position.latitude,
-            lng: event.attributes.resultObject.position.longitude,
+            lat: latitude,
+            lng: longitude,
           },
         ]);
       }
