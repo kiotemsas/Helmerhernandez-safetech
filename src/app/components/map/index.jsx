@@ -93,8 +93,8 @@ const MapComponent = () => {
           ...prevEvents,
           {
             id: event.id,
-            lat: event.attributes.latitude,
-            lng: event.attributes.longitude,
+            lat: event.attributes.resultObject.position.latitude,
+            lng: event.attributes.resultObject.position.longitude,
           },
         ]);
       }
