@@ -79,8 +79,8 @@ const MapComponent = () => {
     subscription.on('create', (event) => {
       console.log('New event:', event);
 
-      const latitude = event.attributes.latitude;
-      const longitude = event.attributes.longitude;
+      const latitude = event.attributes.resultObject.position.latitude;
+      const longitude = event.attributes.resultObject.position.longitude;
       if (latitude && longitude) {
         console.log(`  - Latitude: ${latitude}`);
         console.log(`  - Longitude: ${longitude}`);
