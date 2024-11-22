@@ -8,7 +8,7 @@ import Parse from '../../../utils/parse';
 
 const parseClient = new Parse.LiveQueryClient({
   applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
-  serverURL: 'wss://safetech.b4a.io', // Asegúrate de usar 'wss://' para conexiones seguras
+  serverURL: 'wss://safetech.b4a.io', // Asegúrate de usar 'wss://' para conexiones seguras wss://3.137.134.27:8080
   javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
 });
 parseClient.open();
@@ -79,8 +79,9 @@ const MapComponent = () => {
     subscription.on('create', (event) => {
       console.log('New event:', event);
 
-      const latitude = event.attributes.latitude;
-      const longitude = event.attributes.longitude;
+      const latitude = event.attributes.resultObject.position.latitude;
+      const longitude = event.attributes.resultObject.position.longitude;
+
       if (latitude && longitude) {
         console.log(`  - Latitude: ${latitude}`);
         console.log(`  - Longitude: ${longitude}`);
@@ -89,12 +90,11 @@ const MapComponent = () => {
       }
 
       if (event.attributes.type === 'commandResult') {
-        setEvents((prevEvents) => [
-          ...prevEvents,
+        setEvents([
           {
             id: event.id,
-            lat: event.attributes.latitude,
-            lng: event.attributes.longitude,
+            lat: latitude,
+            lng: longitude,
           },
         ]);
       }
