@@ -8,7 +8,7 @@ import Parse from '../../../utils/parse';
 
 const parseClient = new Parse.LiveQueryClient({
   applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
-  serverURL: 'wss://safetech.b4a.io', // Asegúrate de usar 'wss://' para conexiones seguras
+  serverURL: 'wss://safetech.b4a.io', // Asegúrate de usar 'wss://' para conexiones seguras wss://3.137.134.27:8080
   javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
 });
 parseClient.open();
