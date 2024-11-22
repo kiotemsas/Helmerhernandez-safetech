@@ -8,7 +8,9 @@ import Parse from '../../../utils/parse';
 
 const parseClient = new Parse.LiveQueryClient({
   applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
+
   serverURL: 'ws://3.137.134.27:8080/parse', // Asegúrate de usar 'wss://' para conexiones seguras
+
   javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
 });
 parseClient.open();
@@ -81,6 +83,7 @@ const MapComponent = () => {
 
       const latitude = event.attributes.resultObject.position.latitude;
       const longitude = event.attributes.resultObject.position.longitude;
+
       if (latitude && longitude) {
         console.log(`  - Latitude: ${latitude}`);
         console.log(`  - Longitude: ${longitude}`);
