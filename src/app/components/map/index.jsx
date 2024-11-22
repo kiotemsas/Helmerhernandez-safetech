@@ -81,6 +81,7 @@ const MapComponent = () => {
 
       const latitude = event.attributes.resultObject.position.latitude;
       const longitude = event.attributes.resultObject.position.longitude;
+
       if (latitude && longitude) {
         console.log(`  - Latitude: ${latitude}`);
         console.log(`  - Longitude: ${longitude}`);
