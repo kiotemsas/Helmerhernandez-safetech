@@ -3,8 +3,8 @@ import Parse from 'parse';
 
 // Initialize Parse
 Parse.initialize('NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR', '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ');
-Parse.serverURL = 'http://3.137.134.27:8080/';
 
+Parse.serverURL = 'http://3.137.134.27:8080/parse';
 
 const headers = {
     'X-Parse-Application-Id': 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
@@ -37,5 +37,4 @@ const headers = {
     return await fetchFromParse('wss://parseapi.back4app.com/functions/getVehiclesByVendor', 'POST', { vendor: vendorId });
   };
   
-
 export default Parse;

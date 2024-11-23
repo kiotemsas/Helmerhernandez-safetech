@@ -15,7 +15,7 @@ const handler = NextAuth({
 
         const userData = { username: credentials.username, password: credentials.password};
         
-        const { data } = await axios.post('https://parseapi.back4app.com/login', userData, {
+        const { data } = await axios.post('http://3.137.134.27:8080/parse/login', userData, {
           headers: { 
             "Content-Type": "application/json",
             "X-Parse-REST-API-Key": "deWxXGwOYr6ena7rovZkoLgrDtZhaw9w3cFsA4s1",
