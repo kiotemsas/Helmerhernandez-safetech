@@ -58,7 +58,7 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.sessionToken = user.sessionToken; // Guarda el token de sesión
-        console.log('Session Token:', sessionToken); // Asegúrate de que no sea undefined
+        //console.log('Session Token:', sessionToken); // Asegúrate de que no sea undefined
         token.id = user.id; // Guarda el ID del usuario
       }
       return token;
