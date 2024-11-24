@@ -3,47 +3,16 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Box,
-  Stack,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Avatar,
+  DialogContent,  
+  Box,  
   Typography,
 } from '@mui/material';
 
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery'; 
+import GetVehiclesByVendor from './GetVehiclesByVendor';
+import GetVehicles from './GetVehicles';
  
-
-const rows = [
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'CARLOS LOAIZA', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'MELLO DRUM', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'JOE DOE', 
-  }, 
-];
-
 
 const Vehicles = () => {
  
@@ -89,78 +58,14 @@ const Vehicles = () => {
 
           <DialogTitle>{"VEHICLE’S"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
-          <Box> 
-
-            <Table class="table-modal" aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="h6">Plate</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Brand</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Model</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Driver</Typography>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.no} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.plate}
-                      </Typography>
-                    </TableCell>
-
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.brand}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.model}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.driver}
-                      </Typography>
-                    </TableCell>
-
-                     
-                    <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Box width="100%">
-                          <Button class="btn-modal" onClick={handleClose}>
-                              DETAILS
-                          </Button>
-                        </Box>
-                     
-                      </Stack>
-                    </TableCell>
-
-
-
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <Box>           
+            {/*<GetVehiclesByVendor vendorId="12345" />*/}
+            <GetVehicles handleClose={handleClose} />
           
           </Box>
         </DialogContent> 
 
-      </Dialog>
+      </Dialog>      
     </>
   );
 };

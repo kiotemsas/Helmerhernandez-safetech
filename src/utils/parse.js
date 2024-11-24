@@ -66,4 +66,23 @@ export const getVehiclesByVendor = async (vendorId, token) => {
   );
 };
 
+export const getVehicles = async (token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getVehicles',
+    'POST',
+    {},
+    token
+  );
+};
+
+export const getVendors = async (token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getVendors',
+    'POST',
+    {},
+    token
+  );
+};
+
 export default Parse;
+

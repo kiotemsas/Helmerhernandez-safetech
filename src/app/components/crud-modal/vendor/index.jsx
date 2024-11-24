@@ -19,6 +19,7 @@ import {
 
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery'; 
+import GetVendors from './GetVendors';
  
 
 const rows = [
@@ -156,6 +157,8 @@ const Vendor = () => {
                 ))}
               </TableBody>
             </Table>
+
+            <GetVendors />
           
           </Box>
         </DialogContent> 

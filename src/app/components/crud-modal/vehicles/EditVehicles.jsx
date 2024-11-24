@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { saveVehicle } from '@/utils/parse'; 
+import React, { useState, useEffect } from 'react';
+import { editVehicle } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
 
 import Stack from '@mui/material/Stack';
@@ -8,18 +8,9 @@ import CustomTextField from '@/app/components/forms/theme-elements/CustomTextFie
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import { Button } from '@mui/material';
 
-
-const SaveVehicle = ({ setOpen, handleClose }) => {
+const EditVehicle = ({ setOpen, handleClose, vehicle }) => {
   const { data: session } = useSession();
-  const [vehicleData, setVehicleData] = useState({
-    plateNumber: '',
-    model: '',
-    year: '',
-    serial: '',
-    status: '',
-    brand: '',
-    defaultVendor: '',
-  });
+  const [vehicleData, setVehicleData] = useState(vehicle);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,14 +20,12 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
     }));
   };
 
-  //console.log('Datos de Session:', session);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (session && session.accessToken) {
         const token = session.accessToken;
-        const response = await saveVehicle(vehicleData, token);
+        const response = await editVehicle(vehicleData, token);
         alert(response.result.message);
         setOpen(false);
       } else {
@@ -44,7 +33,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
       }
     } catch (error) {
       console.error(error);
-      alert('Error al guardar el vehículo. Por favor, intente de nuevo.');
+      alert('Error al editar el vehículo. Por favor, intente de nuevo.');
     }
   };
 
@@ -72,6 +61,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
               placeholder={field.label}
               variant="outlined"
               fullWidth
+              value={vehicleData[field.name]}
               onChange={handleChange}
             />
           </Box>
@@ -79,7 +69,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
 
         <Stack direction="row" spacing={2}>
           <Button
-            color="secondary"            
+            color="secondary"
             variant="contained"
             size="large"
             fullWidth
@@ -95,12 +85,12 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
             size="large"
             fullWidth
           >
-            CREATE
-          </Button>  
-        </Stack>           
+            UPDATE
+          </Button>
+        </Stack>
       </Stack>
     </form>
   );
 };
 
-export default SaveVehicle;
+export default EditVehicle;
