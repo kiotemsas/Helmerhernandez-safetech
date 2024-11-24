@@ -85,3 +85,4 @@ export const getVendors = async (token) => {
 };
 
 export default Parse;
+

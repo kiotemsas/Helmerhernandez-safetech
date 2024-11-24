@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import { Button } from '@mui/material';
+import Link from 'next/link';
 
 const SaveVehicle = ({ setOpen, handleClose }) => {
   const { data: session } = useSession();
@@ -79,6 +80,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
         <Stack direction="row" spacing={2}>
           <Button
             color="secondary"
+            color="secondary"
             variant="contained"
             size="large"
             fullWidth
@@ -96,7 +98,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
           >
             CREATE
           </Button>
-        </Stack>
+             
       </Stack>
     </form>
   );
