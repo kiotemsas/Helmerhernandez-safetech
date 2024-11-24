@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { saveVehicle } from '@/utils/parse'; // Asegúrate de que esta función esté correctamente implementada
+import { saveVehicle } from '@/utils/parse'; 
 import { useSession } from 'next-auth/react';
 
 import Stack from '@mui/material/Stack';
@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import { Button } from '@mui/material';
-import Link from 'next/link';
+
 
 const SaveVehicle = ({ setOpen, handleClose }) => {
   const { data: session } = useSession();
@@ -79,8 +79,7 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
 
         <Stack direction="row" spacing={2}>
           <Button
-            color="secondary"
-            color="secondary"
+            color="secondary"            
             variant="contained"
             size="large"
             fullWidth
@@ -97,8 +96,8 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
             fullWidth
           >
             CREATE
-          </Button>
-             
+          </Button>  
+        </Stack>           
       </Stack>
     </form>
   );
