@@ -73,6 +73,10 @@ const GetVehicles = ({ handleClose }) => {
     setSelectedVehicle(null);
   };
 
+  const handleDeleteSuccess = (vehicleId) => {
+    setVehicles((prevVehicles) => prevVehicles.filter((vehicle) => vehicle.objectId !== vehicleId));
+  };
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -163,7 +167,7 @@ const GetVehicles = ({ handleClose }) => {
         <DialogTitle>Delete Vehicle</DialogTitle>
         <DialogContent>
           {selectedVehicle && (
-            <DeleteVehicle setOpen={setOpenDelete} handleClose={handleDeleteClose} vehicleId={selectedVehicle.objectId} />
+            <DeleteVehicle setOpen={setOpenDelete} handleClose={handleDeleteClose} vehicleId={selectedVehicle.objectId} handleDeleteSuccess={handleDeleteSuccess} />
           )}
         </DialogContent>
       </Dialog>

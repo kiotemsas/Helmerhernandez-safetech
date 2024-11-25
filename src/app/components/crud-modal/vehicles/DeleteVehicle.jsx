@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 
-const DeleteVehicle = ({ setOpen, handleClose, vehicleId }) => {
+const DeleteVehicle = ({ setOpen, handleClose, vehicleId, onDeleteSuccess }) => {
   const { data: session } = useSession();
 
   const handleDelete = async () => {
@@ -17,6 +17,7 @@ const DeleteVehicle = ({ setOpen, handleClose, vehicleId }) => {
         
         const response = await deleteVehicle(vehicleId, token);
         alert(response.result.message);
+        onDeleteSuccess(vehicleId);
         setOpen(false);
       } else {
         alert('No se ha encontrado una sesión activa.');
