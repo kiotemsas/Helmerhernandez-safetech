@@ -167,7 +167,7 @@ const GetVehicles = ({ handleClose }) => {
         <DialogTitle>Delete Vehicle</DialogTitle>
         <DialogContent>
           {selectedVehicle && (
-            <DeleteVehicle setOpen={setOpenDelete} handleClose={handleDeleteClose} vehicleId={selectedVehicle.objectId} handleDeleteSuccess={handleDeleteSuccess} />
+            <DeleteVehicle setOpen={setOpenDelete} handleClose={handleDeleteClose} vehicleId={selectedVehicle.objectId} onDeleteSuccess={handleDeleteSuccess} />
           )}
         </DialogContent>
       </Dialog>
