@@ -1,6 +1,7 @@
 import React from 'react';
-import { deleteVehicle } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
+
+import { deleteVehicle } from '@/utils/parse';
 
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -12,7 +13,8 @@ const DeleteVehicle = ({ setOpen, handleClose, vehicleId }) => {
   const handleDelete = async () => {
     try {
       if (session && session.accessToken) {
-        const token = session.accessToken;
+        const token = session.accessToken;        
+        
         const response = await deleteVehicle(vehicleId, token);
         alert(response.result.message);
         setOpen(false);

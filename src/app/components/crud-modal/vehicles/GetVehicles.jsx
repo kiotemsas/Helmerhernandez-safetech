@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getVehicles } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
+
+import { getVehicles } from '@/utils/parse';
+import EditVehicles from './EditVehicles';
+import DeleteVehicle from './DeleteVehicle';
 
 import {
   Button,
@@ -10,13 +13,23 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody,  
+  TableBody,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  CircularProgress,
+  Alert,
 } from '@mui/material';
 
 const GetVehicles = ({ handleClose }) => {
   const { data: session } = useSession();
   const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -31,11 +44,42 @@ const GetVehicles = ({ handleClose }) => {
       } catch (error) {
         console.error(error);
         alert('Error al obtener los vehículos. Por favor, intente de nuevo.');
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchVehicles();
   }, [session]);
+
+  const handleEditOpen = (vehicle) => {
+    console.log('Vehicle:', vehicle); // Agrega este console.log para verificar el contenido del objeto vehicle
+    setSelectedVehicle(vehicle);
+    setOpenEdit(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEdit(false);
+    setSelectedVehicle(null);
+  };
+
+  const handleDeleteOpen = (vehicle) => {
+    setSelectedVehicle(vehicle);
+    setOpenDelete(true);
+  };
+
+  const handleDeleteClose = () => {
+    setOpenDelete(false);
+    setSelectedVehicle(null);
+  };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
 
   return (
     <Box>
@@ -56,7 +100,7 @@ const GetVehicles = ({ handleClose }) => {
                 <TableCell>
                   <Typography variant="h6">Vendor</Typography>
                 </TableCell>
-                <TableCell></TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,11 +135,12 @@ const GetVehicles = ({ handleClose }) => {
 
                   <TableCell>
                     <Stack direction="row" alignItems="center" spacing={2}>
-                      <Box width="100%">
-                        <Button className="btn-modal" onClick={handleClose}>
-                          DETAILS
-                        </Button>
-                      </Box>
+                      <Button variant="contained" color="primary" onClick={() => handleEditOpen(vehicle)}>
+                        Edit
+                      </Button>
+                      <Button variant="contained" color="secondary" onClick={() => handleDeleteOpen(vehicle)}>
+                        Delete
+                      </Button>
                     </Stack>
                   </TableCell>
                 </TableRow>
@@ -104,6 +149,24 @@ const GetVehicles = ({ handleClose }) => {
           </Table>
         </Box>
       </Stack>
+
+      <Dialog open={openEdit} onClose={handleEditClose} fullWidth maxWidth="sm">
+        <DialogTitle>Edit Vehicle</DialogTitle>
+        <DialogContent>
+          {selectedVehicle && (
+            <EditVehicles setOpen={setOpenEdit} handleClose={handleEditClose} vehicle={selectedVehicle} />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={openDelete} onClose={handleDeleteClose} fullWidth maxWidth="sm">
+        <DialogTitle>Delete Vehicle</DialogTitle>
+        <DialogContent>
+          {selectedVehicle && (
+            <DeleteVehicle setOpen={setOpenDelete} handleClose={handleDeleteClose} vehicleId={selectedVehicle.objectId} />
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
