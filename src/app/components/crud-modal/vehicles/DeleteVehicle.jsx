@@ -1,20 +1,23 @@
 import React from 'react';
-import { deleteVehicle } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
+
+import { deleteVehicle } from '@/utils/parse';
 
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
 
-const DeleteVehicle = ({ setOpen, handleClose, vehicleId }) => {
+const DeleteVehicle = ({ setOpen, handleClose, vehicleId, onDeleteSuccess }) => {
   const { data: session } = useSession();
 
   const handleDelete = async () => {
     try {
       if (session && session.accessToken) {
-        const token = session.accessToken;
+        const token = session.accessToken;        
+        
         const response = await deleteVehicle(vehicleId, token);
         alert(response.result.message);
+        onDeleteSuccess(vehicleId);
         setOpen(false);
       } else {
         alert('No se ha encontrado una sesión activa.');

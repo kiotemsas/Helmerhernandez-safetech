@@ -73,6 +73,9 @@ const SaveVehicle = ({ setOpen, handleClose }) => {
               variant="outlined"
               fullWidth
               onChange={handleChange}
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
             />
           </Box>
         ))}

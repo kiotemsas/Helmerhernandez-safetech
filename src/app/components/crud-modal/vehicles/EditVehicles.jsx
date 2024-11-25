@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { editVehicle } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
 
@@ -25,15 +25,27 @@ const EditVehicle = ({ setOpen, handleClose, vehicle }) => {
     try {
       if (session && session.accessToken) {
         const token = session.accessToken;
-        const response = await editVehicle(vehicleData, token);
+                
+        const dataToSend = {
+          id: vehicleData.objectId,
+          plateNumber: vehicleData.plateNumber,
+          model: vehicleData.model,
+          year: vehicleData.year,
+          serial: vehicleData.serial,
+          status: vehicleData.status,
+          brand: vehicleData.brand,
+          defaultVendor: vehicleData.defaultVendor,
+        };
+                
+        const response = await editVehicle(dataToSend, token);
         alert(response.result.message);
         setOpen(false);
       } else {
         alert('No se ha encontrado una sesión activa.');
       }
     } catch (error) {
-      console.error(error);
-      alert('Error al editar el vehículo. Por favor, intente de nuevo.');
+      console.error('Error:', error); // Imprime el error en la consola
+      alert(`Error al editar el vehículo. Por favor, intente de nuevo. Detalles: ${error.message}`);
     }
   };
 
@@ -50,6 +62,20 @@ const EditVehicle = ({ setOpen, handleClose, vehicle }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Stack spacing={2}>
+        <Box className="muitech">
+          <CustomFormLabel className="nametech" htmlFor="objectId">
+            OBJECT ID
+          </CustomFormLabel>
+          <CustomTextField
+            id="objectId"
+            name="objectId"
+            placeholder="OBJECT ID"
+            variant="outlined"
+            fullWidth
+            value={vehicleData.objectId}
+            disabled
+          />
+        </Box>
         {fields.map((field) => (
           <Box key={field.name} className="muitech">
             <CustomFormLabel className="nametech" htmlFor={field.name}>

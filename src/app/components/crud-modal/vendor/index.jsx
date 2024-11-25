@@ -81,73 +81,7 @@ const Vendor = () => {
 
           <DialogTitle>{"VENDOR’S"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
-          <Box> 
-
-            {/* <Table class="table-modal" aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="h6">Id</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">City</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Phone</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Status</Typography>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.no} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.plate}
-                      </Typography>
-                    </TableCell>
-
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.brand}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.model}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.driver}
-                      </Typography>
-                    </TableCell>
-
-                     
-                    <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Box width="100%">
-                          <Button class="btn-modal" onClick={handleClose}>
-                              DETAILS
-                          </Button>
-                        </Box>
-                     
-                      </Stack>
-                    </TableCell>
-
-
-
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table> */}
+          <Box>            
 
             <GetVendors handleClose={handleClose} />
           
