@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { getVendors } from '@/utils/parse';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import { List, ListItem, ListItemText, CircularProgress, Alert } from '@mui/material';
 
-const GetVendors = () => {
+import {
+  Button,
+  Box,
+  Stack,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@mui/material';
+import { CircularProgress, Alert } from '@mui/material';
+
+const GetVendors = ({ handleClose }) => {
   const { data: session } = useSession();
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,16 +56,41 @@ const GetVendors = () => {
   return (
     <Box>
       <Stack spacing={2}>
-        <List>
-          {vendors.map((vendor) => (
-            <ListItem key={vendor.objectId}>
-              <ListItemText
-                primary={vendor.name}
-                secondary={`ID: ${vendor.objectId}, Address: ${vendor.address}, City: ${vendor.city}, Country: ${vendor.country}, Phone: ${vendor.phone}, Status: ${vendor.status}`}
-              />
-            </ListItem>
-          ))}
-        </List>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Address</TableCell>
+              <TableCell>City</TableCell>
+              <TableCell>Country</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {vendors.map((vendor) => (
+              <TableRow key={vendor.objectId}>
+                <TableCell>{vendor.name}</TableCell>
+                <TableCell>{vendor.address}</TableCell>
+                <TableCell>{vendor.city}</TableCell>
+                <TableCell>{vendor.country}</TableCell>
+                <TableCell>{vendor.phone}</TableCell>
+                <TableCell>{vendor.status}</TableCell>
+                <TableCell>
+                  <Stack spacing={2}>
+                    <Box width="100%">
+                      {/* <Button className="btn-modal" onClick={() => handleDetails(vendor.objectId)}> */}
+                      <Button className="btn-modal" onClick={handleClose}>
+                        DETAILS
+                      </Button>
+                    </Box>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Stack>
     </Box>
   );

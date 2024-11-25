@@ -4,16 +4,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
-  DialogActions,
   Box,
-  Stack,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Avatar,
   Typography,
 } from '@mui/material';
 
@@ -92,20 +83,20 @@ const Vendor = () => {
 
           <Box> 
 
-            <Table class="table-modal" aria-label="simple table">
+            {/* <Table class="table-modal" aria-label="simple table">
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Typography variant="h6">Plate</Typography>
+                    <Typography variant="h6">Id</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">Brand</Typography>
+                    <Typography variant="h6">City</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">Model</Typography>
+                    <Typography variant="h6">Phone</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="h6">Driver</Typography>
+                    <Typography variant="h6">Status</Typography>
                   </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
@@ -156,9 +147,9 @@ const Vendor = () => {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+            </Table> */}
 
-            <GetVendors />
+            <GetVendors handleClose={handleClose} />
           
           </Box>
         </DialogContent> 
