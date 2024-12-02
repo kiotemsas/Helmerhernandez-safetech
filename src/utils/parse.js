@@ -84,5 +84,32 @@ export const getVendors = async (token) => {
   );
 };
 
+export const saveVendor = async (vendorData, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/saveVendor',
+    'POST',
+    vendorData,
+    token
+  );
+};
+
+export const editVendor = async (vendorData, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/editVendor',
+    'POST',
+    vendorData,
+    token
+  );
+};
+
+export const deleteVendor = async (vendorId, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/deleteVendor',
+    'POST',
+    { id: vendorId },
+    token
+  );
+};
+
 export default Parse;
 

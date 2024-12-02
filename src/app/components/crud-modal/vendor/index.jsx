@@ -11,30 +11,6 @@ import {
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery'; 
 import GetVendors from './GetVendors';
- 
-
-const rows = [
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'CARLOS LOAIZA', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'MELLO DRUM', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'JOE DOE', 
-  }, 
-];
 
 
 const Vendor = () => {
