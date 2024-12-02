@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 const EditVendor = ({ setOpen, handleClose, vendor }) => {
   const { data: session } = useSession();
   const [vendorData, setVendorData] = useState({
+    id: '',
     name: '',
     address: '',
     city: '',
@@ -38,15 +39,26 @@ const EditVendor = ({ setOpen, handleClose, vendor }) => {
     try {
       if (session && session.accessToken) {
         const token = session.accessToken;
-        const response = await editVendor(vendorData, token);
+
+        const dataToSend = {
+          id: vendorData.objectId,
+          name: vendorData.name,
+          address: vendorData.address,
+          city: vendorData.city,
+          country: vendorData.country,
+          phone: vendorData.phone,
+          status: vendorData.status,
+        };
+
+        const response = await editVendor(dataToSend, token);
         alert(response.result.message);
         setOpen(false);
       } else {
         alert('No se ha encontrado una sesión activa.');
       }
     } catch (error) {
-      console.error(error);
-      alert('Error al editar el proveedor. Por favor, intente de nuevo.');
+      console.error('Error:', error); // Imprime el error en la consola
+      alert(`Error al editar el proveedor. Por favor, intente de nuevo. Detalles: ${error.message}`);
     }
   };
 
@@ -62,6 +74,20 @@ const EditVendor = ({ setOpen, handleClose, vendor }) => {
   return (
     <form onSubmit={handleSubmit}>
       <Stack spacing={2}>
+        <Box className="muitech">
+          <CustomFormLabel className="nametech" htmlFor="objectId">
+            VENDOR ID
+          </CustomFormLabel>
+          <CustomTextField
+            id="objectId"
+            name="objectId"
+            placeholder="OBJECT ID"
+            variant="outlined"
+            fullWidth
+            value={vendorData.objectId}
+            disabled
+          />
+        </Box>
         {fields.map((field) => (
           <Box key={field.name} className="muitech">
             <CustomFormLabel className="nametech" htmlFor={field.name}>
