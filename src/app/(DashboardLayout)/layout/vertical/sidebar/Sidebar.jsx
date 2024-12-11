@@ -5,7 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import SidebarItems from './SidebarItems';
 import Logo from '../../shared/logo/Logo';
 import { useSelector, useDispatch } from 'react-redux';
-import { hoverSidebar } from '@/store/customizer/CustomizerSlice';
 import Scrollbar from '@/app/components/custom-scroll/Scrollbar';
 import { Profile } from './SidebarProfile/Profile';
 import IconButton from "@mui/material/IconButton";
@@ -20,31 +19,18 @@ import Vehicles from '@/app/components/crud-modal/vehicles';
 import Routes from '@/app/components/crud-modal/routes';
 
 const Sidebar = () => {
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const lgUp = useMediaQuery((theme) => theme.breakpoints.down('lg'))
   const lgDown = useMediaQuery((theme) => theme.breakpoints.up("lg"));
   const customizer = useSelector((state) => state.customizer);
   const dispatch = useDispatch();
   const theme = useTheme();
   const toggleWidth =
-    customizer.isCollapse && !customizer.isSidebarHover
+    customizer.isCollapse  
       ? customizer.MiniSidebarWidth
       : customizer.SidebarWidth;
-
-  const onHoverEnter = () => {
-    if (customizer.isCollapse) {
-      dispatch(hoverSidebar(true));
-    }
-  };
-
-  const onHoverLeave = () => {
-    dispatch(hoverSidebar(false));
-  };
-
-
-
+ 
   return (
     <>
-      {!lgUp ?
         <Box
           sx={{
             zIndex: 100,
@@ -55,9 +41,7 @@ const Sidebar = () => {
             }),
           }}
         >
-          {/* ------------------------------------------- */}
-          {/* Sidebar for desktop */}
-          {/* ------------------------------------------- */}
+
           <Drawer
             anchor="left"
             variant="permanent"
@@ -71,17 +55,13 @@ const Sidebar = () => {
               },
             }}
           >
-            {/* ------------------------------------------- */}
-            {/* Sidebar Box */}
-            {/* ------------------------------------------- */}
+            
             <Box
               sx={{
                 height: '100%',
               }}
             >
-              {/* ------------------------------------------- */}
-              {/* Logo */}
-              {/* ------------------------------------------- */}
+
               <Box >
     
                 
@@ -89,9 +69,7 @@ const Sidebar = () => {
               
                 <IconButton className='toggle-tech' color="inherit" aria-label="menu" 
                   onClick={
-                    lgDown
-                      ? () => dispatch(toggleSidebar())
-                      : () => dispatch(toggleMobileSidebar())
+                    () => dispatch(toggleSidebar())
                   }
                 >
                   <IconMenu2 size="40" />   
@@ -101,9 +79,7 @@ const Sidebar = () => {
               
                 <IconButton className='toggle-tech collapse' color="inherit" aria-label="menu"
                   onClick={
-                    lgDown
-                      ? () => dispatch(toggleSidebar())
-                      : () => dispatch(toggleMobileSidebar())
+                    () => dispatch(toggleSidebar())
                   }
                 >
                   <IconMenu2 size="40" />  
@@ -116,12 +92,6 @@ const Sidebar = () => {
               </Box>
 
               <Scrollbar sx={{ height: 'calc(100% - 300px)' }}>
-                {/* ------------------------------------------- */}
-                {/* Sidebar Items */}
-                {/* ------------------------------------------- */}
-                 {/*<SidebarItems />*/}
-                 {/*SidebarItems />*/}
-                  {/*<MaxWidthDialog />*/}
 
                 <Vehicles/>
                  <Drivers/>
@@ -133,10 +103,9 @@ const Sidebar = () => {
             </Box>
           </Drawer>
         </Box>
-        :
+      
         <Drawer
-          anchor="left"
-          open={customizer.isMobileSidebar}
+          anchor="left" 
           onClose={() => dispatch(toggleMobileSidebar())}
           variant="temporary"
           PaperProps={{
@@ -147,18 +116,14 @@ const Sidebar = () => {
             },
           }}
         >
-          {/* ------------------------------------------- */}
-          {/* Logo */}
-          {/* ------------------------------------------- */}
+         
           <Box px={2}>
             <Logo />
           </Box>
-          {/* ------------------------------------------- */}
-          {/* Sidebar For Mobile */}
-          {/* ------------------------------------------- */}
+
           <SidebarItems />
         </Drawer>
-      }
+
     </>
   );
 };

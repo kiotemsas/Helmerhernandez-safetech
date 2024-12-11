@@ -8,12 +8,11 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import Typography from '@mui/material/Typography'; 
 import { useSelector } from 'react-redux';
-import { IconBackground, IconPower } from '@tabler/icons-react';
-import Link from 'next/link';
+import {  IconPower } from '@tabler/icons-react'; 
 
+import { useSession, signOut } from "next-auth/react"
 import { useState } from "react";
 import Createvehicle from '@/app/components/create/vehicle/index';
 import Createroute from '@/app/components/create/route/index';
@@ -21,10 +20,10 @@ import Createdriver from '@/app/components/create/driver/index';
 import Createuser from '@/app/components/create/user/index';
 
 export const Profile = () => {
-  const customizer = useSelector((state) => state.customizer);
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+  const customizer = useSelector((state) => state.customizer); 
+  const hideMenu =  customizer.isCollapse;
   const [anchorEl2, setAnchorEl2] = useState(null);
+  const { data: session } = useSession()
 
   const handleClick2 = (event) => {
     setAnchorEl2(event.currentTarget);
@@ -39,7 +38,7 @@ export const Profile = () => {
     
     <Box>
 
-      <Box class="plus-menu" >
+      <Box className="plus-menu" >
 
         <Button
 
@@ -73,14 +72,10 @@ export const Profile = () => {
 
             OTROS ENLACES
 
-
           </Typography>}
 
+        </Button> 
 
-        </Button>
-        {/* ------------------------------------------- */}
-        {/* Message Dropdown */}
-        {/* ------------------------------------------- */}
         <Menu
           id="msgs-menu"
           open={Boolean(anchorEl2)}
@@ -97,7 +92,7 @@ export const Profile = () => {
           }}
         >
  
-          <Box class={hideMenu ? 'bubble-list wipe' : 'bubble-list strip'}
+          <Box className={hideMenu ? 'bubble-list wipe' : 'bubble-list strip'}
             sx={{
               display: {
                 xs: "none",
@@ -109,9 +104,7 @@ export const Profile = () => {
             justifyContent="space-between"
             pt={2}
             pr={4}
-          >
-
-
+          > 
             <Createvehicle />
             <Createroute />
             <Createdriver/>
@@ -137,19 +130,19 @@ export const Profile = () => {
               <Avatar alt="" src={"/images/profile/user-1.jpg"} sx={{ height: 60, width: 60 }} />
 
               <Box>
-                <Typography variant="h6">Joe Doe</Typography>
-                <Typography variant="caption">Designer</Typography>
+                <Typography variant="h6">{session.user.name}</Typography>
+                <Typography variant="caption">{session.user.email}</Typography>
               </Box>
               
               <Box sx={{ ml: 'auto' }}>
                 <Tooltip title="Logout" placement="top">
                   <IconButton
                     color="primary"
-                    component={Link}
-                    href="/auth/auth1/login"
+                    onClick={() => signOut()}
                     aria-label="logout"
                     size="small"
                   >
+                    
                     <IconPower size="20" />
                   </IconButton>
                 </Tooltip>

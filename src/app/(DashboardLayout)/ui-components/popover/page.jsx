@@ -4,8 +4,6 @@ import Breadcrumb from '@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcr
 import PageContainer from '@/app/components/container/PageContainer';
 import ParentCard from '@/app/components/shared/ParentCard';
 import ChildCard from '@/app/components/shared/ChildCard';
-import ClickPopover from '@/app/components/ui-components/popover/ClickPopover';
-import HoverPopover from '@/app/components/ui-components/popover/HoverPopover';
 
 const BCrumb = [
   {

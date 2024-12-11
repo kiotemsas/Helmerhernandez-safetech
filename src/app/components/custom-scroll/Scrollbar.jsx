@@ -13,9 +13,7 @@ const Scrollbar = (props) => {
   const { children, sx, ...other } = props;
   const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
 
-  if (lgDown) {
-    return <Box sx={{ overflowX: "auto" }}>{children}</Box>;
-  }
+
 
   return (
     <SimpleBarStyle sx={sx} {...other}>

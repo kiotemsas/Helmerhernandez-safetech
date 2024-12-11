@@ -19,16 +19,16 @@ const FollowerCard = () => {
         <Grid item xs={12} sm={12} key={index}>
           <BlankCard className={"card-box"}>
 
-            <CardContent class="card-flex red">
+            <CardContent className="card-flex red">
 
-            <Box class="header-card"> 
+            <Box className="header-card"> 
 
               <Stack direction="row"  spacing={2} alignItems="center" justifyContent="space-between">
               
               
                 <Stack  direction="row" spacing={2} alignItems="center" style={{width: '60%'}}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar class="avatar" src="/images/profile/user-1.jpg" alt="" />
+                    <Avatar className="avatar" src="/images/profile/user-1.jpg" alt="" />
                     <Box>
                       <Typography variant="h6">CARLOS LOAIZA</Typography>
                       <Typography variant="p">
@@ -42,7 +42,7 @@ const FollowerCard = () => {
 
                   <Stack direction="row" spacing={2}>
 
-                    <Image class="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70} style={{width: '100%'}} /> 
+                    <Image className="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70} style={{width: '100%'}} /> 
 
                   </Stack>
                   
@@ -57,18 +57,18 @@ const FollowerCard = () => {
               </Stack>              
               </Box>
 
-              <Box class="map-card">
+              <Box className="map-card">
                 <Image src={"/images/profile/map.png"} alt="img" width={400} height={200} style={{width: '100%'}} />                    
               </Box>
 
-              <Box class="body-card">
+              <Box className="body-card">
                 <Typography variant="h6">RENAULT SANDERO</Typography>
                 <Typography variant="h5">ROUTE #3</Typography>   
                 <Typography variant="p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor </Typography>            
               </Box>
 
-              <Box class="group-btn-card">
-                <Button class="lineal" variant="contained" color="primary">
+              <Box className="group-btn-card">
+                <Button className="lineal" variant="contained" color="primary">
                   CLOSE
                 </Button>
                 <Button variant="contained" color="primary">

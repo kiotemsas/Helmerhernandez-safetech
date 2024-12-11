@@ -3,22 +3,12 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Box,
-  Stack,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Avatar,
+  DialogContent, 
+  Box, 
   Typography,
 } from '@mui/material';
 
 import { useSelector } from 'react-redux';
-import useMediaQuery from '@mui/material/useMediaQuery'; 
  
 
 const rows = [
@@ -57,8 +47,7 @@ const Routes = () => {
   };
    
   const customizer = useSelector((state) => state.customizer);
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+  const hideMenu = customizer.isCollapse;
   const [open, setOpen] = React.useState(false);
   const [fullWidth] = React.useState(true);
   
@@ -66,7 +55,7 @@ const Routes = () => {
     <> 
 
 
-      <Button class={hideMenu ? 'btn-menu wipe' : 'btn-menu strip'} color="primary" fullWidth onClick={handleClickOpen}>
+      <Button className={hideMenu ? 'btn-menu wipe' : 'btn-menu strip'} color="primary" fullWidth onClick={handleClickOpen}>
         
 
         <svg width="30" height="30" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_108_509)">
@@ -80,9 +69,9 @@ const Routes = () => {
 
       <Dialog  fullWidth={fullWidth} maxWidth={hideMenu ?  'xl' :  'lg'}  open={open} onClose={handleClose}>
 
-         <DialogContent class="crud-dialog">
+         <DialogContent className="crud-dialog">
 
-          <Button class="close-dialog-crud" onClick={handleClose}>
+          <Button className="close-dialog-crud" onClick={handleClose}>
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M32 3.22286L28.7771 0L16 12.7771L3.22286 0L0 3.22286L12.7771 16L0 28.7771L3.22286 32L16 19.2229L28.7771 32L32 28.7771L19.2229 16L32 3.22286Z" fill="#202022" />
             </svg>
@@ -91,72 +80,7 @@ const Routes = () => {
           <DialogTitle>{"ROUTE’S"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
           <Box> 
-
-            <Table class="table-modal" aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <Typography variant="h6">Plate</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Brand</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Model</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h6">Driver</Typography>
-                  </TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.no} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.plate}
-                      </Typography>
-                    </TableCell>
-
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.brand}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.model}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell scope="row">
-                      <Typography variant="subtitle1" color="textPrimary" fontWeight={600}>
-                        {row.driver}
-                      </Typography>
-                    </TableCell>
-
-                     
-                    <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Box width="100%">
-                          <Button class="btn-modal" onClick={handleClose}>
-                              DETAILS
-                          </Button>
-                        </Box>
-                     
-                      </Stack>
-                    </TableCell>
-
-
-
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+ 
           
           </Box>
         </DialogContent> 

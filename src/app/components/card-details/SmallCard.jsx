@@ -18,15 +18,15 @@ const FollowerCard = () => {
         <Grid item xs={12} sm={12} key={index}>
           <BlankCard className={"card-box"}>
            
-            <CardContent class="card-flex red">
+            <CardContent className="card-flex red">
 
-            <Box class="header-card"> 
+            <Box className="header-card"> 
               <Stack direction="row"  spacing={2} alignItems="center" justifyContent="space-between">
               
               
                 <Stack  direction="row" spacing={2} alignItems="center" style={{width: '60%'}}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar class="avatar" src="/images/profile/user-1.jpg" alt="" />
+                    <Avatar className="avatar" src="/images/profile/user-1.jpg" alt="" />
                     <Box>
                       <Typography variant="h6">CARLOS LOAIZA</Typography>
                       <Typography variant="p">
@@ -40,7 +40,7 @@ const FollowerCard = () => {
 
                   <Stack direction="row"  spacing={2}>
 
-                    <Image class="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70}/> 
+                    <Image className="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70}/> 
 
                   </Stack>
                   
@@ -59,15 +59,15 @@ const FollowerCard = () => {
             </CardContent>
 
 
-            <CardContent class="card-flex green">
+            <CardContent className="card-flex green">
 
-            <Box class="header-card"> 
+            <Box className="header-card"> 
               <Stack direction="row"  spacing={2} alignItems="center" justifyContent="space-between">
               
               
                 <Stack  direction="row" spacing={2} alignItems="center" style={{width: '60%'}}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar class="avatar" src="/images/profile/user-1.jpg" alt="" />
+                    <Avatar className="avatar" src="/images/profile/user-1.jpg" alt="" />
                     <Box>
                       <Typography variant="h6">CARLOS LOAIZA</Typography>
                       <Typography variant="p">
@@ -81,7 +81,7 @@ const FollowerCard = () => {
 
                   <Stack direction="row"  spacing={2}>
 
-                    <Image class="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70}/> 
+                    <Image className="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70}/> 
 
                   </Stack>
                   

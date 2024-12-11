@@ -61,7 +61,7 @@ const Header = () => {
 
           
           <Box
-              class="safetechcheck"
+              className="safetechcheck"
               alignItems="center"
               justifyContent="center"
               sx={{
@@ -88,7 +88,7 @@ const Header = () => {
 
 
           <Box
-              class="safetechcheck"
+              className="safetechcheck"
               alignItems="center"
               justifyContent="center"
               sx={{
@@ -115,7 +115,7 @@ const Header = () => {
 
 
           <Box
-              class="searchtoptech"
+              className="searchtoptech"
               alignItems="center"
               justifyContent="center"
               style={{ marginLeft: "35px" }}

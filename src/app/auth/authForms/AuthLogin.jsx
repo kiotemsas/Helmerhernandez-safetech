@@ -1,15 +1,18 @@
+ 
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Stack from '@mui/material/Stack';
+import { TextField, Alert } from '@mui/material'
 import Typography from '@mui/material/Typography';
-import Link from 'next/link';
-import {Alert } from '@mui/material'
+import Link from "next/link";
 import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox';
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
+import AuthSocialButtons from "./AuthSocialButtons";
 import { signIn, useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation'
 
@@ -21,22 +24,20 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
   const [password, setPassword] = useState('');
 
 
-  const handleSubmit = async (e) => {
-    
-    alert(username);
+  const handleSubmit = async (e) => { 
+
     e.preventDefault();
+    
     const result = await signIn('credentials', {
       redirect: false,
       username,
       password,
     });
-    if (result.error) {
-      // Handle successful sign-in
+    if (result.error) { 
       setError('Sign-in error: Username or  Password is Wrong', result.error);
     }
   };
-  if (session) {
-    alert(username);
+  if (session) { 
     return redirect('/');
   }
   return (
@@ -51,7 +52,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
     {subtext}
 
-    {error ? <Box mt={3}><Alert severity='error' >
+    {error ? <Box mb={3}><Alert severity='error' >
         Sign-in error: Username or Password is Wrong
       </Alert></Box> : ''}
 
@@ -60,23 +61,18 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
       <Stack>
         <Box className="muitech">
           <CustomFormLabel className="nametech" htmlFor="username">Username</CustomFormLabel>
-          <CustomTextField id="username" variant="outlined" error={error !== ''}  placeholder="Username" fullWidth onChange={(e) => setusername(e.target.value)}/>
+          <CustomTextField id="username" required={true} variant="outlined" error={error !== ''}  placeholder="Username" fullWidth onChange={(e) => setusername(e.target.value)}/>
           
         </Box>
         <Box className="muitech">
           <CustomFormLabel className="nametech" htmlFor="password">Password</CustomFormLabel>
-          <CustomTextField id="password" placeholder="password" error={error !== ''}  type="password" variant="outlined" fullWidth onChange={(e) => setPassword(e.target.value)}/>
+          <CustomTextField id="password" required={true} placeholder="password" error={error !== ''}  type="password" variant="outlined" fullWidth onChange={(e) => setPassword(e.target.value)}/>
         </Box>
         <Stack justifyContent="space-between" direction="row" alignItems="center" my={2}>
-          <FormGroup>
-            <FormControlLabel
-              control={<CustomCheckbox defaultChecked />}
-              label="Remeber this Device"
-            />
-          </FormGroup>
+         
           <Typography
             component={Link}
-            href="/auth/auth1/forgot-password"
+            href="#"
             fontWeight="500"
             sx={{
               textDecoration: 'none',
@@ -94,7 +90,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
                       component={Link}
                       href="/auth/auth1/forgot-password"
                       fontWeight="500"
-                      class="passtech"
+                      className="passtech"
                       sx={{
                         textDecoration: 'none',
                         color: 'primary.main',
@@ -112,9 +108,7 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
           color="primary"
           variant="contained"
           size="large"
-          fullWidth
-          component={Link}
-          href="/"
+          fullWidth 
           type="submit"
         >
           Login

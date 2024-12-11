@@ -1,19 +1,10 @@
-'use client';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
+'use client'
+import Typography from '@mui/material/Typography'
+import PageContainer from "@/app/components/container/PageContainer";
+import DashboardCard from "@/app/components/shared/DashboardCard";
+import Breadcrumb from '@/app/(DashboardLayout)/layout/shared/breadcrumb/Breadcrumb';
 
-import PageContainer from '@/app/components/container/PageContainer';
 
-export default function Dashboard() {
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
-  return (
-    <PageContainer title="Dashboard" description="this is Dashboard">
-      
-    </PageContainer>
-  );
+export default function Dashboard (){ 
 }

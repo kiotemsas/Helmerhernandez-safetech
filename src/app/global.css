@@ -8,8 +8,15 @@
 }
 
 .header-tech{
-    background-color: unset;
+    background-color: transparent;
+    -webkit-backdrop-filter: unset;
+    backdrop-filter: unset;
 }
+
+#techboxlogin .muitech .Mui-error fieldset{
+    border-bottom: 2px solid #fa896b;
+}
+
 
 #techboxlogin .muitech fieldset {    
     border-radius: 0;
@@ -40,12 +47,14 @@
 }
 
 
-.mui-1wcaknn {
+
+#techboxlogin .mui-1wcaknn {
     border-radius: 0;
     margin: 0 auto 20px;
     text-align: center;
     position: relative;
     width: 100%;
+    padding: 0;
 }
 
 #techboxlogin .muitech {
@@ -58,7 +67,7 @@
 
 
 
-#techboxlogin .muitech a[type="submit"] {
+#techboxlogin .muitech button{
     width: 46%;
     margin: 0 auto;
     padding: 12px 0;
@@ -112,6 +121,10 @@
     margin-right: 10px;
 }
 
+#msgs-menu ul{
+    width: 0;
+}
+
 #msgs-menu .MuiMenu-paper {
     position: absolute;
     background-color: #0000;
@@ -131,13 +144,13 @@
 
 .bubble-list.wipe{
     bottom: 5%;
-    left: 100px !important;
+    left: 10em !important;
     top: auto !important;
 }
 
 .bubble-list.strip{
     bottom: 5%;
-    left: 300px !important;
+    left: 22em  !important;
     top: auto !important;
 }
 
@@ -147,7 +160,7 @@
     justify-content: center;
 }
 
-.bubble-link {
+.bubble-list .bubble-link, .bubble-list button{
     padding: 20px;
     background-color: #cacaca;
     border-radius: 40px;
@@ -204,13 +217,12 @@
 
 .plus-menu:hover{
     background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    border-radius: unset;
 }
 
 .plus-menu:hover button h6{
     color: #fff;
 }
-
-
 
 .plus-menu:hover button svg path{
     fill: #fff;
@@ -268,14 +280,14 @@
     background-size: cover;
 }
 
-
-.dialog-form.extended .MuiDialog-paper {
-    margin: 50vh 340px 0;
-    height: auto;
+.dialog-form{
+    height: unset;
+    display: unset;
 }
 
+ 
 .dialog-form .MuiDialog-paper {
-    height: auto;
+    height: 625px; 
     max-width: 512px;
     margin: 50vh 130px 0;
     transform: translateY(-50%);
@@ -283,14 +295,39 @@
     -webkit-box-shadow: 0px 5px 0px 0px #00BBC9;
     -moz-box-shadow: 0px 5px 0px 0px #00BBC9;
     box-shadow: 0px 5px 0px 0px #00BBC9;
-}
-
-.dialog-form .dialog-form-content{
     padding: 20px 60px;
+    border-radius: 7px;
+}
+
+.dialog-form .dialog-form-content  {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+}
+
+.dialog-form .dialog-form-content .dialog-form-box .dialog-response{
+    
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
 }
 
 
-.dialog-form .dialog-form-content .close-dialog-form {
+.dialog-form .dialog-form-content .dialog-form-box svg{
+    margin: 0 0 1.5em;
+}
+
+
+.dialog-form .close-dialog-form {
     position: absolute;
     left: 10px;
     background: transparent;
@@ -299,7 +336,7 @@
 }
 
 
-.dialog-form .dialog-form-content h2 {
+.dialog-form h2 {
     font-size: 18px;
     line-height: 18px;
     font-weight: bold;
@@ -307,7 +344,7 @@
     padding: 0 0 14px;
 }
 
-.dialog-form .dialog-form-content h2 .DialogSubTitle {
+.dialog-form h2 .DialogSubTitle {
     font-size: 12px;
     line-height: 12px;
     color: #202022;
@@ -332,8 +369,6 @@
     line-height: 12px;
 }
 
-
-
 .dialog-form .muitech input{
     padding: 22px 16px 6px;
     color: #000;
@@ -341,7 +376,6 @@
     font-size: 14px;
     line-height: 14px;
 }
-
 
 .dialog-form .muitech-confirm {
     display: flex;
@@ -351,7 +385,7 @@
     padding: 20px 0;
 }
 
-.dialog-form .muitech-confirm a{
+.dialog-form .muitech-confirm a, .dialog-form .muitech-confirm button{
     width: 46%;
     margin: 0 auto;
     padding: 12px 0;
@@ -367,8 +401,7 @@
     box-shadow: 0 8px 16px -10px #0000006e;
 }
 
-
-.dialog-form .muitech-confirm a.lineal{
+.dialog-form .muitech-confirm a:first-child, .dialog-form .muitech-confirm button.MuiButton-alone{
     background: #fff;
     border: 2px solid #00BBC9;
     color: #202022;
@@ -401,7 +434,7 @@ button.btn-techmenu {
 
 .group-card{
     display: flex;
-    padding: 20px;
+    padding: 20px; 
     gap: 20px;
 }
 
@@ -413,7 +446,6 @@ button.btn-techmenu {
     padding: 0 0 20px;
     text-align: center;
 }
-
 
 .card-box{
     background: unset;
@@ -580,6 +612,7 @@ button.btn-techmenu {
     padding: 15px 20px;
     width: 100%;
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     border: unset;
     background: unset;
@@ -610,6 +643,7 @@ button.btn-techmenu {
     line-height: 1.334rem;
     font-family: '__Plus_Jakarta_Sans_3e240d', Helvetica, Arial, sans-serif;
     display: block;
+    color: #2A3547;
 }
 
 .mui-10klw3m {
@@ -639,7 +673,7 @@ button.btn-techmenu {
     line-height: 10px;
     font-weight: bold;
     color: #202022;
-    padding: 20px 0;
+    padding: 8px 20px 20px;
 }
 
 .crud-dialog  h2 p {
@@ -666,4 +700,60 @@ button.btn-techmenu {
     box-shadow: 0 8px 16px -10px #0000006e;
     width: 100%;
     border: unset;
+}
+
+.w-full{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.tabletype{
+    position: relative;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    border: 0px;
+    margin: 0px;
+    border-radius: 0px;
+    padding: 0px;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    flex-direction: inherit;
+    -webkit-box-align: center;
+    align-items: center;
+} 
+
+.tabletype svg{
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    flex-shrink: 0;
+    fill: currentcolor;
+    font-size: 18px;
+    margin-right: 4px;
+    margin-left: 4px; 
+    user-select: none; 
+    transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1), transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabletype svg.iconDirectionAsc{
+	transform: rotate(0deg);
+    opacity: 1;
+}
+
+
+.tabletype svg.iconDirectionDesc{
+	transform: rotate(180deg);
+    opacity: 1;
 }
