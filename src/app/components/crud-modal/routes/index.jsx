@@ -3,37 +3,14 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent, 
-  Box, 
+  DialogContent,  
+  Box,  
   Typography,
 } from '@mui/material';
 
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'; 
+import GetRoutes from './GetRoutes';
  
-
-const rows = [
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'CARLOS LOAIZA', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'MELLO DRUM', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'JOE DOE', 
-  }, 
-];
-
 
 const Routes = () => {
  
@@ -77,15 +54,16 @@ const Routes = () => {
             </svg>
           </Button>
 
-          <DialogTitle>{"RUTA"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
+          <DialogTitle>{"RUTAS"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
-          <Box> 
- 
+          <Box>           
+     
+            <GetRoutes handleClose={handleClose} />
           
           </Box>
         </DialogContent> 
 
-      </Dialog>
+      </Dialog>      
     </>
   );
 };

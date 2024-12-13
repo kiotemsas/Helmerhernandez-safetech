@@ -17,7 +17,7 @@ import { useState } from "react";
 import Createvehicle from '@/app/components/create/vehicle/index';
 import Createroute from '@/app/components/create/route/index';
 import Createdriver from '@/app/components/create/driver/index';
-import Createuser from '@/app/components/create/user/index';
+import CreateVendor from '@/app/components/create/vendor/index';
 
 export const Profile = () => {
   const customizer = useSelector((state) => state.customizer); 
@@ -108,7 +108,7 @@ export const Profile = () => {
             <Createvehicle />
             <Createroute />
             <Createdriver/>
-            <Createuser/>
+            <CreateVendor/>
           </Box>
  
         </Menu>

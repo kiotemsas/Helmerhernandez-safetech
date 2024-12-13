@@ -6,22 +6,15 @@ import {
   DialogContent,
 } from '@mui/material';
 import Slide from '@mui/material/Slide'; 
-import Box from '@mui/material/Box';
 import { useState } from "react";
 import { useSelector } from 'react-redux'; 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Link from 'next/link';
-import Typography from '@mui/material/Typography';
- 
-import Stack from '@mui/material/Stack'; 
-import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
-import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
+import Typography from '@mui/material/Typography'; 
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 
   const customizer = useSelector((state) => state.customizer);
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
-  const hideMenu = lgUp ? customizer.isCollapse && !customizer.isSidebarHover : '';
+  const hideMenu = customizer.isCollapse ;
 
   return <Slide className={hideMenu ? 'dialog-form' : 'dialog-form extended'} direction="right" ref={ref} {...props} />;
 
@@ -52,7 +45,8 @@ const Createdriver = () => {
                 gap="4px"
               >
 
-CONDUCTOR
+                  CONDUCTOR
+
               </Typography>
       </Button>
 

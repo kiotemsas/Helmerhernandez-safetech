@@ -30,6 +30,11 @@ const fetchFromParse = async (url, method, data, token) => {
   return await response.json();
 };
 
+
+
+
+//VEHICLE
+
 export const saveVehicle = async (vehicleData, token) => {
   return await fetchFromParse(
     'http://3.137.134.27:8080/parse/functions/saveVehicle',
@@ -57,6 +62,19 @@ export const deleteVehicle = async (vehicleId, token) => {
   );
 };
 
+
+export const getVehicles = async (token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getVehicles',
+    'POST',
+    {},
+    token
+  );
+};
+
+
+
+
 export const getVehiclesByVendor = async (vendorId, token) => {
   return await fetchFromParse(
     'http://3.137.134.27:8080/parse/functions/getVehiclesByVendor',
@@ -66,11 +84,18 @@ export const getVehiclesByVendor = async (vendorId, token) => {
   );
 };
 
-export const getVehicles = async (token) => {
+
+
+//VENDOR
+
+
+
+
+export const saveVendor = async (vendorData, token) => {
   return await fetchFromParse(
-    'http://3.137.134.27:8080/parse/functions/getVehicles',
+    'http://3.137.134.27:8080/parse/functions/saveVendor',
     'POST',
-    {},
+    vendorData,
     token
   );
 };
@@ -83,6 +108,54 @@ export const getVendors = async (token) => {
     token
   );
 };
+
+
+export const editVendor = async (vendorData, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/editVendor',
+    'POST',
+    vendorData,
+    token
+  );
+};
+
+
+export const deleteVendor = async (vendorId, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/deleteVendor',
+    'POST',
+    { id: vendorId },
+    token
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default Parse;
 

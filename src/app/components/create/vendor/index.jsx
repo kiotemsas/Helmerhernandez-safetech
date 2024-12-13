@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { saveVehicle } from '@/utils/parse';
+import { saveVendor } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
 
 import {
@@ -13,8 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import Slide from '@mui/material/Slide';
-import { useSelector } from 'react-redux';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useSelector } from 'react-redux'; 
 import Link from 'next/link'; 
 
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
@@ -32,25 +31,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const steps = ['Create', 'Confirm']; 
 
-const SaveVehicle = () => {
+const SaveVendor = () => {
 
   const { data: session } = useSession();
-  const [vehicleData, setVehicleData] = useState({
-    plateNumber: '',
-    model: '',
-    year: '',
-    serial: '',
+  const [vendorData, setVendorData] = useState({
+    name: '',
+    address: '',
+    city: '',
+    country: '',
     status: '',
-    brand: '',
-    defaultVendor: '',
+    phone: '',
   });
 
-  const [idVehicle, setIdVehicle] = useState('');
+  const [idProveedor, setidProveedor] = useState('');
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setVehicleData((prevData) => ({
+    setVendorData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -58,13 +56,12 @@ const SaveVehicle = () => {
 
 
   const fields = [
-    { label: 'NÚMERO DE PLACA', name: 'plateNumber' },
-    { label: 'MODELO', name: 'model' },
-    { label: 'AÑO', name: 'year' },
-    { label: 'SERIAL', name: 'serial' },
+    { label: 'NOMBRE', name: 'name' },
+    { label: 'DIRECCIÓN', name: 'address' },
+    { label: 'CIUDAD', name: 'city' },
+    { label: 'PAÍS', name: 'country' },
     { label: 'ESTADO', name: 'status' },
-    { label: 'MARCA', name: 'brand' },
-    { label: 'PROVEEDOR', name: 'defaultVendor' },
+    { label: 'TELÉFONO', name: 'phone' },
   ];
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -98,8 +95,8 @@ const SaveVehicle = () => {
       if (session) {
 
         const token = session.accessToken;
-        const response = await saveVehicle(vehicleData, token);
-        setIdVehicle(response.result.id);
+        const response = await saveVendor(vendorData, token);
+        setidProveedor(response.result.id);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);        
 
       } else {
@@ -181,11 +178,20 @@ const SaveVehicle = () => {
           <Box className="dialog-form-box">
 
             <svg width="134" height="134" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="67" cy="67" r="66.5" fill="white" stroke="#D1D1D1" />
-              <path d="M90.9511 44.2825C90.2733 42.365 88.3756 41 86.1389 41H48.8611C46.6244 41 44.7606 42.365 44.0489 44.2825L37 63.75V89.75C37 91.5375 38.525 93 40.3889 93H43.7778C45.6417 93 47.1667 91.5375 47.1667 89.75V86.5H87.8333V89.75C87.8333 91.5375 89.3583 93 91.2222 93H94.6111C96.475 93 98 91.5375 98 89.75V63.75L90.9511 44.2825ZM48.8611 76.75C46.0483 76.75 43.7778 74.5725 43.7778 71.875C43.7778 69.1775 46.0483 67 48.8611 67C51.6739 67 53.9444 69.1775 53.9444 71.875C53.9444 74.5725 51.6739 76.75 48.8611 76.75ZM86.1389 76.75C83.3261 76.75 81.0556 74.5725 81.0556 71.875C81.0556 69.1775 83.3261 67 86.1389 67C88.9517 67 91.2222 69.1775 91.2222 71.875C91.2222 74.5725 88.9517 76.75 86.1389 76.75ZM43.7778 60.5L48.8611 45.875H86.1389L91.2222 60.5H43.7778Z" fill="#202022" />
+              <circle cx="67" cy="67" r="66.5" fill="white" stroke="#D1D1D1"/>
+              <g clip-path="url(#clip0_1_4)">
+              <path d="M96 77.35L95.7351 76.7324C95.5109 76.1765 89.7434 63.2471 66.5509 63.2059C66.5306 63.2059 66.5102 63.2059 66.4898 63.2059C66.4694 63.2059 66.449 63.2059 66.4287 63.2059C43.2566 63.2471 37.4891 76.1765 37.2649 76.7324L37 77.35V87.1294C37 87.6853 37.3668 88.1794 37.8763 88.3441L46.2321 90.9794C45.8041 92.3176 45.58 93.7176 45.58 95.1588V96.9706C45.58 97.5471 46.0487 98 46.599 98H86.3807C86.9513 98 87.3997 97.5471 87.3997 96.9706V95.1588C87.3997 93.7176 87.1755 92.3176 86.7475 90.9794L95.0829 88.3441C95.6128 88.1794 95.9796 87.6853 95.9796 87.1088V77.35H96ZM89.0301 83.3618L83.5071 85.1118C79.3699 80.1088 72.6242 76.7941 66.6325 76.7941C60.6204 76.7941 53.7523 80.1088 49.5541 85.1324L43.9496 83.3618C43.6846 83.2794 43.5216 83.0324 43.5216 82.7647V78.8735C44.0311 78.05 45.2743 76.3412 47.6995 74.6529C52.2035 71.4824 58.725 69.8147 66.5102 69.7941C74.2953 69.7941 80.8169 71.4824 85.3209 74.6529C87.7257 76.3412 88.9893 78.05 89.4988 78.8735V82.7441C89.4784 83.0324 89.295 83.2794 89.0301 83.3618Z" fill="#202022"/>
+              <path d="M66.5102 58.8824C73.0384 58.8824 78.3306 53.5361 78.3306 46.9412C78.3306 40.3462 73.0384 35 66.5102 35C59.982 35 54.6898 40.3462 54.6898 46.9412C54.6898 53.5361 59.982 58.8824 66.5102 58.8824Z" fill="#202022"/>
+              </g>
+              <defs>
+              <clipPath id="clip0_1_4">
+              <rect width="59" height="63" fill="white" transform="translate(37 35)"/>
+              </clipPath>
+              </defs>
             </svg>
 
-            <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>¿Estás seguro de crear el siguiente vehículo? </Typography>
+
+            <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>¿Estás seguro de crear el siguiente proveedor? </Typography>
 
           </Box>
 
@@ -213,7 +219,8 @@ const SaveVehicle = () => {
           gap="4px"
         >
 
-          VEHÍCULO
+            PROVEEDOR
+
         </Typography>
       </Button>
 
@@ -232,7 +239,7 @@ const SaveVehicle = () => {
           </svg>
         </Button>
 
-        <DialogTitle>{"CREAR VEHÍCULO"} <Typography className="DialogSubTitle">12/08/2024  10:08 PM</Typography></DialogTitle>
+        <DialogTitle>{"CREAR PROVEEDOR"} <Typography className="DialogSubTitle">12/08/2024  10:08 PM</Typography></DialogTitle>
 
         <DialogContent className="dialog-form-content">
 
@@ -255,14 +262,24 @@ const SaveVehicle = () => {
                 <Box className="dialog-form-box">
 
                   <svg width="134" height="134" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="67" cy="67" r="66.5" fill="white" stroke="#D1D1D1" />
-                    <path d="M90.9511 44.2825C90.2733 42.365 88.3756 41 86.1389 41H48.8611C46.6244 41 44.7606 42.365 44.0489 44.2825L37 63.75V89.75C37 91.5375 38.525 93 40.3889 93H43.7778C45.6417 93 47.1667 91.5375 47.1667 89.75V86.5H87.8333V89.75C87.8333 91.5375 89.3583 93 91.2222 93H94.6111C96.475 93 98 91.5375 98 89.75V63.75L90.9511 44.2825ZM48.8611 76.75C46.0483 76.75 43.7778 74.5725 43.7778 71.875C43.7778 69.1775 46.0483 67 48.8611 67C51.6739 67 53.9444 69.1775 53.9444 71.875C53.9444 74.5725 51.6739 76.75 48.8611 76.75ZM86.1389 76.75C83.3261 76.75 81.0556 74.5725 81.0556 71.875C81.0556 69.1775 83.3261 67 86.1389 67C88.9517 67 91.2222 69.1775 91.2222 71.875C91.2222 74.5725 88.9517 76.75 86.1389 76.75ZM43.7778 60.5L48.8611 45.875H86.1389L91.2222 60.5H43.7778Z" fill="#202022" />
-                    <circle cx="113" cy="24" r="18" fill="#0CC71E" />
-                    <path d="M104 26.2L108.909 31L122 17" stroke="white" stroke-width="4" stroke-linecap="round" />
+                    <circle cx="67" cy="67" r="66.5" fill="white" stroke="#D1D1D1"/>
+                    <circle cx="113" cy="24" r="18" fill="#0CC71E"/>
+                    <path d="M104 26.2L108.909 31L122 17" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    <g clip-path="url(#clip0_1_34)">
+                    <path d="M96 78.35L95.7351 77.7323C95.5109 77.1765 89.7434 64.247 66.5509 64.2059C66.5306 64.2059 66.5102 64.2059 66.4898 64.2059C66.4694 64.2059 66.449 64.2059 66.4287 64.2059C43.2566 64.247 37.4891 77.1765 37.2649 77.7323L37 78.35V88.1294C37 88.6853 37.3668 89.1794 37.8763 89.3441L46.2321 91.9794C45.8041 93.3176 45.58 94.7176 45.58 96.1588V97.9706C45.58 98.5471 46.0487 99 46.599 99H86.3807C86.9513 99 87.3997 98.5471 87.3997 97.9706V96.1588C87.3997 94.7176 87.1755 93.3176 86.7475 91.9794L95.0829 89.3441C95.6128 89.1794 95.9796 88.6853 95.9796 88.1088V78.35H96ZM89.0301 84.3618L83.5071 86.1118C79.3699 81.1088 72.6242 77.7941 66.6325 77.7941C60.6204 77.7941 53.7523 81.1088 49.5541 86.1323L43.9496 84.3618C43.6846 84.2794 43.5216 84.0323 43.5216 83.7647V79.8735C44.0311 79.05 45.2743 77.3412 47.6995 75.6529C52.2035 72.4823 58.725 70.8147 66.5102 70.7941C74.2953 70.7941 80.8169 72.4823 85.3209 75.6529C87.7257 77.3412 88.9893 79.05 89.4988 79.8735V83.7441C89.4784 84.0323 89.295 84.2794 89.0301 84.3618Z" fill="#202022"/>
+                    <path d="M66.5102 59.8824C73.0384 59.8824 78.3306 54.5361 78.3306 47.9412C78.3306 41.3462 73.0384 36 66.5102 36C59.982 36 54.6898 41.3462 54.6898 47.9412C54.6898 54.5361 59.982 59.8824 66.5102 59.8824Z" fill="#202022"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_1_34">
+                    <rect width="59" height="63" fill="white" transform="translate(37 36)"/>
+                    </clipPath>
+                    </defs>
                   </svg>
 
-                  <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>Has creado un nuevo  vehículo</Typography>
-                  <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>Identificación del Vehículo : {idVehicle}</Typography>
+
+
+                  <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>Has creado un nuevo proveedor</Typography>
+                  <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>Identificación del proveedor : {idProveedor}</Typography>
 
                 </Box>
 
@@ -333,5 +350,5 @@ const SaveVehicle = () => {
 };
 
 
-export default SaveVehicle;
+export default SaveVendor;
 

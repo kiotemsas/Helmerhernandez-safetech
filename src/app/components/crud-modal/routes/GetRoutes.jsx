@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 
-import { getVendors, deleteVendor, editVendor } from '@/utils/parse';
+import { getVehicles, deleteVehicle, editVehicle } from '@/utils/parse';
 import  { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -18,13 +18,17 @@ import {
     Divider,
     IconButton,
     TextField,
-    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
+    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
+    Select
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField'; 
+import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
+import Toolbar from '@mui/material/Toolbar';
+import InputAdornment from '@mui/material/InputAdornment';
+import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
 
 
 import {
@@ -42,8 +46,8 @@ const columnHelper = createColumnHelper();
 
 const columns = [
  
-    columnHelper.accessor('name', {
-        header: () => 'Nombre',
+    columnHelper.accessor('plateNumber', {
+        header: () => 'Número de placa',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -51,8 +55,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('address', {
-        header: () => 'Dirección',
+    columnHelper.accessor('model', {
+        header: () => 'Modelo',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -60,8 +64,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('city', {
-        header: () => 'Ciudad',
+    columnHelper.accessor('serial', {
+        header: () => 'Serial',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -69,8 +73,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('country', {
-      header: () => 'País',
+    columnHelper.accessor('brand', {
+      header: () => 'Marca',
       cell: info => (
           <Typography variant="subtitle1" color="textSecondary">
               {info.getValue()}
@@ -78,8 +82,8 @@ const columns = [
       ),
     }),
 
-    columnHelper.accessor('phone', {
-      header: () => 'Teléfono',
+    columnHelper.accessor('defaultVendor', {
+      header: () => 'Proveedor',
       cell: info => (
           <Typography variant="subtitle1" color="textSecondary">
               {info.getValue()}
@@ -151,7 +155,7 @@ function DebouncedInput({
  
 
 
-const GetVendor = () => {
+const GetRoutes = () => {
 
     const { data: session } = useSession();
     const [data, _setData] = React.useState(() => []);
@@ -180,7 +184,7 @@ const GetVendor = () => {
           try {
             if (session) {
               const token = session.accessToken;
-              const response = await getVendors(token);
+              const response = await getVehicles(token);
               _setData(response.result);
 
             } else {
@@ -236,20 +240,21 @@ const GetVendor = () => {
                     const token = session.accessToken;
                     const dataToSend = {
                         id: editedData.objectId,
-                        name: editedData.name,
-                        address: editedData.address,
-                        city: editedData.city,
-                        country: editedData.country,
+                        plateNumber: editedData.plateNumber,
+                        model: editedData.model,
+                        year: editedData.year,
+                        serial: editedData.serial,
                         status: editedData.status,
-                        phone: editedData.phone, 
+                        brand: editedData.brand,
+                        defaultVendor: editedData.defaultVendor,
                     };
 
-                    const response = await editVendor(dataToSend, token);
-                    //setError('', response.result.message);           
+                    const response = await editVehicle(dataToSend, token);
+                    setError('Editing vehicle successfully.', response.result.message);           
                 } 
 
             } catch (error) {
-               // setError('', error.message); 
+                setError('Error editing vehicle. Please try again.', error.message); 
             }
 
             setEditRowId(null);
@@ -265,17 +270,17 @@ const GetVendor = () => {
             if (session ) {
               const token = session.accessToken;  
               const data_deleted = [...data];                    
-              const response = await deleteVendor(id, token);
+              const response = await deleteVehicle(id, token);
 
               data_deleted.splice(index, 1);
               _setData(data_deleted);
-              //setError('', response.result.message);   
+              setError('Deleted vehicle succesufull.', response.result.message);   
               setOpen(false);
 
             } 
 
           } catch (error) {
-            //setError('', error.message);  
+            setError('Error deleting vehicle. Please try again.', error.message);  
           }
 
 
@@ -439,13 +444,5 @@ const GetVendor = () => {
             </>
     );
 };
-export default GetVendor;
-
-
-
-
-
-
-
-
+export default GetRoutes;
 

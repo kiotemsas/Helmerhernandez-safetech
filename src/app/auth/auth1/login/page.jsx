@@ -41,12 +41,13 @@ export default function Login() {
                 }}
               >
                 <Image
-                  src={"/images/logos/dark-logo.svg"}
-                  alt="bg" width={300} height={250}
+                  src={"/images/logos/login.webp"}
+                  alt="bg" width={300} height={85}
                   style={{
                     width: '100%',
                     maxWidth: '300px',
                     maxHeight: 'auto',
+                    marginBottom: '60px',
                   }}
                 />
               </Box>
