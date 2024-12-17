@@ -35,13 +35,13 @@ export default function Login() {
                 justifyContent="center"
                 sx={{
                   display: {
-                    xs: 'none',
+                    xs: 'flex',
                     lg: 'flex',
                   },
                 }}
               >
                 <Image
-                  src={"/images/logos/login.webp"}
+                  src={"/images/logos/logo.webp"}
                   alt="bg" width={300} height={85}
                   style={{
                     width: '100%',

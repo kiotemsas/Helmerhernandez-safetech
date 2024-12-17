@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 
 import { useSelector } from 'react-redux'; 
-import GetRoutes from './GetRoutes';
  
 
 const Routes = () => {
@@ -58,7 +57,6 @@ const Routes = () => {
 
           <Box>           
      
-            <GetRoutes handleClose={handleClose} />
           
           </Box>
         </DialogContent> 

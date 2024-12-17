@@ -3,7 +3,6 @@ import Parse from 'parse';
 
 // Initialize Parse
 Parse.initialize('NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR', '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ');
-
 Parse.serverURL = 'http://3.137.134.27:8080/parse';
 
 const headers = {
@@ -29,8 +28,6 @@ const fetchFromParse = async (url, method, data, token) => {
   
   return await response.json();
 };
-
-
 
 
 //VEHICLE
@@ -73,8 +70,6 @@ export const getVehicles = async (token) => {
 };
 
 
-
-
 export const getVehiclesByVendor = async (vendorId, token) => {
   return await fetchFromParse(
     'http://3.137.134.27:8080/parse/functions/getVehiclesByVendor',
@@ -87,9 +82,6 @@ export const getVehiclesByVendor = async (vendorId, token) => {
 
 
 //VENDOR
-
-
-
 
 export const saveVendor = async (vendorData, token) => {
   return await fetchFromParse(
@@ -130,8 +122,45 @@ export const deleteVendor = async (vendorId, token) => {
 };
 
 
+//USER
 
 
+export const saveUser = async (UserData, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/saveUser',
+    'POST',
+    UserData,
+    token
+  );
+};
+
+export const editUser= async (UserData, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/editUser',
+    'POST',
+    UserData,
+    token
+  );
+};
+
+export const deleteUser = async (userId, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/deleteUser',
+    'POST',
+    { id: userId },
+    token
+  );
+};
+
+
+export const getUser = async (token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getUsers',
+    'POST',
+    {},
+    token
+  );
+};
 
 
 

@@ -304,6 +304,9 @@
     margin: 50vh 340px 0;
 }
 
+.logo{
+    margin-top: -24px;
+}
 
 .dialog-form .dialog-form-content  {
     height: 100%;

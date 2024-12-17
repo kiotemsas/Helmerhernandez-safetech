@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 
-import { getVehicles, deleteVehicle, editVehicle } from '@/utils/parse';
+import { getUser, deleteUser, editUser } from '@/utils/parse';
 import  { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -46,8 +46,8 @@ const columnHelper = createColumnHelper();
 
 const columns = [
  
-    columnHelper.accessor('plateNumber', {
-        header: () => 'Número de placa',
+    columnHelper.accessor('name', {
+        header: () => 'Nombre',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -55,8 +55,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('model', {
-        header: () => 'Modelo',
+    columnHelper.accessor('email', {
+        header: () => 'Email',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -64,8 +64,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('serial', {
-        header: () => 'Serial',
+    columnHelper.accessor('phone', {
+        header: () => 'Teléfono',
         cell: info => (
             <Typography variant="subtitle1" color="textSecondary">
                 {info.getValue()}
@@ -73,8 +73,8 @@ const columns = [
         ),
     }),
 
-    columnHelper.accessor('brand', {
-      header: () => 'Marca',
+    columnHelper.accessor('address', {
+      header: () => 'Dirección',
       cell: info => (
           <Typography variant="subtitle1" color="textSecondary">
               {info.getValue()}
@@ -82,14 +82,24 @@ const columns = [
       ),
     }),
 
-    columnHelper.accessor('defaultVendor', {
-      header: () => 'Proveedor',
+    columnHelper.accessor('city', {
+      header: () => 'Ciudad',
       cell: info => (
           <Typography variant="subtitle1" color="textSecondary">
               {info.getValue()}
           </Typography>
       ),
     }),
+
+    columnHelper.accessor('country', {
+        header: () => 'País',
+        cell: info => (
+            <Typography variant="subtitle1" color="textSecondary">
+                {info.getValue()}
+            </Typography>
+        ),
+      }),
+
 
     
     columnHelper.accessor('edit', {
@@ -155,7 +165,7 @@ function DebouncedInput({
  
 
 
-const GetVehicles = () => {
+const GetDrivers = () => {
 
     const { data: session } = useSession();
     const [data, _setData] = React.useState(() => []);
@@ -179,14 +189,12 @@ const GetVehicles = () => {
     
     
     useEffect(() => {
-
-
       
         const fetchVehicles = async () => {
           try {
             if (session) {
               const token = session.accessToken;
-              const response = await getVehicles(token);
+              const response = await getUser(token);
               _setData(response.result);
 
             } else {
@@ -242,21 +250,20 @@ const GetVehicles = () => {
                     const token = session.accessToken;
                     const dataToSend = {
                         id: editedData.objectId,
-                        plateNumber: editedData.plateNumber,
-                        model: editedData.model,
-                        year: editedData.year,
-                        serial: editedData.serial,
-                        status: editedData.status,
-                        brand: editedData.brand,
-                        defaultVendor: editedData.defaultVendor,
+                        name: editedData.name,
+                        email: editedData.email,
+                        phone: editedData.phone,
+                        address: editedData.address,
+                        city: editedData.city,
+                        country: editedData.country,
                     };
 
-                    const response = await editVehicle(dataToSend, token);
-                    setError('Editing vehicle successfully.', response.result.message);           
+                    const response = await editUser(dataToSend, token);
+                    //setError('Editing vehicle successfully.', response.result.message);           
                 } 
 
             } catch (error) {
-                setError('Error editing vehicle. Please try again.', error.message); 
+               //setError('Error editing vehicle. Please try again.', error.message); 
             }
 
             setEditRowId(null);
@@ -272,17 +279,17 @@ const GetVehicles = () => {
             if (session ) {
               const token = session.accessToken;  
               const data_deleted = [...data];                    
-              const response = await deleteVehicle(id, token);
+              const response = await deleteUser(id, token);
 
               data_deleted.splice(index, 1);
               _setData(data_deleted);
-              setError('Deleted vehicle succesufull.', response.result.message);   
+              //setError('Deleted vehicle succesufull.', response.result.message);   
               setOpen(false);
 
             } 
 
           } catch (error) {
-            setError('Error deleting vehicle. Please try again.', error.message);  
+            //setError('Error deleting vehicle. Please try again.', error.message);  
           }
 
 
@@ -446,5 +453,5 @@ const GetVehicles = () => {
             </>
     );
 };
-export default GetVehicles;
+export default GetDrivers;
 

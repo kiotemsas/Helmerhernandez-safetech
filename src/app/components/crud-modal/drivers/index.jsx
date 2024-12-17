@@ -3,37 +3,14 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent, 
-  Box, 
+  DialogContent,  
+  Box,  
   Typography,
 } from '@mui/material';
 
 import { useSelector } from 'react-redux'; 
+import GetDrivers from './GetDrivers';
  
-
-const rows = [
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'CARLOS LOAIZA', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'MELLO DRUM', 
-  }, 
-
-  {
-    plate: 'UDS 837',
-    brand: 'RENAULT',
-    model: 'SANDERO',
-    driver: 'JOE DOE', 
-  }, 
-];
-
 
 const Drivers = () => {
  
@@ -46,8 +23,8 @@ const Drivers = () => {
     setOpen(false);
   };
    
-  const customizer = useSelector((state) => state.customizer); 
-  const hideMenu =  customizer.isCollapse;
+  const customizer = useSelector((state) => state.customizer);
+  const hideMenu = customizer.isCollapse;
   const [open, setOpen] = React.useState(false);
   const [fullWidth] = React.useState(true);
   
@@ -61,7 +38,7 @@ const Drivers = () => {
         <svg width="30" height="30" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 0C20.2 0 22 1.8 22 4C22 6.2 20.2 8 18 8C15.8 8 14 6.2 14 4C14 1.8 15.8 0 18 0ZM36 14H24V40H20V28H16V40H12V14H0V10H36V14Z" fill="#202022"/>
         </svg>
 
-        {hideMenu ? '' : <Typography variant="h6">CONDUCTOR</Typography>}
+        {hideMenu ? '' : <Typography variant="h6">CONDUCTORES</Typography>}
 
       </Button>
 
@@ -75,15 +52,16 @@ const Drivers = () => {
             </svg>
           </Button>
 
-          <DialogTitle>{"CREAR CONDUCTOR"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
+          <DialogTitle>{"CONDUCTORES"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
-          <Box>  
-
+          <Box>           
+            {/*<GetVehiclesByVendor vendorId="12345" />*/}
+            <GetDrivers handleClose={handleClose} />
           
           </Box>
         </DialogContent> 
 
-      </Dialog>
+      </Dialog>      
     </>
   );
 };

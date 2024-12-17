@@ -70,7 +70,7 @@ export const Profile = () => {
             gap="4px"
           >
 
-            OTROS ENLACES
+            CREAR
 
           </Typography>}
 

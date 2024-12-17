@@ -40,7 +40,7 @@ const Vendor = () => {
             </clipPath></defs>
           </svg>
 
-        {hideMenu ? '' : <Typography variant="h6">PROVEEDOR</Typography>}
+        {hideMenu ? '' : <Typography variant="h6">PROVEEDORES</Typography>}
 
       </Button>
 
@@ -54,7 +54,7 @@ const Vendor = () => {
             </svg>
           </Button>
 
-          <DialogTitle>{"PROVEEDOR"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
+          <DialogTitle>{"PROVEEDORES"} <Typography>12/08/2024  10:08 PM</Typography></DialogTitle>
 
           <Box>            
 
