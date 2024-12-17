@@ -155,24 +155,18 @@ const GetVendor = () => {
 
     const { data: session } = useSession();
     const [data, _setData] = React.useState(() => []);
-    const [columnFilters, setColumnFilters] = React.useState(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState([])
     const [open, setOpen] = React.useState(false); 
     const [editRowId, setEditRowId] = React.useState(null);
     const [editedData, setEditedData] = React.useState(null);
+    const [deleteData, setDeleteData] = React.useState(null);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(''); 
- 
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
+       
     const handleClose = () => {
         setOpen(false);
-    };
-    
+    }; 
     
     useEffect(() => {
       
@@ -245,11 +239,11 @@ const GetVendor = () => {
                     };
 
                     const response = await editVendor(dataToSend, token);
-                    //setError('', response.result.message);           
+                    setError('', response.result.message);           
                 } 
 
             } catch (error) {
-               // setError('', error.message); 
+               setError('', error.message); 
             }
 
             setEditRowId(null);
@@ -258,48 +252,56 @@ const GetVendor = () => {
 
     };
 
-    const handleDelete = async (id, index) => {
-
-          try {
-
-            if (session ) {
-              const token = session.accessToken;  
-              const data_deleted = [...data];                    
-              const response = await deleteVendor(id, token);
-
-              data_deleted.splice(index, 1);
-              _setData(data_deleted);
-              //setError('', response.result.message);   
-              setOpen(false);
-
-            } 
-
-          } catch (error) {
-            //setError('', error.message);  
-          }
-
-
+    const handleDelete = async () => {
+    
+            try {
+    
+                if (session ) {
+                  const token = session.accessToken;  
+                  const data_deleted = [...data];                    
+                  const response = await deleteVendor(deleteData.id, token);
+    
+                  data_deleted.splice(deleteData.index, 1);
+                  _setData(data_deleted);
+                  setError('Deleted vehicle succesufull.', response.result.message);   
+                  setOpen(false);
+                } 
+    
+              } catch (error) {
+                setError('Error deleting vehicle. Please try again.', error.message);  
+              }
+    
+              setDeleteData(null);
+    
     };
 
     const handleChange = (e, field) => {
+
         if (editedData) {
             setEditedData({
                 ...editedData,
                 [field]: e.target.value,
             });
         }
+        
     };
+
+    const handleChangeDeleted = (id, index) => {
+        
+        setDeleteData({
+            id: id,
+            index: index,
+        });
+
+        setOpen(true);    
+
+    };
+
  
     return (
         <>
 
-        
-
-        
             <Box>
-
-
-             
 
                 <TableContainer>
                         <Table
@@ -351,8 +353,6 @@ const GetVendor = () => {
 
                                     {table.getRowModel().rows.map((row) => (
 
-                                       
-
                                         <TableRow key={row.id}>
                                             {row.getVisibleCells().map((cell) => (
                                                 <TableCell key={cell.id}>
@@ -375,32 +375,12 @@ const GetVendor = () => {
                                                                     <EditIcon />
                                                                 </IconButton>
 
-                                                                <IconButton className='roundButton error' onClick={handleClickOpen}  color="error">
+                                                                <IconButton className='roundButton error' onClick={() =>
+                                                                   handleChangeDeleted(row.original.objectId, row.id)
+                                                                } color="error">
                                                                     <DeleteIcon />
                                                                 </IconButton>
-
                                                                 
-                                                                <Dialog
-                                                                    open={open}
-                                                                    onClose={handleClose}
-                                                                    aria-labelledby="alert-dialog-title"
-                                                                    aria-describedby="alert-dialog-description"
-                                                                >
-                                                                    <DialogTitle id="alert-dialog-title">
-                                                                        {"¿Seguro que quieres eliminar este archivo?"}
-                                                                    </DialogTitle>
-                                                                    <DialogContent>
-                                                                        <DialogContentText id="alert-dialog-description">
-                                                                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
-                                                                        </DialogContentText>
-                                                                    </DialogContent>
-                                                                    <DialogActions>
-                                                                        <Button color="error" onClick={handleClose}>Cerrar</Button>
-                                                                        <Button onClick={() => handleDelete(row.original.objectId, row.id)} autoFocus>
-                                                                            Eliminar
-                                                                        </Button>
-                                                                    </DialogActions>
-                                                                </Dialog>
                                                             </>
                                                             
                                                         )
@@ -434,9 +414,34 @@ const GetVendor = () => {
                                 
                         </Table>
                 </TableContainer>
+
                 <Divider />
+
             </Box>
-            </>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"¿Seguro que quieres eliminar este archivo?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="error" onClick={handleClose}>Cerrar</Button>
+                    <Button onClick={() => handleDelete()} autoFocus>
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog> 
+
+        </>
     );
 };
 export default GetVendor;

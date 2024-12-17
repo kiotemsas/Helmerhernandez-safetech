@@ -68,23 +68,9 @@ const CreateDriver = () => {
     }));
   };
   
-  const fields = [
-    { label: 'NOMBRE COMPLETO', name: 'name' },
-    { label: 'USUARIO', name: 'username' , layout: 'two' },
-    { label: 'PASSWORD', name: 'password' , layout: 'two' },
-    { label: 'EMAIL', name: 'email' },
-    { label: 'TELÉFONO', name: 'phone' },
-    { label: 'DIRECCIÓN', name: 'address' },
-    { label: 'CIUDAD', name: 'city', layout: 'two' },
-    { label: 'PAÍS', name: 'country' , layout: 'two' },
-    { label: 'PROVEEDOR', name: 'vendor' }, 
-    { label: 'ESTADO', name: 'status' },
-  ];
 
   const [activeStep, setActiveStep] = React.useState(0);
-
   const isStepOptional = (step) => step === 1;
-
 
   const [open, setOpen] = React.useState(false);
 
@@ -140,9 +126,9 @@ const CreateDriver = () => {
 
             <Box className="muitech">
 
-                <CustomFormLabel className="nametech" htmlFor="name">Nombres Completos</CustomFormLabel>
+                <CustomFormLabel className="nametech" htmlFor="name">NOMBRES COMPLETOS</CustomFormLabel>
 
-                <CustomTextField id="name" name="name" placeholder="Nombres" variant="outlined" fullWidth
+                <CustomTextField id="name" name="name" placeholder="NOMBRES COMPLETOS" variant="outlined" fullWidth
                           required={true}
                           onChange={handleChange}
                           onKeyDown={(e) => {
@@ -157,9 +143,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="username">Usuario</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="username">USUARIO</CustomFormLabel>
 
-                  <CustomTextField id="username" name="username" placeholder="Usuario" variant="outlined" fullWidth
+                  <CustomTextField id="username" name="username" placeholder="USUARIO" variant="outlined" fullWidth
                             required={true}
                             onChange={handleChange}
                             onKeyDown={(e) => {
@@ -174,9 +160,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="password">Contraseña</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="password">CONTRASEÑA</CustomFormLabel>
 
-                  <CustomTextField id="password" name="password" placeholder="Contraseña" variant="outlined" fullWidth
+                  <CustomTextField id="password" name="password" placeholder="CONTRASEÑA" variant="outlined" fullWidth
                             required={true}
                             type="password"
                             onChange={handleChange}
@@ -192,9 +178,9 @@ const CreateDriver = () => {
 
             <Box className="muitech">
 
-              <CustomFormLabel className="nametech" htmlFor="email">Correo electrónico</CustomFormLabel>
+              <CustomFormLabel className="nametech" htmlFor="email">CORREO ELECTRÓNICO</CustomFormLabel>
 
-              <CustomTextField id="email" name="email" placeholder="Email" variant="outlined" fullWidth
+              <CustomTextField id="email" name="email" placeholder="CORREO ELECTRÓNICO" variant="outlined" fullWidth
                         required={true}
                         onChange={handleChange}
                         onKeyDown={(e) => {
@@ -209,9 +195,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="phone">Teléfono</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="phone">TELÉFONO</CustomFormLabel>
 
-                  <CustomTextField id="phone" name="phone" placeholder="Teléfono" variant="outlined" fullWidth
+                  <CustomTextField id="phone" name="phone" placeholder="TELÉFONO" variant="outlined" fullWidth
                             required={true}
                             onChange={handleChange}
                             onKeyDown={(e) => {
@@ -226,9 +212,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="address">Dirección</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="address">DIRECCIÓN</CustomFormLabel>
 
-                  <CustomTextField id="address" name="address" placeholder="Dirección" variant="outlined" fullWidth
+                  <CustomTextField id="address" name="address" placeholder="DIRECCIÓN" variant="outlined" fullWidth
                             required={true}
                             onChange={handleChange}
                             onKeyDown={(e) => {
@@ -247,9 +233,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="city">Ciudad</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="city">CIUDAD</CustomFormLabel>
 
-                  <CustomTextField id="city" name="city" placeholder="Ciudad" variant="outlined" fullWidth
+                  <CustomTextField id="city" name="city" placeholder="CIUDAD" variant="outlined" fullWidth
                             required={true}
                             onChange={handleChange}
                             onKeyDown={(e) => {
@@ -264,9 +250,9 @@ const CreateDriver = () => {
 
                 <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="country">País</CustomFormLabel>
+                  <CustomFormLabel className="nametech" htmlFor="country">PAÍS</CustomFormLabel>
 
-                  <CustomTextField id="country" name="country" placeholder="País" variant="outlined" fullWidth
+                  <CustomTextField id="country" name="country" placeholder="PAÍS" variant="outlined" fullWidth
                             required={true}
                             onChange={handleChange}
                             onKeyDown={(e) => {
@@ -286,9 +272,9 @@ const CreateDriver = () => {
 
             <Box className="muitech">
 
-              <CustomFormLabel className="nametech" htmlFor="vendor">Proveedor</CustomFormLabel>
+              <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>
 
-                <CustomTextField id="vendor" name="vendor" placeholder="Proveedor" variant="outlined" fullWidth
+                <CustomTextField id="vendor" name="vendor" placeholder="PROVEEDOR" variant="outlined" fullWidth
                           required={true}
                           onChange={handleChange}
                           onKeyDown={(e) => {
@@ -301,9 +287,9 @@ const CreateDriver = () => {
 
             <Box className="muitech">
 
-              <CustomFormLabel className="nametech" htmlFor="status">Estado</CustomFormLabel>
+              <CustomFormLabel className="nametech" htmlFor="status">ESTADO</CustomFormLabel>
 
-                <CustomTextField id="status" name="status" placeholder="Estado" variant="outlined" fullWidth
+                <CustomTextField id="status" name="status" placeholder="ESTADO" variant="outlined" fullWidth
                           required={true}
                           onChange={handleChange}
                           onKeyDown={(e) => {

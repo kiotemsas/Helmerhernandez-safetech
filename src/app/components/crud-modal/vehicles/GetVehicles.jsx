@@ -25,10 +25,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
-import Toolbar from '@mui/material/Toolbar';
-import InputAdornment from '@mui/material/InputAdornment';
-import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
+import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField'; 
 
 
 import {
@@ -133,6 +130,7 @@ function DebouncedInput({
     debounce = 500,
     ...props
 }) {
+    
     const [value, setValue] = React.useState(initialValue);
 
     React.useEffect(() => {
@@ -150,38 +148,28 @@ function DebouncedInput({
     return (
         <CustomTextField {...props} value={value} onChange={e => setValue(e.target.value)} />
     );
+
 }
-
  
-
-
 const GetVehicles = () => {
 
-    const { data: session } = useSession();
+    const {data: session } = useSession();
     const [data, _setData] = React.useState(() => []);
-    const [columnFilters, setColumnFilters] = React.useState(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState([]);
     const [open, setOpen] = React.useState(false); 
     const [editRowId, setEditRowId] = React.useState(null);
     const [editedData, setEditedData] = React.useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(''); 
- 
+    const [deleteData, setDeleteData] = React.useState(null);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');   
 
     const handleClose = () => {
         setOpen(false);
-    };
-    
+    };    
     
     useEffect(() => {
 
-
-      
         const fetchVehicles = async () => {
           try {
             if (session) {
@@ -200,7 +188,7 @@ const GetVehicles = () => {
         };
     
         fetchVehicles();
-      }, [session]);
+    }, [session]);
 
 
     const table = useReactTable({
@@ -265,26 +253,26 @@ const GetVehicles = () => {
 
     };
 
-    const handleDelete = async (id, index) => {
+    const handleDelete = async () => {
 
-          try {
+        try {
 
             if (session ) {
               const token = session.accessToken;  
               const data_deleted = [...data];                    
-              const response = await deleteVehicle(id, token);
+              const response = await deleteVehicle(deleteData.id, token);
 
-              data_deleted.splice(index, 1);
+              data_deleted.splice(deleteData.index, 1);
               _setData(data_deleted);
               setError('Deleted vehicle succesufull.', response.result.message);   
               setOpen(false);
-
             } 
 
           } catch (error) {
             setError('Error deleting vehicle. Please try again.', error.message);  
           }
 
+          setDeleteData(null);
 
     };
 
@@ -296,24 +284,27 @@ const GetVehicles = () => {
             });
         }
     };
+
+    const handleChangeDeleted = (id, index) => {
+        
+        setDeleteData({
+            id: id,
+            index: index,
+        });
+
+        setOpen(true);
+    
+    };
  
     return (
         <>
-
-        
-
-        
+          
             <Box>
 
-
-             
-
                 <TableContainer>
-                        <Table
-                                sx={{
-                                    whiteSpace: 'nowrap',
-                                }}
-                            >
+
+                        <Table sx={{whiteSpace: 'nowrap',}}>
+
                                 <TableHead>
                                     {table.getHeaderGroups().map((headerGroup) => (
                                         <TableRow key={headerGroup.id}>
@@ -353,12 +344,9 @@ const GetVehicles = () => {
                                     ))}
                                 </TableHead>
 
-                                
                                 <TableBody>
 
-                                    {table.getRowModel().rows.map((row) => (
-
-                                       
+                                    {table.getRowModel().rows.map((row) => (                                      
 
                                         <TableRow key={row.id}>
                                             {row.getVisibleCells().map((cell) => (
@@ -372,7 +360,6 @@ const GetVehicles = () => {
                                                                 <IconButton className='roundButton clean' onClick={() => setEditRowId(null)} color="success">
                                                                     <CloseIcon />
                                                                 </IconButton>
-
                                                                 
                                                             </>
                                                         ) : ( 
@@ -382,32 +369,12 @@ const GetVehicles = () => {
                                                                     <EditIcon />
                                                                 </IconButton>
 
-                                                                <IconButton className='roundButton error' onClick={handleClickOpen}  color="error">
+                                                                <IconButton className='roundButton error' onClick={() =>
+                                                                   handleChangeDeleted(row.original.objectId, row.id)
+                                                                } color="error">
                                                                     <DeleteIcon />
                                                                 </IconButton>
 
-                                                                
-                                                                <Dialog
-                                                                    open={open}
-                                                                    onClose={handleClose}
-                                                                    aria-labelledby="alert-dialog-title"
-                                                                    aria-describedby="alert-dialog-description"
-                                                                >
-                                                                    <DialogTitle id="alert-dialog-title">
-                                                                        {"¿Seguro que quieres eliminar este archivo?"}
-                                                                    </DialogTitle>
-                                                                    <DialogContent>
-                                                                        <DialogContentText id="alert-dialog-description">
-                                                                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
-                                                                        </DialogContentText>
-                                                                    </DialogContent>
-                                                                    <DialogActions>
-                                                                        <Button color="error" onClick={handleClose}>Cerrar</Button>
-                                                                        <Button onClick={() => handleDelete(row.original.objectId, row.id)} autoFocus>
-                                                                            Eliminar
-                                                                        </Button>
-                                                                    </DialogActions>
-                                                                </Dialog>
                                                             </>
                                                             
                                                         )
@@ -417,10 +384,7 @@ const GetVehicles = () => {
                                                                 variant="outlined"
                                                                 value={editedData?.[cell.column.id] || ""}
                                                                 onChange={(e) =>
-                                                                    handleChange(
-                                                                        e,
-                                                                        cell.column.id
-                                                                    )
+                                                                    handleChange(e,cell.column.id)
                                                                 }
                                                                 fullWidth
                                                             />
@@ -443,6 +407,32 @@ const GetVehicles = () => {
                 </TableContainer>
                 <Divider />
             </Box>
+
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"¿Seguro que quieres eliminar este archivo?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="error" onClick={handleClose}>Cerrar</Button>
+                    <Button onClick={() => handleDelete()} autoFocus>
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
+
             </>
     );
 };

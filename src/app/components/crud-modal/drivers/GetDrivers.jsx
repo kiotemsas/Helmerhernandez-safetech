@@ -25,10 +25,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
-import Toolbar from '@mui/material/Toolbar';
-import InputAdornment from '@mui/material/InputAdornment';
-import { IconDotsVertical, IconFilter, IconSearch, IconTrash } from '@tabler/icons-react';
+import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField'; 
 
 
 import {
@@ -163,25 +160,19 @@ function DebouncedInput({
 }
 
  
-
-
 const GetDrivers = () => {
 
     const { data: session } = useSession();
     const [data, _setData] = React.useState(() => []);
-    const [columnFilters, setColumnFilters] = React.useState(
-        []
-    )
+    const [columnFilters, setColumnFilters] = React.useState([])
     const [open, setOpen] = React.useState(false); 
     const [editRowId, setEditRowId] = React.useState(null);
     const [editedData, setEditedData] = React.useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(''); 
- 
+    const [deleteData, setDeleteData] = React.useState(null);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');  
 
     const handleClose = () => {
         setOpen(false);
@@ -259,11 +250,11 @@ const GetDrivers = () => {
                     };
 
                     const response = await editUser(dataToSend, token);
-                    //setError('Editing vehicle successfully.', response.result.message);           
+                    setError('Editing vehicle successfully.', response.result.message);           
                 } 
 
             } catch (error) {
-               //setError('Error editing vehicle. Please try again.', error.message); 
+               setError('Error editing vehicle. Please try again.', error.message); 
             }
 
             setEditRowId(null);
@@ -272,26 +263,26 @@ const GetDrivers = () => {
 
     };
 
-    const handleDelete = async (id, index) => {
-
-          try {
+    const handleDelete = async () => {
+    
+        try {
 
             if (session ) {
               const token = session.accessToken;  
               const data_deleted = [...data];                    
-              const response = await deleteUser(id, token);
+              const response = await deleteUser(deleteData.id, token);
 
-              data_deleted.splice(index, 1);
+              data_deleted.splice(deleteData.index, 1);
               _setData(data_deleted);
-              //setError('Deleted vehicle succesufull.', response.result.message);   
+              setError('Deleted vehicle succesufull.', response.result.message);   
               setOpen(false);
-
             } 
 
           } catch (error) {
-            //setError('Error deleting vehicle. Please try again.', error.message);  
+            setError('Error deleting vehicle. Please try again.', error.message);  
           }
 
+          setDeleteData(null);
 
     };
 
@@ -303,17 +294,25 @@ const GetDrivers = () => {
             });
         }
     };
+
+
+    const handleChangeDeleted = (id, index) => {
+        
+        setDeleteData({
+            id: id,
+            index: index,
+        });
+
+        setOpen(true);    
+
+    };
+
+
  
     return (
         <>
-
-        
-
         
             <Box>
-
-
-             
 
                 <TableContainer>
                         <Table
@@ -365,8 +364,6 @@ const GetDrivers = () => {
 
                                     {table.getRowModel().rows.map((row) => (
 
-                                       
-
                                         <TableRow key={row.id}>
                                             {row.getVisibleCells().map((cell) => (
                                                 <TableCell key={cell.id}>
@@ -389,32 +386,12 @@ const GetDrivers = () => {
                                                                     <EditIcon />
                                                                 </IconButton>
 
-                                                                <IconButton className='roundButton error' onClick={handleClickOpen}  color="error">
+                                                                <IconButton className='roundButton error' onClick={() =>
+                                                                   handleChangeDeleted(row.original.objectId, row.id)
+                                                                } color="error">
                                                                     <DeleteIcon />
                                                                 </IconButton>
 
-                                                                
-                                                                <Dialog
-                                                                    open={open}
-                                                                    onClose={handleClose}
-                                                                    aria-labelledby="alert-dialog-title"
-                                                                    aria-describedby="alert-dialog-description"
-                                                                >
-                                                                    <DialogTitle id="alert-dialog-title">
-                                                                        {"¿Seguro que quieres eliminar este archivo?"}
-                                                                    </DialogTitle>
-                                                                    <DialogContent>
-                                                                        <DialogContentText id="alert-dialog-description">
-                                                                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
-                                                                        </DialogContentText>
-                                                                    </DialogContent>
-                                                                    <DialogActions>
-                                                                        <Button color="error" onClick={handleClose}>Cerrar</Button>
-                                                                        <Button onClick={() => handleDelete(row.original.objectId, row.id)} autoFocus>
-                                                                            Eliminar
-                                                                        </Button>
-                                                                    </DialogActions>
-                                                                </Dialog>
                                                             </>
                                                             
                                                         )
@@ -450,7 +427,30 @@ const GetDrivers = () => {
                 </TableContainer>
                 <Divider />
             </Box>
-            </>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"¿Seguro que quieres eliminar este archivo?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ¿Esta seguro de que desea eliminar este archivo de forma permanente?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="error" onClick={handleClose}>Cerrar</Button>
+                    <Button onClick={() => handleDelete()} autoFocus>
+                        Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+        </>
     );
 };
 export default GetDrivers;
