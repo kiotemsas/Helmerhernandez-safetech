@@ -30,6 +30,7 @@ const fetchFromParse = async (url, method, data, token) => {
 };
 
 
+
 //VEHICLE
 
 export const saveVehicle = async (vehicleData, token) => {
@@ -157,7 +158,7 @@ export const getUser = async (token) => {
   return await fetchFromParse(
     'http://3.137.134.27:8080/parse/functions/getUsers',
     'POST',
-    {},
+    { role: "driver"},
     token
   );
 };

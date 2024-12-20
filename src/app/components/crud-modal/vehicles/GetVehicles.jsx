@@ -79,8 +79,8 @@ const columns = [
       ),
     }),
 
-    columnHelper.accessor('defaultVendor', {
-      header: () => 'Proveedor',
+    columnHelper.accessor('year', {
+      header: () => 'Año',
       cell: info => (
           <Typography variant="subtitle1" color="textSecondary">
               {info.getValue()}
@@ -236,7 +236,7 @@ const GetVehicles = () => {
                         serial: editedData.serial,
                         status: editedData.status,
                         brand: editedData.brand,
-                        defaultVendor: editedData.defaultVendor,
+                        year: editedData.year,
                     };
 
                     const response = await editVehicle(dataToSend, token);

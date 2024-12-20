@@ -410,6 +410,10 @@
     box-shadow: 0 8px 16px -10px #0000006e;
 }
 
+.techselect .MuiAutocomplete-inputRoot{
+    padding: 0;
+}
+
 .dialog-form .muitech-confirm a:first-child, .dialog-form .muitech-confirm button.MuiButton-alone{
     background: #fff;
     border: 2px solid #00BBC9;

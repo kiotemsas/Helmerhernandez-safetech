@@ -2,9 +2,10 @@
 
 
 'use client';
-import React, { useState } from 'react';
-import { saveUser } from '@/utils/parse';
+import React, { useState} from 'react';
+import { saveUser,getVendors } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
+
 
 import {
   Box,
@@ -21,6 +22,10 @@ import Slide from '@mui/material/Slide';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link'; 
+
+
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
@@ -40,6 +45,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const steps = ['Create', 'Confirm']; 
 
+
+// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+ 
+
+
+
+
+
+
 const CreateDriver = () => {
 
   const { data: session } = useSession();
@@ -56,7 +70,10 @@ const CreateDriver = () => {
     status: '',
     role: "driver"
   });
-
+  
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');  
   const [idUser, setIdUser] = useState('');
 
 
@@ -69,14 +86,37 @@ const CreateDriver = () => {
   };
   
 
+
   const [activeStep, setActiveStep] = React.useState(0);
   const isStepOptional = (step) => step === 1;
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
+  const [vendors, setvendors] = React.useState(() => []);
+
+   const handleClickOpen = () => {
     setActiveStep(0);
     setOpen(true);
+
+    const fetchVendors = async () => {
+      try {
+        if (session) {
+          const token = session.accessToken;
+          const response = await getVendors(token);
+          setvendors(response.result);
+
+        } else {
+          alert('No se ha encontrado una sesión activa.');
+        }
+      } catch (error) { 
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVendors();
+
   };
 
   const handleClose = () => {    
@@ -266,20 +306,29 @@ const CreateDriver = () => {
             </Grid>
 
 
-
-
-
-
             <Box className="muitech">
 
-              <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>
+              <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>              
 
-                <CustomTextField id="vendor" name="vendor" placeholder="PROVEEDOR" variant="outlined" fullWidth
-                          required={true}
-                          onChange={handleChange}
-                          onKeyDown={(e) => {
-                            e.stopPropagation();
-                }} />
+                <Autocomplete 
+                                     
+                      options={vendors} 
+                      getOptionLabel={(option) => option.name || ""} 
+                      id="vendor"
+                      onChange={(event, value) => 
+
+                        setUserData((prevData) => ({
+                          ...prevData,
+                          ["vendor"]: value.objectId,
+                        }))    
+
+                      }
+                      fullWidth
+                      renderInput={(params) => (
+                        <CustomTextField {...params} className="techselect"  name="vendor" placeholder="Seleccione el proveedor" variant="outlined" 
+                       />
+                      )}
+                    />
 
             </Box>
 
@@ -296,11 +345,7 @@ const CreateDriver = () => {
                             e.stopPropagation();
                 }} />
 
-            </Box>
-
-
-
-            
+            </Box>            
 
             <Box className="muitech-confirm">
                 <Button
@@ -325,9 +370,6 @@ const CreateDriver = () => {
             </Box>
 
           </form>
-
-
-
 
         );
       case 1:

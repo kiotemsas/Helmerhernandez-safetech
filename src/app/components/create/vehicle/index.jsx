@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { saveVehicle } from '@/utils/parse';
+import { saveVehicle, getVendors } from '@/utils/parse';
 import { useSession } from 'next-auth/react';
 
 import {
@@ -16,6 +16,9 @@ import Slide from '@mui/material/Slide';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link'; 
+
+
+import Autocomplete from '@mui/material/Autocomplete';
 
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
@@ -35,6 +38,7 @@ const steps = ['Create', 'Confirm'];
 const SaveVehicle = () => {
 
   const { data: session } = useSession();
+  
   const [vehicleData, setVehicleData] = useState({
     plateNumber: '',
     model: '',
@@ -45,9 +49,12 @@ const SaveVehicle = () => {
     defaultVendor: '',
   });
 
-  const [idVehicle, setIdVehicle] = useState('');
+  const [idVehicle, setIdVehicle] = useState('');  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');  
 
-
+  const [vendors, setvendors] = React.useState(() => []);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVehicleData((prevData) => ({
@@ -63,8 +70,7 @@ const SaveVehicle = () => {
     { label: 'AÑO', name: 'year' },
     { label: 'SERIAL', name: 'serial' },
     { label: 'ESTADO', name: 'status' },
-    { label: 'MARCA', name: 'brand' },
-    { label: 'PROVEEDOR', name: 'defaultVendor' },
+    { label: 'MARCA', name: 'brand' }, 
   ];
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -77,6 +83,26 @@ const SaveVehicle = () => {
   const handleClickOpen = () => {
     setActiveStep(0);
     setOpen(true);
+
+    const fetchVendors = async () => {
+      try {
+        if (session) {
+          const token = session.accessToken;
+          const response = await getVendors(token);
+          setvendors(response.result);
+
+        } else {
+          alert('No se ha encontrado una sesión activa.');
+        }
+      } catch (error) { 
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVendors();
+    
   };
 
   const handleClose = () => {    
@@ -145,6 +171,33 @@ const SaveVehicle = () => {
                   />
                 </Box>
               ))}
+
+                <Box className="muitech">
+
+                  <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>              
+
+                  <Autocomplete 
+                                      
+                        options={vendors} 
+                        getOptionLabel={(option) => option.name || ""} 
+                        id="vendor"
+                        onChange={(event, value) => 
+
+                          setVehicleData((prevData) => ({
+                            ...prevData,
+                            ["defaultVendor"]: value.objectId,
+                          }))    
+                          
+                        }
+                        fullWidth
+                        renderInput={(params) => (
+                          <CustomTextField {...params} className="techselect"  name="vendor" placeholder="Seleccione el proveedor" variant="outlined" 
+                        />
+                        )}
+                      />
+
+              </Box>   
+
               <Box className="muitech-confirm">
                 <Button
                   color="secondary"

@@ -5,6 +5,9 @@ we need to make this component client rendered as well*/
 import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; //Map component Component from library
 import Parse from '../../../utils/parse';
+import { getVehicles }  from '../../../utils/parse';
+import { useSession } from 'next-auth/react';
+import { Popover, Box, Typography } from '@mui/material';
 
 const parseClient = new Parse.LiveQueryClient({
   applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
@@ -28,7 +31,7 @@ const defaultMapCenter = {
 };
 
 //Default zoom level, can be adjusted
-const defaultMapZoom = 17;
+const defaultMapZoom = 14;
 
 //Map options
 const defaultMapOptions = {
@@ -69,8 +72,74 @@ const defaultMapOptions = {
 
 const MapComponent = () => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const {data: session } = useSession();
+  const [data, _setData] = React.useState(() => []);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => { 
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  const handleMapClick = (e) => { 
+    alert("")
+  };
+
+  const onMarkerPress = (index) => {
+    console.log("Marker : ", index)
+  
+  };
 
   useEffect(() => {
+
+
+
+    const fetchVehicles = async () => {
+
+
+
+              try {
+                if (session) {
+
+                  const token = session.accessToken;
+                  const response = await getVehicles(token);
+
+
+
+                  {response.result.map((key) => {
+                    setEvents([
+                      {
+                        id: key.objectId,
+                        lat: key.lastEventPosition.position.latitude,
+                        lng: key.lastEventPosition.position.longitude,
+                        ignition: key.lastEventPosition.position.attributes.ignition
+                      },
+                    ]) 
+
+                  })}
+
+                  console.log(events);
+ 
+ 
+                } else {
+                  alert('No se ha encontrado una sesión activa.');
+                }
+              } catch (error) { 
+    
+              } finally {
+                //setLoading(false);
+              }
+    };
+        
+    fetchVehicles();
+
+
     const query = new Parse.Query('Event');
     const subscription = parseClient.subscribe(query);
 
@@ -79,27 +148,18 @@ const MapComponent = () => {
     });
 
     subscription.on('create', (event) => {
-      console.log('New event:', event);
 
-      const latitude = event.attributes.resultObject.position.latitude;
-      const longitude = event.attributes.resultObject.position.longitude;
+      setEvents([
+        {
+          id: event.id,
+          lat: event.attributes.resultObject.position.latitude,
+          lng: event.attributes.resultObject.position.longitude,
+          ignition: event.attributes.resultObject.position.attributes.ignition
+        },
+      ]);
 
-      if (latitude && longitude) {
-        console.log(`  - Latitude: ${latitude}`);
-        console.log(`  - Longitude: ${longitude}`);
-      } else {
-        console.log('  - No latitude or longitude found in event data.');
-      }
+      console.log(events);
 
-      if (event.attributes.type === 'commandResult') {
-        setEvents([
-          {
-            id: event.id,
-            lat: latitude,
-            lng: longitude,
-          },
-        ]);
-      }
     });
 
     subscription.on('error', (error) => {
@@ -118,22 +178,48 @@ const MapComponent = () => {
         mapContainerStyle={defaultMapContainerStyle}
         center={defaultMapCenter}
         zoom={defaultMapZoom}
-        options={defaultMapOptions}
-      >
+        options={defaultMapOptions}       
+      > 
+
         {events.map((event) => {
-          const latitude = parseFloat(event.lat);
-          const longitude = parseFloat(event.lng);
-          return (
-            <Marker
-              key={event.id}
-              position={{
-                lat: isNaN(latitude) ? defaultMapCenter.lat : latitude,
-                lng: isNaN(longitude) ? defaultMapCenter.lng : longitude,
-              }}
-              options={{ icon: '/images/svgs/marker.svg' }}
-            />
+           
+          return ( 
+
+            <> 
+
+              {event.ignition ?  
+
+                  <Marker
+                      key={event.id}
+                      position={{
+                        lat: parseFloat(event.lat),
+                        lng: parseFloat(event.lng),
+                      }}
+                      onClick={(e) => handleMapClick(e)}
+                      options={{ icon: '/images/svgs/vehicleOn.svg' }}
+                  />
+
+              : 
+
+                  <Marker
+                    key={event.id}
+                    position={{
+                      lat: parseFloat(event.lat),
+                      lng: parseFloat(event.lng),
+                    }}
+                    onClick={(e) => handleMapClick(e)}
+                    options={{ icon: '/images/svgs/vehicleOff.svg' }}
+                  /> 
+
+              }
+ 
+            </>
+ 
           );
+          
         })}
+
+        
       </GoogleMap>
     </div>
   );
