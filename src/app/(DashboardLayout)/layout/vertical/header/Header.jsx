@@ -15,6 +15,12 @@ import Navigation from "./Navigation";
 import MobileRightSidebar from "./MobileRightSidebar";
 import { IconSearch, IconX } from '@tabler/icons-react';
 
+
+
+
+import Search from '../../vertical/header/Search';
+
+
 import { FormGroup, FormControlLabel, FormControl } from '@mui/material';
 import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox';
 
@@ -48,116 +54,7 @@ const Header = () => {
     <AppBarStyled className="header-tech" position="sticky" color="default">
       <ToolbarStyled>
        
-
-        
-
-        <Box flexGrow={1} />
-        <Stack spacing={1} direction="row" alignItems="center">
-
-
-          {/* ------------------------------------------- */}
-          {/* Search Dropdown */}
-          {/* ------------------------------------------- */}
-
-          
-          <Box
-              className="safetechcheck"
-              alignItems="center"
-              justifyContent="center"
-              sx={{
-                  display: {
-                    xs: 'none',
-                    lg: 'flex',
-                  },
-              }}
-          >
-            <FormControlLabel
-              value="start"
-              control={<CustomCheckbox  color="primary" /> }
-              label={
-                <>
-                  <img src="images/svgs/icon-carperson.svg" className="profile-img" width="80px" height="auto" style={{ marginRight: "5px" }} />
-                </>
-              }
-              labelPlacement="start"
-            />
-
-
-          </Box>
-
-
-
-          <Box
-              className="safetechcheck"
-              alignItems="center"
-              justifyContent="center"
-              sx={{
-                  display: {
-                    xs: 'none',
-                    lg: 'flex',
-                  },
-              }}
-          >
-            <FormControlLabel
-              value="start"
-              control={<CustomCheckbox  color="primary" /> }
-              label={
-                <>
-                  <img src="images/svgs/icon-map.svg" className="profile-img" width="33px" height="auto" style={{ marginRight: "5px" }} />
-                </>
-              }
-              labelPlacement="start"
-            />
-
-
-          </Box>
-          
-
-
-          <Box
-              className="searchtoptech"
-              alignItems="center"
-              justifyContent="center"
-              style={{ marginLeft: "35px" }}
-              sx={{
-                  display: {
-                    xs: 'none',
-                    lg: 'flex',
-                  },
-              }}
-          >
-            
-            <CustomOutlinedInput           
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconSearch size="16" />
-                </InputAdornment>
-              }            
-              placeholder="Driver or Plate text"
-              fullWidth
-            />
-
-          </Box>
-
-
-
-          {lgUp ? (
-            <>
-              <Navigation />
-            </>
-          ) : null}
-
-
-          {/* ------------------------------------------- */}
-          {/* End Ecommerce Dropdown */}
-          {/* ------------------------------------------- */}
-       
-          {/* ------------------------------------------- */}
-          {/* Toggle Right Sidebar for mobile */}
-          {/* ------------------------------------------- */}
-          {lgDown ? <MobileRightSidebar /> : null}
-          <Profile />
-        </Stack>
+  
       </ToolbarStyled>
     </AppBarStyled>
   );

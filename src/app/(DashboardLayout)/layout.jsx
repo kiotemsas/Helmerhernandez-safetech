@@ -64,17 +64,12 @@ export default function RootLayout({ children }) {
           }}
         >
 
-<MapProvider>
-      <MapComponent/>
-    </MapProvider>
+        <MapProvider>
+          <MapComponent/>
+        </MapProvider>
 
     
-          {/* ------------------------------------------- */}
-          {/* Header */}
-          {/* ------------------------------------------- */}
-          {customizer.isHorizontal ? <HorizontalHeader /> : <Header />}
-          {/* PageContent */}
-          {customizer.isHorizontal ? <Navigation /> : ""}
+        
           <Container
             sx={{
               maxWidth: customizer.isLayout === "boxed" ? "lg" : "100%!important",

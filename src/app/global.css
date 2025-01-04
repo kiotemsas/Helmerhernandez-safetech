@@ -11,6 +11,9 @@
     background-color: transparent;
     -webkit-backdrop-filter: unset;
     backdrop-filter: unset;
+    z-index: 99;
+    justify-content: flex-end;
+    padding: 0 3em;
 }
 
 #techboxlogin .muitech .Mui-error fieldset{
@@ -46,7 +49,20 @@
     z-index: 5;
 }
 
+.searchtoptech{
+    position: relative;
+}
 
+.searchtoptech nav{
+    list-style: none;
+    background-color: #fff;
+    overflow: hidden;
+    margin: 9px 0 0;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
 
 #techboxlogin .mui-1wcaknn {
     border-radius: 0;
@@ -105,6 +121,25 @@
 
 .mui-j7yf57-MuiButtonBase-root-MuiListItemButton-root.Mui-selected svg path{
     fill: #fff;
+}
+
+.accordionRootModal{
+    max-width: 360px;
+}
+
+
+.accordionRootModal .accordionModal{
+    padding: 0 12px 0 0;
+}
+
+
+.accordionRootModal .accordionModal .MuiAccordionSummary-content{
+    margin: 0;
+}
+
+
+.accordionRootModal .accordionModal  .MuiAccordionDetails-root {
+    padding: 0 0 16px;
 }
 
 .toggle-tech {
@@ -445,10 +480,15 @@ button.btn-techmenu {
     height: 100%;
 }
 
-.group-card{
-    display: flex;
-    padding: 20px; 
-    gap: 20px;
+.group-card{ 
+    display: block;
+    padding: 20px;
+    position: relative;
+    height: 100%;
+}
+
+.group-card .group-card-item{  
+    height: 100%;
 }
 
 .group-card .title-item-card{
@@ -483,6 +523,7 @@ button.btn-techmenu {
     background: none;
     border: unset;
     cursor: pointer;
+    z-index: 55;
 }
 
 .Drawer-safetech .MuiDrawer-paper{
@@ -497,10 +538,41 @@ button.btn-techmenu {
     box-shadow: 0 -5px #00bbc9;
 }
 
+
+
+.popoverCard .MuiPopover-paper{
+    margin-left: 3em;
+    margin-top: -4.8em;
+    border: 2px solid #D62109
+}
+
+
+.popoverCard .popcard{
+    width: 340px;
+    padding: 0 8px 0 14px;
+}
+
+
+.popoverCard .popcard .MuiGrid-root {
+    display: flex;
+    align-items: center;
+}
+
+
+.popoverCard .popcard .MuiAvatar-root {
+    width: 60px;
+    height: 60px;
+}
+
+.popoverCard .popcard a{
+    margin: 0 auto;
+}
+
 .card-flex {
     border-radius: 20px;
     background-color: #fff;
     margin-bottom: 25px;
+    padding: 0;
 }
 
 .card-flex svg{
@@ -539,21 +611,6 @@ button.btn-techmenu {
     margin: 10px 0;
 }
 
-.card-flex button{
-    width: 46%;
-    margin: 0 auto;
-    padding: 12px 0;
-    margin: 0 auto;
-    text-align: center;
-    border-radius: 60px;
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
-    color: #fff;
-    text-transform: uppercase;
-    font-weight: bold;
-    -webkit-box-shadow: 0 8px 16px -10px #0000006e;
-    -moz-box-shadow: 0 8px 16px -10px #0000006e;
-    box-shadow: 0 8px 16px -10px #0000006e;
-}
 
 .card-flex  .group-btn{
     display: flex;
@@ -563,8 +620,8 @@ button.btn-techmenu {
     margin: 30px 0;
 }
 
-.body-card{
-    padding: 30px;
+.card-flex .body-card{
+    padding: 20px;
 }
 
 
@@ -575,16 +632,16 @@ button.btn-techmenu {
 
 
 .card-flex .group-btn-card {
-    padding: 20px 0;
+    padding: 6px 0 0;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
 
 .card-flex  .group-btn-card button {
-    width: 125px;
+    width: 100px;
     margin: 0 auto;
-    padding: 12px 0;
+    padding: 6px 0;
     margin: 0 10px;
     text-align: center;
     border-radius: 60px;
@@ -665,6 +722,11 @@ button.btn-techmenu {
 
 .table-modal{
     width: 100%;
+}
+
+
+.errorMessage svg{
+    margin: 0 !important;
 }
 
 

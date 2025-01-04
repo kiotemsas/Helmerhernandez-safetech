@@ -17,9 +17,9 @@ const Error = () => (
     >
         <Container maxWidth="md">
             <Image
-                src={"/images/backgrounds/errorimg.svg"}
-                alt="404" width={500} height={500}
-                style={{ width: "100%", maxWidth: "500px", maxHeight: '500px' }}
+                src={"/images/backgrounds/errorimg.png"}
+                alt="404" width={475} height={300}
+                style={{ width: "100%", maxWidth: "475px", maxHeight: '500px' }}
             />
             <Typography align="center" variant="h1" mb={4}>
                 Opps!!!

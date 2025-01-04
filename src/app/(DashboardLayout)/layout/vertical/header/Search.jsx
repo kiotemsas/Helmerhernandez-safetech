@@ -70,6 +70,7 @@ const Search = () => {
           </Stack>
         </DialogContent>
         <Divider />
+        
         <Box p={2} sx={{ maxHeight: '60vh', overflow: 'auto' }}>
           <Typography variant="h5" p={1}>
             Quick Page Links
@@ -118,6 +119,7 @@ const Search = () => {
             </List>
           </Box>
         </Box>
+
       </Dialog>
     </>
   );

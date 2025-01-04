@@ -15,7 +15,7 @@ import {
 import Slide from '@mui/material/Slide';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Link from 'next/link'; 
+import Link from 'next/link';
 
 
 import Autocomplete from '@mui/material/Autocomplete';
@@ -33,12 +33,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 });
 
-const steps = ['Create', 'Confirm']; 
+const steps = ['Create', 'Confirm'];
 
 const SaveVehicle = () => {
 
   const { data: session } = useSession();
-  
+
   const [vehicleData, setVehicleData] = useState({
     plateNumber: '',
     model: '',
@@ -49,12 +49,12 @@ const SaveVehicle = () => {
     defaultVendor: '',
   });
 
-  const [idVehicle, setIdVehicle] = useState('');  
+  const [idVehicle, setIdVehicle] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');  
+  const [error, setError] = useState('');
 
   const [vendors, setvendors] = React.useState(() => []);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVehicleData((prevData) => ({
@@ -70,7 +70,7 @@ const SaveVehicle = () => {
     { label: 'AÑO', name: 'year' },
     { label: 'SERIAL', name: 'serial' },
     { label: 'ESTADO', name: 'status' },
-    { label: 'MARCA', name: 'brand' }, 
+    { label: 'MARCA', name: 'brand' },
   ];
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -92,21 +92,21 @@ const SaveVehicle = () => {
           setvendors(response.result);
 
         } else {
-          alert('No se ha encontrado una sesión activa.');
+          setError('No se ha encontrado una sesión activa.');
         }
-      } catch (error) { 
-
+      } catch (error) {
+        setError(error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchVendors();
-    
+
   };
 
-  const handleClose = () => {    
-    setOpen(false);    
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -116,7 +116,7 @@ const SaveVehicle = () => {
 
   };
 
-  const saveIt = async(e) => {
+  const saveIt = async (e) => {
 
     e.preventDefault();
 
@@ -126,15 +126,14 @@ const SaveVehicle = () => {
         const token = session.accessToken;
         const response = await saveVehicle(vehicleData, token);
         setIdVehicle(response.result.id);
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);        
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
       } else {
-        //alert('No se ha encontrado una sesión activa.');
+        setError('No se ha encontrado una sesión activa.');
       }
 
     } catch (error) {
-      //console.error(error);
-      //alert('Error al guardar el vehículo. Por favor, intente de nuevo.');
+      setError(error);
     }
 
 
@@ -172,31 +171,32 @@ const SaveVehicle = () => {
                 </Box>
               ))}
 
-                <Box className="muitech">
+              <Box className="muitech">
 
-                  <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>              
+                <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>
 
-                  <Autocomplete 
-                                      
-                        options={vendors} 
-                        getOptionLabel={(option) => option.name || ""} 
-                        id="vendor"
-                        onChange={(event, value) => 
+                <Autocomplete
 
-                          setVehicleData((prevData) => ({
-                            ...prevData,
-                            ["defaultVendor"]: value.objectId,
-                          }))    
-                          
-                        }
-                        fullWidth
-                        renderInput={(params) => (
-                          <CustomTextField {...params} className="techselect"  name="vendor" placeholder="Seleccione el proveedor" variant="outlined" 
-                        />
-                        )}
-                      />
+                  options={vendors}
+                  getOptionLabel={(option) => option.name || ""}
+                  id="vendor"
+                  onChange={(event, value) => {
+                    value ?
+                      setVehicleData((prevData) => ({
+                        ...prevData,
+                        ["defaultVendor"]: value.objectId,
+                      }))
+                      : null
+                  }
+                  }
+                  fullWidth
+                  renderInput={(params) => (
+                    <CustomTextField {...params} className="techselect" name="vendor" placeholder="Seleccione el proveedor" variant="outlined"
+                    />
+                  )}
+                />
 
-              </Box>   
+              </Box>
 
               <Box className="muitech-confirm">
                 <Button
@@ -239,6 +239,11 @@ const SaveVehicle = () => {
             </svg>
 
             <Typography className='dialog-response' variant="body2" sx={{ mt: 1 }}>¿Estás seguro de crear el siguiente vehículo? </Typography>
+
+
+            {error ? <Box className="errorMessage" mb={3} mt={3}><Alert severity='error' >
+              <Typography variant="h6">{error.message}</Typography>
+            </Alert></Box> : ''}
 
           </Box>
 
