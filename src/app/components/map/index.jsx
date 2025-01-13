@@ -21,14 +21,6 @@ import { useSession } from 'next-auth/react';
 import { Popover, Typography, Button, Box, Grid, Avatar, InputAdornment, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import Image from 'next/image';
 
-
-const parseClient = new Parse.LiveQueryClient({
-  applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
-  serverURL: 'ws://3.137.134.27:8080/parse',
-  javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
-});
-parseClient.open();
-
 //Map's styling
 const defaultMapContainerStyle = {
   width: '100%',
@@ -85,11 +77,20 @@ const defaultMapOptions = {
 const MapComponent = () => {
 
   const { data: session } = useSession();
-  const [dataMarkers, setData] = React.useState(() => []);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [dataMarkers, setData] = useState(() => []); 
+  const [anchorEl, setAnchorEl] = useState(null);
   const [map, setMap] = useState()
-  const [infoMarker, setInfo] = React.useState(0);
+  const [infoMarker, setInfo] = useState(0);
   const [inputTitle, setInputTitle] = useState('');
+  
+  const parseClient = new Parse.LiveQueryClient({
+    applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
+    serverURL: 'ws://3.137.134.27:8080/parse',
+    javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
+  });
+  parseClient.open();
+  const query = new Parse.Query('Event');
+  const subscription = parseClient.subscribe(query);
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -101,7 +102,7 @@ const MapComponent = () => {
 
     if (rotr.length >= 1)
       return rotr.filter((t) =>
-        t.plateNumber.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()) || t.brand.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()),
+        t.plateNumber.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()) || t.driver.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()),
       );
 
     return rotr;
@@ -128,14 +129,14 @@ const MapComponent = () => {
   };
 
   const handleMapClick = (e, data) => {
-
-    setInfo(data);
+   
+    setInfo(data);    
     setActive(false)
     setInputTitle("");
 
     map.panTo({
-      lat: data.lat,
-      lng: data.lng,
+      lat: parseFloat(data.lat),
+      lng: parseFloat(data.lng)
     });
 
     map.setZoom(15);
@@ -146,70 +147,65 @@ const MapComponent = () => {
 
   };
 
+  
   useEffect(() => {
 
-    const fetchVehicles = async () => {
+    const initialVehicles = async () => {
+  
+        subscription.on('open', () => {
+          console.log('LiveQuery connection opened');        
+        });
 
-      try {
-        if (session) {
+        const token = session.accessToken;
+        const response = await getVehicles(token);         
 
-          const token = session.accessToken;
-          const response = await getVehicles(token);
+        setData([]);
+ 
+        {
+          response.result.map(async (key) => {
 
+            {key.lastEventPosition ?
 
-          {
-            response.result.map((key) => {
               setData([
+                ...dataMarkers,
                 {
-                  id: key.objectId,
-                  lat: key.lastEventPosition.position.latitude,
-                  lng: key.lastEventPosition.position.longitude,
-                  ignition: key.lastEventPosition.position.attributes.ignition,
-                  plateNumber: key.plateNumber,
-                  brand: key.brand,
+                      id: key.objectId,
+                      lat: key.lastEventPosition.position.latitude,
+                      lng: key.lastEventPosition.position.longitude,
+                      ignition: key.lastEventPosition.position.attributes.ignition,
+                      plateNumber: key.plateNumber,
+                      driver: key.route.driver.name,
                 },
               ])
 
-            })
-          }
+            : ""}
+                
+          })
 
-        } else {
-          alert('No se ha encontrado una sesión activa.');
-        }
-      } catch (error) {
+        } 
 
-      } finally {
-        //setLoading(false);
-      }
     };
 
-    fetchVehicles();
+    initialVehicles();
+    return () => {};
+
+  }, []);
 
 
-    const query = new Parse.Query('Event');
-    const subscription = parseClient.subscribe(query);
 
-    subscription.on('open', () => {
-      console.log('LiveQuery connection opened');
-    });
+  useEffect(() => {
+ 
 
-    subscription.on('create', (index) => {
+    subscription.on('create', async (index) => { 
 
+      console.log(dataMarkers)
 
-      //console.log(index.attributes);
-
-      setData([
-        {
-          id: index.id,
-          lat: index.attributes.resultObject.position.latitude,
+      setData(dataMarkers.map(user =>
+        user.id === index.attributes.vehicle.id ? { ...user,  lat: index.attributes.resultObject.position.latitude,
           lng: index.attributes.resultObject.position.longitude,
-          ignition: index.attributes.resultObject.position.attributes.ignition,
-          plateNumber: index.attributes.resultObject.device.model,
-          brand: index.attributes.resultObject.device.contact,
-        },
-      ]);
-
-
+          ignition: index.attributes.resultObject.position.attributes.ignition} : user
+      )); 
+      
       setAnchorEl(null);
 
     });
@@ -222,9 +218,10 @@ const MapComponent = () => {
       subscription.unsubscribe();
       parseClient.close();
     };
-  }, []);
 
-  return (
+}, [dataMarkers]);
+
+return (
 
     <>
 
@@ -331,8 +328,8 @@ const MapComponent = () => {
                           key={menu.plateNumber}
                         >
                           <ListItemText
-                            primary={menu.plateNumber}
-                            secondary={menu?.brand}
+                            primary={menu.driver}
+                            secondary={menu?.plateNumber}
                           />
                         </ListItemButton>
 
@@ -363,7 +360,7 @@ const MapComponent = () => {
 
       <div className="w-full">
 
-        <GoogleMap
+        <GoogleMap  
           mapId={'bf51a910020fa25a'}
           onLoad={(map) => setMap(map)}
           mapContainerStyle={defaultMapContainerStyle}
@@ -372,44 +369,46 @@ const MapComponent = () => {
           options={defaultMapOptions}
         >
 
-          {dataMarkers.map((dataMarker) => {
 
-            return (
+            {dataMarkers.map((dataMarker,index)=>
 
-              <>
+            {
+              return ( <>
+                              
+                  {dataMarker.ignition ?
 
-                {dataMarker.ignition ?
+                      <Marker
+                        key={dataMarker.id}
+                        position={{
+                          lat: parseFloat(dataMarker.lat),
+                          lng: parseFloat(dataMarker.lng),
+                        }}
+                        onClick={(e) => handleMapClick(e, dataMarker)}
+                        options={{ icon: '/images/svgs/vehicleOn.svg' }}
+                      />
 
-                  <Marker
-                    key={dataMarker.id}
-                    position={{
-                      lat: parseFloat(dataMarker.lat),
-                      lng: parseFloat(dataMarker.lng),
-                    }}
-                    onClick={(e) => handleMapClick(e, dataMarker)}
-                    options={{ icon: '/images/svgs/vehicleOn.svg' }}
-                  />
+                      :
 
-                  :
-
-                  <Marker
-                    key={dataMarker.id}
-                    position={{
-                      lat: parseFloat(dataMarker.lat),
-                      lng: parseFloat(dataMarker.lng),
-                    }}
-                    onClick={(e) => handleMapClick(e, dataMarker)}
-                    options={{ icon: '/images/svgs/vehicleOff.svg' }}
-                  />
+                      <Marker
+                        key={dataMarker.id}
+                        position={{
+                          lat: parseFloat(dataMarker.lat),
+                          lng: parseFloat(dataMarker.lng),
+                        }}
+                        onClick={(e) => handleMapClick(e, dataMarker)}
+                        options={{ icon: '/images/svgs/vehicleOff.svg' }}
+                      />
 
 
-                }
+                    }
 
-              </>
+ 
+ 
+                </>)
+            }
 
-            );
 
-          })}
+            )}
 
           
 
@@ -455,7 +454,7 @@ const MapComponent = () => {
                           <Grid item lg={5} md={5} sm={5} >
 
                             <Box>
-                              <Typography variant="h6">{infoMarker.brand}</Typography>
+                              <Typography variant="h6">{infoMarker.driver}</Typography>
                               <Typography variant="p">{infoMarker.plateNumber}</Typography>
                             </Box>
 
@@ -508,7 +507,8 @@ const MapComponent = () => {
 
     </>
 
-  );
+);
+
 };
 
 export { MapComponent };
