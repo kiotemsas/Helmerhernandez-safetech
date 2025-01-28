@@ -1,6 +1,13 @@
+:root {
+    --gradient-safetech: linear-gradient(93.77deg, #593A97 3.09%, #E83E33 96.91%);
+    --color-a-safetech: #E83E33;
+    --color-b-safetech: #5B3089;
+}
+
+
 #techboxlogin{
-    background-color: #CACACA;
-    padding: 0 80px;
+    background: #1F1D1D;
+    padding: 0 11em;
 }
 
 .page-wrapper{
@@ -29,15 +36,25 @@
     -moz-border-radius-topright: 6px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    background-color: #ffffff;
+    background-color: transparent;
     border: 0;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #49454F;
 }
 
 #techboxlogin .muitech input {
-    padding: 36px 16px 8px;    
-    color: #000;
+    padding: 36px 16px 12px;    
+    color: #fff;
     z-index: 2;
+}
+
+
+#techboxlogin .muitech input:-webkit-autofill{
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+#techboxlogin .muitech  input::placeholder {  
+    color: #CACACA; 
 }
 
 #techboxlogin .muitech label{
@@ -45,7 +62,7 @@
     top: 6px;
     padding: 0 16px 0;
     margin: 0;
-    color: #000;
+    color: #fff;
     z-index: 5;
 }
 
@@ -82,15 +99,24 @@
 }
 
 
-
-#techboxlogin .muitech button{
-    width: 46%;
+#techboxlogin .muitech .captcha {
+    display: block;
+    width: max-content;
     margin: 0 auto;
     padding: 12px 0;
     margin: 0 auto;
     text-align: center;
     border-radius: 60px;
-    background: linear-gradient(94.07deg, #00BBC9 0%, #00747C 100%);
+}
+
+#techboxlogin .muitech button{ 
+    width: 12em;
+    margin: 0 auto;
+    padding: 12px 0;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 60px;
+    background: var(--gradient-safetech);
     color: #fff;
     text-transform: uppercase;
     font-weight: bold;
@@ -100,8 +126,10 @@
 }
 
 #techboxlogin .muitech .passtech{
-    color: #424242;
-    font-size: 1.1rem;
+    color: #CACACA;
+    font-size: 1.2rem;
+    margin-bottom: 3em;
+    display: block;
 }
 
 
@@ -129,7 +157,7 @@
 
 
 .accordionRootModal .accordionModal{
-    padding: 0 12px 0 0;
+    padding: 10px 12px;
 }
 
 
@@ -211,7 +239,7 @@
 
 
 .bubble-link:hover{
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    background: var(--gradient-safetech);
 }
 
 .bubble-link:hover h6{
@@ -246,12 +274,29 @@
 }
 
 
+.circle_avatar{
+    height: 50px;
+    width: 50px;
+    background: var(--gradient-safetech);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle_avatar{
+    color: #fff;
+}
+
 .plus-menu button h6 {
     margin-left: 15px;
 }
 
+
 .plus-menu:hover{
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    background: var(--gradient-safetech);
     border-radius: unset;
 }
 
@@ -327,11 +372,21 @@
     margin: 50vh 130px 0;
     transform: translateY(-50%);
     background-color: #cacaca;
-    -webkit-box-shadow: 0px 5px 0px 0px #00BBC9;
-    -moz-box-shadow: 0px 5px 0px 0px #00BBC9;
-    box-shadow: 0px 5px 0px 0px #00BBC9;
+    -webkit-box-shadow: 0px 5px 0px 0px var(--color-b-safetech);
+    -moz-box-shadow: 0px 5px 0px 0px var(--color-b-safetech);
+    box-shadow: 0px 5px 0px 0px var(--color-b-safetech);
     padding: 20px 60px;
     border-radius: 7px;
+}
+
+.backgroundLogin{    
+    background-image: url("/images/backgrounds/background.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.dialog-form.bigger .MuiDialog-paper { 
+    max-width: 812px; 
 }
 
 
@@ -436,7 +491,7 @@
     margin: 0 auto;
     text-align: center;
     border-radius: 60px;
-    background: linear-gradient(94.07deg, #00BBC9 0%, #00747C 100%);
+    background: var(--gradient-safetech);
     color: #fff;
     text-transform: uppercase;
     font-weight: bold;
@@ -451,7 +506,7 @@
 
 .dialog-form .muitech-confirm a:first-child, .dialog-form .muitech-confirm button.MuiButton-alone{
     background: #fff;
-    border: 2px solid #00BBC9;
+    border: 2px solid var(--color-b-safetech);
     color: #202022;
 }
 
@@ -556,6 +611,9 @@ button.btn-techmenu {
 .popoverCard .popcard .MuiGrid-root {
     display: flex;
     align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -645,7 +703,7 @@ button.btn-techmenu {
     margin: 0 10px;
     text-align: center;
     border-radius: 60px;
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    background: var(--gradient-safetech);
     color: #fff;
     text-transform: uppercase;
     font-weight: bold;
@@ -657,7 +715,7 @@ button.btn-techmenu {
 
 .card-flex  .group-btn-card button.lineal {
     background: #fff;
-    border: 2px solid #00bbc9;
+    border: 2px solid var(--color-b-safetech);
     color: #202022;
     cursor: pointer;
 }
@@ -689,12 +747,29 @@ button.btn-techmenu {
     cursor: pointer;
 }
 
+.btn-transparent{
+    list-style: none;
+    margin: 0; 
+    position: relative;
+    border-radius: unset;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    border: unset;
+    background: unset;
+    cursor: pointer;
+}
+
+.btn-transparent svg{ 
+    margin-top: -5px;  
+}
+
 .btn-menu.wipe{
     display: block;
 }
 
 .btn-menu:hover{
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    background: var(--gradient-safetech);
 }
 
 .btn-menu:hover h6{
@@ -851,12 +926,12 @@ button.btn-techmenu {
 
 .roundButton.info{
     color: #fff;
-    background: linear-gradient(94.07deg, #00bbc9 0%, #00747c 100%);
+    background: var(--gradient-safetech);
 }
 
 
 .roundButton.error{
-    background: linear-gradient(94.07deg, #fa896b 0%, #fa896b 100%);
+    background: var(--color-b-safetech);
     color: #fff;
 }
 

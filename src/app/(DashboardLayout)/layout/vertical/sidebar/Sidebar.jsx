@@ -17,6 +17,7 @@ import Vendor from '@/app/components/crud-modal/vendor';
 import Drivers from '@/app/components/crud-modal/drivers';
 import Vehicles from '@/app/components/crud-modal/vehicles';
 import Routes from '@/app/components/crud-modal/routes';
+import History from '@/app/components/crud-modal/history';
 
 const Sidebar = () => {
   const lgUp = useMediaQuery((theme) => theme.breakpoints.down('lg'))
@@ -97,6 +98,8 @@ const Sidebar = () => {
                  <Drivers/>
                  <Vendor/>                 
                  <Routes/>
+
+                 <History/>
 
               </Scrollbar>
               <Profile />

@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
+
+
 import CustomOutlinedInput from '@/app/components/forms/theme-elements/CustomOutlinedInput';
 
 import List from '@mui/material/List';
@@ -19,7 +21,9 @@ import { Stack } from '@mui/system';
 import { getVehicles } from '../../../utils/parse';
 import { useSession } from 'next-auth/react';
 import { Popover, Typography, Button, Box, Grid, Avatar, InputAdornment, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import Image from 'next/image';
+import Image from 'next/image'; 
+
+
 
 //Map's styling
 const defaultMapContainerStyle = {
@@ -82,7 +86,10 @@ const MapComponent = () => {
   const [map, setMap] = useState()
   const [infoMarker, setInfo] = useState(0);
   const [inputTitle, setInputTitle] = useState('');
-  
+    
+
+
+
   const parseClient = new Parse.LiveQueryClient({
     applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
     serverURL: 'ws://3.137.134.27:8080/parse',
@@ -128,8 +135,24 @@ const MapComponent = () => {
     map.setZoom(14);
   };
 
+  const handleSchedule = () => {
+    setAnchorEl(null);
+    alert("Call to Action")
+  };
+
+  
+
   const handleMapClick = (e, data) => {
-   
+
+    const date = new Date(data.lastUpdate); 
+    let parts_date = date.toLocaleString('en-US').split(",");
+    let firstWord = data.driver.substring(0, 1)
+
+
+    data.firstWord = firstWord;   
+    data.date = parts_date[0];
+    data.time = parts_date[1];
+
     setInfo(data);    
     setActive(false)
     setInputTitle("");
@@ -159,6 +182,7 @@ const MapComponent = () => {
         const token = session.accessToken;
         const response = await getVehicles(token);         
 
+        console.log(response)
         setData([]);
  
         {
@@ -175,6 +199,8 @@ const MapComponent = () => {
                       ignition: key.lastEventPosition.position.attributes.ignition,
                       plateNumber: key.plateNumber,
                       driver: key.route.driver.name,
+                      lastUpdate: key.lastEventPosition.device.lastUpdate,
+
                 },
               ])
 
@@ -198,7 +224,7 @@ const MapComponent = () => {
 
     subscription.on('create', async (index) => { 
 
-      console.log(dataMarkers)
+      console.log(index)
 
       setData(dataMarkers.map(user =>
         user.id === index.attributes.vehicle.id ? { ...user,  lat: index.attributes.resultObject.position.latitude,
@@ -445,15 +471,17 @@ return (
 
                         <Grid spacing={1} container>
 
-                          <Grid item lg={3} md={3} sm={3} >
+                          <Grid item lg={2} md={2} sm={2} >
 
-                            <Avatar className="avatar" src="/images/profile/user-1.jpg" alt="" />
+                            <Box className="circle_avatar">
+                              <Typography variant="h4">{infoMarker.firstWord}</Typography> 
+                            </Box>
 
                           </Grid>
 
-                          <Grid item lg={5} md={5} sm={5} >
+                          <Grid item lg={4} md={4} sm={4} >
 
-                            <Box>
+                            <Box className="">
                               <Typography variant="h6">{infoMarker.driver}</Typography>
                               <Typography variant="p">{infoMarker.plateNumber}</Typography>
                             </Box>
@@ -462,7 +490,23 @@ return (
 
                           <Grid item lg={4} md={4} sm={4} >
 
-                            <Image className="vehicle-img" src={"/images/profile/map.png"} alt="img" width={100} height={70} />
+                            <Box>
+                              <Typography variant="h6">{infoMarker.date}</Typography>
+                              <Typography variant="p">{infoMarker.time}</Typography>
+                            </Box>
+
+                          </Grid>
+
+                          <Grid item lg={2} md={2} sm={2} >
+
+                             <Button className='btn-transparent' color="primary" fullWidth onClick={handleSchedule}>
+
+                                <svg width="22" height="22" viewBox="0 0 34 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M30.2222 3.8H24.5556V0H20.7778V3.8H13.2222V0H9.44444V3.8H3.77778C1.69433 3.8 0 5.5043 0 7.6L0 31C0 33.0957 1.69433 35 3.77778 35H30.2222C32.3057 35 34 33.0957 34 31V7.6C34 5.5043 32.3057 3.8 30.2222 3.8ZM3.77778 31V9.5H30.2222L30.226 31H3.77778Z" fill="#202022"/>
+                                  <path d="M7.55556 13.3H26.4444V17.1H7.55556V13.3ZM7.55556 20.9H17V24.7H7.55556V20.9Z" fill="#202022"/>
+                                </svg>
+
+                              </Button>
 
                           </Grid>
 

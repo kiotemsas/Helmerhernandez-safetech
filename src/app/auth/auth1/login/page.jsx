@@ -41,8 +41,8 @@ export default function Login() {
                 }}
               >
                 <Image
-                  src={"/images/logos/logo.webp"}
-                  alt="bg" width={300} height={85}
+                  src={"/images/logos/safetrack_logo.webp"}
+                  alt="bg" width={300} height={100}
                   style={{
                     width: '100%',
                     maxWidth: '300px',
@@ -83,7 +83,7 @@ export default function Login() {
             position: 'relative',
             '&:before': {
               content: '""',
-              background: 'radial-gradient(#d2f1df, #d3d7fa, #bad8f4)',
+              background: 'radial-gradient(#693b8c, rgb(233 30 99 / 54%),rgba(104, 58, 183, 0.5));',
               backgroundSize: '400% 400%',
               animation: 'gradient 15s ease infinite',
               position: 'absolute',
@@ -92,6 +92,7 @@ export default function Login() {
               opacity: '0.3',
             },
           }}
+          className='backgroundLogin'
         >
           <Box position="relative">
             
@@ -106,15 +107,7 @@ export default function Login() {
                 },
               }}
             >
-              <Image
-                src={"/images/backgrounds/login-bg.svg"}
-                alt="bg" width={800} height={500}
-                style={{
-                  width: '100%',
-                  maxWidth: '800px',
-                  maxHeight: '500px',
-                }}
-              />
+              
             </Box>
           </Box>
         </Grid>
