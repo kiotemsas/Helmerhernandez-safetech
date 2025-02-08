@@ -53,7 +53,6 @@
     "react-redux": "9.1.0",
     "react-slick": "^0.29.0",
     "react-spring": "^9.7.3",
-    "@tanstack/react-table": "^8.20.1",
     "redux-persist": "^6.0.0",
     "sharp": "^0.32.6",
     "simplebar-react": "^3.2.4",
