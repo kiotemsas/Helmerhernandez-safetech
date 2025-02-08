@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react"
 import { redirect } from 'next/navigation'
 import { MapProvider } from "@/store/providers/map-provider";
 import { MapComponent } from "@/app/components/map";
+
 const MainWrapper = styled("div")(() => ({
   display: "flex",
   minHeight: "100vh",
@@ -30,6 +31,7 @@ const PageWrapper = styled("div")(() => ({
 }));
 
 export default function RootLayout({ children }) {
+  
   const customizer = useSelector((state) => state.customizer);
   const theme = useTheme();
   const { data: session } = useSession()
@@ -63,12 +65,12 @@ export default function RootLayout({ children }) {
             }),
           }}
         >
+ 
 
-        <MapProvider>
-          <MapComponent/>
-        </MapProvider>
-
-    
+<MapProvider>
+         <MapComponent/>
+        
+         </MapProvider>
         
           <Container
             sx={{

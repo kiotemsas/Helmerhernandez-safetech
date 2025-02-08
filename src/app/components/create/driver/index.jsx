@@ -61,6 +61,13 @@ const CreateDriver = () => {
   });
 
 
+  const estados = [
+    {name: "Activado", response: "true"},
+    {name: "Desactivado", response: "false",}, 
+  ];
+
+
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [idUser, setIdUser] = useState('');
@@ -318,14 +325,28 @@ const CreateDriver = () => {
 
               <CustomFormLabel className="nametech" htmlFor="status">ESTADO</CustomFormLabel>
 
-              <CustomTextField id="status" name="status" placeholder="ESTADO" variant="outlined" fullWidth
-                required={true}
-                onChange={handleChange}
-                onKeyDown={(e) => {
-                  e.stopPropagation();
-                }} />
+              <Autocomplete
 
-            </Box>
+                  options={estados}
+                  getOptionLabel={(option) => option.name || ""}
+                  id="status"
+                  onChange={(event, value) => {
+                    value ?
+                      setUserData((prevData) => ({
+                        ...prevData,
+                        ["status"]: value.response,
+                      }))
+                      : null
+                  }
+                  }
+                  fullWidth
+                  renderInput={(params) => (
+                    <CustomTextField {...params} className="techselect" name="status" placeholder="Seleccione el estado" variant="outlined"
+                    />
+                  )}
+                />
+
+            </Box>  
 
             <Box className="muitech-confirm">
               <Button
@@ -497,7 +518,9 @@ const CreateDriver = () => {
 
                     </Box>
 
-                  </> : ''} </>)}
+                  </> 
+                  
+                  : ''} </>)}
 
           </Box>
 

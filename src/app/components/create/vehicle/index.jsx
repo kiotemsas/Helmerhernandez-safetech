@@ -55,6 +55,7 @@ const SaveVehicle = () => {
 
   const [vendors, setvendors] = React.useState(() => []);
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVehicleData((prevData) => ({
@@ -69,8 +70,13 @@ const SaveVehicle = () => {
     { label: 'MODELO', name: 'model' },
     { label: 'AÑO', name: 'year' },
     { label: 'SERIAL', name: 'serial' },
-    { label: 'ESTADO', name: 'status' },
     { label: 'MARCA', name: 'brand' },
+  ];
+
+
+  const estados = [
+    {name: "Activado", response: "true"},
+    {name: "Desactivado", response: "false",}, 
   ];
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -171,7 +177,36 @@ const SaveVehicle = () => {
                 </Box>
               ))}
 
-              <Box className="muitech">
+
+
+            <Box className="muitech">
+
+              <CustomFormLabel className="nametech" htmlFor="status">ESTADO</CustomFormLabel>
+
+              <Autocomplete
+
+                  options={estados}
+                  getOptionLabel={(option) => option.name || ""}
+                  id="status"
+                  onChange={(event, value) => {
+                    value ?
+                      setVehicleData((prevData) => ({
+                        ...prevData,
+                        ["status"]: value.response,
+                      }))
+                      : null
+                  }
+                  }
+                  fullWidth
+                  renderInput={(params) => (
+                    <CustomTextField {...params} className="techselect" name="status" placeholder="Seleccione el estado" variant="outlined"
+                    />
+                  )}
+                />
+
+            </Box>  
+
+            <Box className="muitech">
 
                 <CustomFormLabel className="nametech" htmlFor="vendor">PROVEEDOR</CustomFormLabel>
 
@@ -253,10 +288,6 @@ const SaveVehicle = () => {
         break;
     }
   };
-
-
-
-
 
   return (
     <>

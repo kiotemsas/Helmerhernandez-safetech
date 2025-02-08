@@ -1,22 +1,23 @@
-<svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_4_3)">
-<path d="M30.7824 58.6299C45.9702 58.6299 58.2824 46.3177 58.2824 31.1299C58.2824 15.9421 45.9702 3.62988 30.7824 3.62988C15.5946 3.62988 3.28239 15.9421 3.28239 31.1299C3.28239 46.3177 15.5946 58.6299 30.7824 58.6299Z" fill="url(#paint0_linear_4_3)" stroke="#D62109" stroke-width="1.11111"/>
-<path d="M41.8895 19.8938C41.5561 18.9454 40.6226 18.2703 39.5224 18.2703H21.1852C20.0849 18.2703 19.1681 18.9454 18.818 19.8938L15.3506 29.5226V42.3824C15.3506 43.2665 16.1008 43.9899 17.0177 43.9899H18.6847C19.6016 43.9899 20.3517 43.2665 20.3517 42.3824V40.7749H40.3558V42.3824C40.3558 43.2665 41.1061 43.9899 42.0229 43.9899H43.6899C44.6067 43.9899 45.3569 43.2665 45.3569 42.3824V29.5226L41.8895 19.8938ZM21.1852 35.9525C19.8016 35.9525 18.6847 34.8755 18.6847 33.5413C18.6847 32.2071 19.8016 31.1301 21.1852 31.1301C22.5689 31.1301 23.6857 32.2071 23.6857 33.5413C23.6857 34.8755 22.5689 35.9525 21.1852 35.9525ZM39.5224 35.9525C38.1388 35.9525 37.0218 34.8755 37.0218 33.5413C37.0218 32.2071 38.1388 31.1301 39.5224 31.1301C40.906 31.1301 42.0229 32.2071 42.0229 33.5413C42.0229 34.8755 40.906 35.9525 39.5224 35.9525ZM18.6847 27.9151L21.1852 20.6814H39.5224L42.0229 27.9151H18.6847Z" fill="white"/>
-</g>
-<defs>
-<filter id="filter0_d_4_3" x="0.504615" y="0.852118" width="60.5556" height="60.5555" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="1.11111"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.839216 0 0 0 0 0.129412 0 0 0 0 0.0352941 0 0 0 1 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_4_3"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_4_3" result="shape"/>
-</filter>
-<linearGradient id="paint0_linear_4_3" x1="2.49075" y1="2.83826" x2="59.074" y2="59.4215" gradientUnits="userSpaceOnUse">
-<stop stop-color="#D62109"/>
-<stop offset="1" stop-color="#701105"/>
-</linearGradient>
-</defs>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 55.6 55.4">
+  <!-- Generator: Adobe Illustrator 29.0.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 192)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+
+      .st1 {
+        fill: url(#Degradado_sin_nombre);
+        stroke: #d62109;
+        stroke-width: 1.1px;
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre" data-name="Degradado sin nombre" x1=".1" y1="57.3" x2="55.5" y2="1.8" gradientTransform="translate(0 57.4) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d62109"/>
+      <stop offset="1" stop-color="#701105"/>
+    </linearGradient>
+  </defs>
+  <path class="st1" d="M27.8,54.7c14.9,0,26.9-12.1,26.9-26.9S42.7.9,27.8.9.9,12.9.9,27.8s12.1,26.9,26.9,26.9Z"/>
+  <path class="st0" d="M38.7,16.8c-.3-.9-1.2-1.6-2.3-1.6h-18c-1.1,0-2,.7-2.3,1.6l-3.4,9.4v12.6c0,.9.7,1.6,1.6,1.6h1.6c.9,0,1.6-.7,1.6-1.6v-1.6h19.6v1.6c0,.9.7,1.6,1.6,1.6h1.6c.9,0,1.6-.7,1.6-1.6v-12.6l-3.4-9.4ZM18.4,32.5c-1.4,0-2.4-1.1-2.4-2.4s1.1-2.4,2.4-2.4,2.4,1.1,2.4,2.4-1.1,2.4-2.4,2.4ZM36.4,32.5c-1.4,0-2.4-1.1-2.4-2.4s1.1-2.4,2.4-2.4,2.4,1.1,2.4,2.4-1.1,2.4-2.4,2.4ZM16,24.7l2.4-7.1h18l2.4,7.1H16Z"/>
 </svg>

@@ -83,7 +83,7 @@ export default function Login() {
             position: 'relative',
             '&:before': {
               content: '""',
-              background: 'radial-gradient(#693b8c, rgb(233 30 99 / 54%),rgba(104, 58, 183, 0.5));',
+              background: 'radial-gradient(#b9a6c8, rgb(233 30 99), rgb(104 58 183))',
               backgroundSize: '400% 400%',
               animation: 'gradient 15s ease infinite',
               position: 'absolute',

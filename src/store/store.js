@@ -5,7 +5,7 @@ import CustomizerReducer from './customizer/CustomizerSlice';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: storage,
 };
 export const store = configureStore({
   reducer: {

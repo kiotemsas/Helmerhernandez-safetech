@@ -172,6 +172,19 @@ export const getUser = async (token) => {
 
 
 
+//ROUTES
+
+
+export const getRouteByVehicle = async (vehicleId, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getRoutesByVehicle',
+    'POST',
+    { vehicle: vehicleId },
+    token
+  );
+};
+
+
 
 
 

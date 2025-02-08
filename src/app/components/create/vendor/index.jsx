@@ -16,6 +16,9 @@ import Slide from '@mui/material/Slide';
 import { useSelector } from 'react-redux'; 
 import Link from 'next/link'; 
 
+
+import Autocomplete from '@mui/material/Autocomplete';
+
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import { Stack } from '@mui/system';
@@ -61,8 +64,13 @@ const SaveVendor = () => {
     { label: 'DIRECCIÓN', name: 'address' },
     { label: 'CIUDAD', name: 'city' },
     { label: 'PAÍS', name: 'country' },
-    { label: 'ESTADO', name: 'status' },
     { label: 'TELÉFONO', name: 'phone' },
+  ];
+
+
+  const estados = [
+    {name: "Activado", response: "true"},
+    {name: "Desactivado", response: "false",}, 
   ];
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -142,6 +150,33 @@ const SaveVendor = () => {
                   />
                 </Box>
               ))}
+
+              <Box className="muitech">
+
+                <CustomFormLabel className="nametech" htmlFor="status">ESTADO</CustomFormLabel>
+
+                <Autocomplete
+
+                  options={estados}
+                  getOptionLabel={(option) => option.name || ""}
+                  id="status"
+                  onChange={(event, value) => {
+                      value ?
+                      setVendorData((prevData) => ({
+                        ...prevData,
+                        ["status"]: value.response,
+                      }))
+                    : null
+                    }
+                  }
+                  fullWidth
+                  renderInput={(params) => (
+                  <CustomTextField {...params} className="techselect" name="status" placeholder="Seleccione el estado" variant="outlined"/>
+                  )}
+                />
+
+              </Box>  
+
               <Box className="muitech-confirm">
                 <Button
                   color="secondary"
