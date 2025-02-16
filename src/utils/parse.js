@@ -175,12 +175,17 @@ export const getUser = async (token) => {
 //ROUTES
 
 
-export const getRouteByVehicle = async (vehicleId, token) => {
+export const getRouteByVehicle = async (Id, status, type, startDate, endDate, token) => {
   return await fetchFromParse(
-    'http://3.137.134.27:8080/parse/functions/getRoutesByVehicle',
+    'http://3.137.134.27:8080/parse/functions/getVehicleTrackingData',
     'POST',
-    { vehicle: vehicleId },
-    token
+    { 
+      id : Id,
+      status: status,
+      type : type,
+      startDate : startDate,
+      endDate : endDate },
+      token
   );
 };
 

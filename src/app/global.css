@@ -440,6 +440,21 @@
 
 }
 
+.dialog-form.wipe  .MuiDialog-container {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-form.wipe .MuiDialog-paper{
+    height: 85vh;
+    transform: unset;
+    max-width: 100vw;
+    margin: 0;
+    width: 60vw;
+}
+
 
 .dialog-form .dialog-form-content .dialog-form-box svg{
     margin: 0 0 1.5em;
@@ -511,6 +526,10 @@
     flex-direction: column-reverse;
     flex-wrap: wrap;
     align-content: flex-end;
+}
+
+.dialog-form .muitech-confirm.np{
+    padding: 0;
 }
 
 .dialog-form .muitech-confirm.np.flex-right{
@@ -979,9 +998,13 @@ button.btn-techmenu {
     opacity: 1;
 }
 
+.map-card{
+    margin-bottom: 20px;
+}
+
 
 .roundButton{
-
+    min-width: 44px;
     padding: 10px;
     margin: 0 4px;
     text-align: center;
