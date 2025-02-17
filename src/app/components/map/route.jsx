@@ -99,15 +99,10 @@ const MapRoute = ({ id,plateNumber}) => {
   useEffect(() => {  
 
       const initialVehicles = async () => {
- 
-
-        const dateFI = valueFI.getFullYear()+"-"+(valueFI.getMonth()+1)+"-"+valueFI.getDate()+" "+valueFI.toLocaleTimeString(); 
-
-        const dateFF = valueFF.getFullYear()+"-"+(valueFF.getMonth()+1)+"-"+valueFF.getDate()+" "+valueFF.toLocaleTimeString();
   
              
         const token = session.accessToken;
-        const response = await getRouteByVehicle( id, "active", "position", dateFI,  dateFF, token);  
+        const response = await getRouteByVehicle( id, "active", "position", valueFI.toISOString(),  valueFF.toISOString(), token); 
         
         setDataTrack(response.result.trackingHistory.map((key) => (
             { 
