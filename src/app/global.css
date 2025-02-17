@@ -1000,8 +1000,9 @@ button.btn-techmenu {
 
 .map-card{
     margin-bottom: 20px;
+    height: 75%;
 }
-
+ 
 
 .roundButton{
     min-width: 44px;
