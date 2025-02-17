@@ -1,36 +1,27 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, Marker, Polyline} from '@react-google-maps/api';
-
-
-import CustomOutlinedInput from '@/app/components/forms/theme-elements/CustomOutlinedInput';
-
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-
-import { IconSearch } from '@tabler/icons-react'; 
-
-import { FormControlLabel } from '@mui/material';
-import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox';
-import { MapRoute } from "@/app/components/map/route";
-
-import Parse from '../../../utils/parse';
-import { Stack } from '@mui/system';
-import { getVehicles } from '../../../utils/parse';
-import { useSession } from 'next-auth/react';
-import { Dialog,  
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions, Popover, Typography, Button, Box, Grid, Avatar, InputAdornment, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import Image from 'next/image'; 
+import React, { useEffect, useState } from 'react'; 
+import { GoogleMap, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { useSession } from 'next-auth/react'; 
+import Link from 'next/link';
  
+import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
+import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
+import { DateTimePicker, DatePicker, TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+import ReplayRounded from '@mui/icons-material/ReplayRounded';
+import Close from '@mui/icons-material/Close';
+import CircularProgress from "@mui/material/CircularProgress";
+
+import { Typography, Stepper, Button,  Box, Grid, } from '@mui/material';
+
+import { getRouteByVehicle } from '../../../utils/parse';
+
 //Map's styling
 const defaultMapContainerStyle = {
   width: '100%',
-  height: '100vh',
+  height: '100%',
 };
 
 //K2's coordinates
@@ -80,489 +71,464 @@ const defaultMapOptions = {
   ],
 };
 
-const MapComponent = () => { 
-
+const MapRoute = ({ id,plateNumber}) => {
+ 
   const { data: session } = useSession();
-  const [dataMarkers, setData] = useState(() => []); 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [map, setMap] = useState()
-  const [infoMarker, setInfo] = useState(0);
-  const [inputTitle, setInputTitle] = useState('');     
+  const [map, setMapG] = useState()
 
-  const [openMainModal, setOpenMainModal] = React.useState(false);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const isStepOptional = (step) => step === 1;
+  const steps = ['Create', 'Confirm'];
+
+  const [valueFI, setValueFI] = React.useState(new Date("2025-02-09 00:00:00"));
+  const [valueFF, setValueFF] = React.useState(new Date("2025-02-10 00:00:00"));  
   
+  const [directions, setDirections] = useState(null); 
+  const [travelTime, setTravelTime] = React.useState(null);
+  let count = React.useRef(0);
+  const [openExport, setOpenExport] = React.useState(false); 
 
-  const handleClickOpenMainModal = () => {
-    setOpenMainModal(true);
-    setAnchorEl(null);
-    map.setZoom(14);
 
-  };
+  const [dataTrack, setDataTrack] = useState([]); 
+  const [waypoints, setWayPoints] = useState([]); 
 
-  const handleCloseMainModal = () => {
-    setOpenMainModal(false);
-  }; 
+  const [origen, setOrigen] = React.useState([]);
+  const [destination, setDestination] = React.useState([]);  
 
-  const parseClient = new Parse.LiveQueryClient({
-    applicationId: 'NDIFx8hdu3ZLZbB6tUq3au06HmqrhuKkEZ72EVwR',
-    serverURL: 'ws://3.137.134.27:8080/parse',
-    javascriptKey: '1MoUVm7jZKt9RR1t1THGN64LQOI7GUu5gvTnQlwZ',
-  });
+  
+  useEffect(() => {  
 
-  parseClient.open();
-  const query = new Parse.Query('Event');
-  const subscription = parseClient.subscribe(query);
+      const initialVehicles = async () => {
+       
+        const token = session.accessToken;
+        const response = await getRouteByVehicle( id, "active", "position", valueFI.toISOString(),  valueFF.toISOString(), token);  
+        
+        setDataTrack(response.result.trackingHistory.map((key) => (
+            { 
+              location: { lat: key.position.latitude, lng: key.position.longitude },
+              stopover: true,
+              device: key.device.name,
+              contact: key.device.contact,
+              lastupdate: key.device.lastUpdate,
+            }
+        ))); 
+        
+        setDestination({ lat: response.result.trackingHistory[0].position.latitude, lng: response.result.trackingHistory[0].position.longitude })
+        setOrigen({ lat: response.result.trackingHistory[response.result.trackingHistory.length-1].position.latitude, lng: response.result.trackingHistory[response.result.trackingHistory.length-1].position.longitude })
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-  const [active, setActive] = useState(false)
+      };
 
-  const [search, setSerach] = useState('');
+      initialVehicles();
+      
+            
+      return () => {};
 
-  const filterRoutes = (rotr, cSearch) => {
+  }, [!dataTrack]);
 
-    if (rotr.length >= 1)
-      return rotr.filter((t) =>
-        t.plateNumber.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()) || t.driver.toLocaleLowerCase().includes(cSearch.toLocaleLowerCase()),
-      );
 
-    return rotr;
-  };
-
-  const searchData = filterRoutes(dataMarkers, search);
-
-  const onChange = (e) => {
-
-    setInputTitle(e.target.value);
-    setSerach(e.target.value)
-    {
-      e.target.value === '' && search !== null ?
-        setActive(false)
-      :
-        setActive(true)
+ 
+  const directionsCallback = (response) => {
+  
+    if (destination !== null && origen !== null && response !== null && count.current < 1) {
+      if (response.status === 'OK') { 
+        count.current += 1;
+        console.log(response)
+        setDirections(response);
+        const route = response.routes[0].legs[0];
+        setTravelTime(route.duration.text);
+        setWayPoints(response.routes[0].overview_path)
+      } else {
+        count.current = 0;
+        console.error('Directions request failed due to ' + response.status);
+      }
     }
 
+    
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-    map.setZoom(14);
-  };
-  
 
-  const handleMapClick = (e, data) => {
-
-    const date = new Date(data.lastUpdate); 
-    let parts_date = date.toLocaleString('en-US').split(",");
-    let firstWord = data.driver.substring(0, 1)
-
-    data.firstWord = firstWord;   
-    data.date = parts_date[0];
-    data.time = parts_date[1];
-
-    setInfo(data);     
-
-    setActive(false)
-    setInputTitle("");
-
-    map.panTo({
-      lat: parseFloat(data.lat),
-      lng: parseFloat(data.lng)
-    });
-
-    map.setZoom(15);
-
-    setTimeout(() => {
-      setAnchorEl(e);
-    }, 650);
-
-  };
-
-  
-  useEffect(() => {
-
-    const initialVehicles = async () => {
-  
-        subscription.on('open', () => {
-          console.log('LiveQuery connection opened');        
-        });
-
-        const token = session.accessToken;
-        const response = await getVehicles(token);         
-
-        setData([]); 
-        {
-          response.result.map(async (key) => {
-
-            {key.lastEventPosition ?
-
-              setData([
-                ...dataMarkers,
-                {
-                      id: key.objectId,
-                      lat: key.lastEventPosition.position.latitude,
-                      lng: key.lastEventPosition.position.longitude,
-                      ignition: key.lastEventPosition.position.attributes.ignition,
-                      plateNumber: key.plateNumber,
-                      driver: key.route.driver.name,
-                      lastUpdate: key.lastEventPosition.device.lastUpdate,
-
-                },
-              ])
-
-            : ""}
-                
-          })
-
-        } 
-
-    };
-
-    initialVehicles();
-    return () => {};
-
-  }, []);
-
-
-  useEffect(() => {
- 
-
-    subscription.on('create', async (index) => { 
-
-      console.log(index)
-
-      setData(dataMarkers.map(user =>
-        user.id === index.attributes.vehicle.id ? { ...user,  lat: index.attributes.resultObject.position.latitude,
-          lng: index.attributes.resultObject.position.longitude,
-          ignition: index.attributes.resultObject.position.attributes.ignition} : user
-      )); 
-      
-      setAnchorEl(null);
-
-    });
-
-    subscription.on('error', (error) => {
-      console.error('LiveQuery error:', error);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-      parseClient.close();
-    };
-
-}, [dataMarkers]);
- 
-return (
-
-    <>
-
-      <Stack className="header-tech" position="sticky" color="default" flexGrow={1} spacing={1} direction="row" alignItems="center">
-
-        <Box
-          className="safetechcheck"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            display: {
-              xs: 'none',
-              lg: 'flex',
-            },
-          }}
-        >
-          <FormControlLabel
-            value="start"
-            control={<CustomCheckbox color="primary" />}
-            label={
-              <>
-                <img src="images/svgs/icon-carperson.svg" className="profile-img" width="80px" height="auto" style={{ marginRight: "5px" }} />
-              </>
-            }
-            labelPlacement="start"
-          />
-
-
-        </Box>
-
-        <Box
-          className="safetechcheck"
-          alignItems="center"
-          justifyContent="center"
-          sx={{
-            display: {
-              xs: 'none',
-              lg: 'flex',
-            },
-          }}
-        >
-          <FormControlLabel
-            value="start"
-            control={<CustomCheckbox color="primary" />}
-            label={
-              <>
-                <img src="images/svgs/icon-map.svg" className="profile-img" width="33px" height="auto" style={{ marginRight: "5px" }} />
-              </>
-            }
-            labelPlacement="start"
-          />
-
-
-        </Box>
-
-        <Box
-          className="searchtoptech"
-          alignItems="center"
-          justifyContent="center"
-          style={{ marginLeft: "35px" }}
-        >
-
-
-          <CustomOutlinedInput
-            endAdornment={
-              <InputAdornment position="end">
-                <IconSearch size="16" />
-              </InputAdornment>
-            }
-            value={inputTitle}
-            onChange={(e) => onChange(e)}              
-            placeholder="Driver or Plate text"
-            fullWidth
-          />
-
-
-          {active && (
-
-
-            <List component="nav">
-
-              {searchData == ''
-                ?
-                <>
-                  <Box>
-
-                    <ListItemButton >
-                      <ListItemText
-                        primary="No hay registros"
-                        secondary="SafeTech"
-                      />
-                    </ListItemButton>
-
-                  </Box>
-                </>
-                :
-                <>
-                  {searchData.map((menu) => {
-                    return (
-                      <Box key={menu.id}>
-
-                        <ListItemButton
-                          onClick={(e) => handleMapClick(e, menu)}
-                          key={menu.plateNumber}
-                        >
-                          <ListItemText
-                            primary={menu.driver}
-                            secondary={menu?.plateNumber}
-                          />
-                        </ListItemButton>
-
-                      </Box>
-                    );
-                  })}
-
-                </>
-              }
-
-
-
-
-
-
-            </List>
-
-          )
-
-
-          }
-
-
-
-        </Box>
-
-      </Stack>
-
-      <div className="w-full">
- 
-        <GoogleMap   
-          mapId="8ooTi4y7" 
-          onLoad={(map) => setMap(map)}
-          mapContainerStyle={defaultMapContainerStyle}
-          center={defaultMapCenter}
-          zoom={defaultMapZoom}
-          options={defaultMapOptions}
-        > 
-
-
-        {dataMarkers.map((dataMarker,index)=>
-        {
-            return (<>
-                              
-                {dataMarker.ignition ?
-
-                        <Marker
-                        
-                          position={{
-                            lat: parseFloat(dataMarker.lat),
-                            lng: parseFloat(dataMarker.lng),
-                          }}
-                          onClick={(e) => handleMapClick(e, dataMarker)}
-                          options={{ icon: '/images/vehicleOn.webp' }}
-                        />
-
-                      :
-
-                        <Marker
-                          
-                          position={{
-                            lat: parseFloat(dataMarker.lat),
-                            lng: parseFloat(dataMarker.lng),
-                          }}
-                          onClick={(e) => handleMapClick(e, dataMarker)}
-                          options={{ icon: '/images/vehicleOff.webp' }}
-                        />
-
-
-                } 
- 
-            </>)
-        }
-
-        )}
-
-        </GoogleMap> 
+  const handleDownload = () => {
+    const headers = ["Users", "Contacto", "Last Update", "Latitude", "Longitude"];
+    const rows = dataTrack.map(item => [
+
+        item.device,
+        item.contact,
+        item.lastUpdate,
+        item.location.lat,
+        item.location.lng,
         
-        <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'center',
-              horizontal: 'center',
-            }}
-            className='popoverCard'
-          >
-          
-            <Accordion className='accordionRootModal'>
-              
-                <AccordionSummary
-                    className='accordionModal'
-                    expandIcon={ <Typography>
-                      <svg width="5" height="17" viewBox="0 0 5 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clip-rule="evenodd" d="M2.09993 4.56793C3.19688 4.56793 4.09439 3.67904 4.09439 2.59262C4.09439 1.5062 3.19688 0.61731 2.09993 0.61731C1.00298 0.61731 0.105469 1.5062 0.105469 2.59262C0.105469 3.67904 1.00298 4.56793 2.09993 4.56793ZM2.09993 6.54324C1.00298 6.54324 0.105469 7.43212 0.105469 8.51854C0.105469 9.60496 1.00298 10.4939 2.09993 10.4939C3.19688 10.4939 4.09439 9.60496 4.09439 8.51854C4.09439 7.43212 3.19688 6.54324 2.09993 6.54324ZM0.105469 14.4445C0.105469 13.3581 1.00298 12.4692 2.09993 12.4692C3.19688 12.4692 4.09439 13.3581 4.09439 14.4445C4.09439 15.5309 3.19688 16.4198 2.09993 16.4198C1.00298 16.4198 0.105469 15.5309 0.105469 14.4445Z" fill="#202022" />
-                      </svg>
-                    </Typography>}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+    ]);
+
+
+    const csvContent = [
+        headers.join(","),
+        ...rows.map(e => e.join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Historial-SafeTech.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+};
+
+
+  const rePaintMap = () => {
+    count.current = 0;
+    setWayPoints([]);                             
+    setDirections(null);   
+    setDataTrack(null);  
+    setDestination(null); 
+    setOrigen(null); 
+ 
+  };
+
+  const continuar = async (e) => {  
+    
+    e.preventDefault(); 
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+  }
+  
+  const cerrar = () => {
+    setOpenExport(true);
+    setActiveStep(0);
+  };
+
+  const handleSteps = (step) => {
+  
+    switch (step) {
+
+      case 1:
+        return (  <> 
+        
+        <Box className="BoxEnterTech">
+
+          <Box className="BoxInsideTech">
+
+              <Typography variant="h5">Quieres exportar el historial del vehiculo</Typography>
+              <Typography variant="h4">{plateNumber}</Typography>
+
+
+              <Box className="muitech-confirm">
+
+                <Button
+                  color="primary"
+                  variant="alone"
+                  size="large"
+                  fullWidth
+                  component={Link}
+                  href="/"
+                  onClick={cerrar}
                 >
-                    <Box className="popcard">
+                    CERRAR
+                </Button>
+                
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  onClick={handleDownload}> 
 
-                        <Grid spacing={1} container>
+                  EXPORTAR
 
-                          <Grid item lg={2} md={2} sm={2} >
+                </Button>
 
-                            <Box className="circle_avatar">
-                              <Typography variant="h4">{infoMarker.firstWord}</Typography> 
-                            </Box>
+              </Box>
 
-                          </Grid>
+          </Box>
 
-                          <Grid item lg={4} md={4} sm={4} >
+        </Box>
 
-                            <Box className="">
-                              <Typography variant="h6">{infoMarker.driver}</Typography>
-                              <Typography variant="p">{infoMarker.plateNumber}</Typography>
-                            </Box>
+        </> );
 
-                          </Grid>
 
-                          <Grid item lg={4} md={4} sm={4} >
+  
 
-                            <Box>
-                              <Typography variant="h6">{infoMarker.date}</Typography>
-                              <Typography variant="p">{infoMarker.time}</Typography>
-                            </Box>
+      default:
+        break;
+    }
+  };
 
-                          </Grid>
+  return (
+    <>  
 
-                          <Grid item lg={2} md={2} sm={2} >
+    <Box width="100%">
 
-                              <Button className='btn-transparent' color="primary" fullWidth  onClick={handleClickOpenMainModal}>
+        <Grid spacing={1} container>
 
-                                <svg width="22" height="22" viewBox="0 0 34 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M30.2222 3.8H24.5556V0H20.7778V3.8H13.2222V0H9.44444V3.8H3.77778C1.69433 3.8 0 5.5043 0 7.6L0 31C0 33.0957 1.69433 35 3.77778 35H30.2222C32.3057 35 34 33.0957 34 31V7.6C34 5.5043 32.3057 3.8 30.2222 3.8ZM3.77778 31V9.5H30.2222L30.226 31H3.77778Z" fill="#202022"/>
-                                  <path d="M7.55556 13.3H26.4444V17.1H7.55556V13.3ZM7.55556 20.9H17V24.7H7.55556V20.9Z" fill="#202022"/>
-                                </svg>
+          <Grid item lg={5} md={3} sm={3} >
 
-                              </Button>
+            <Box className="muitech">
 
-                          </Grid>
+                <CustomFormLabel className="nametech" htmlFor="phone">FECHA Y HORA INICIAL</CustomFormLabel>
 
-                        </Grid>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-                    </Box>
+                    <DateTimePicker className='DatePickerTech'
+                        renderInput={(props) => (
+                          
+                            <CustomTextField
+                                {...props}
+                                fullWidth
+                                size="small"
+                                
+                            />
+                        )} 
+                        value={valueFI}
+                        onChange={(newValue) =>   { 
+                          setValueFI(newValue);                             
+                        }} 
+                    />
 
-                </AccordionSummary>
+                </LocalizationProvider>
 
-                <AccordionDetails className='card-flex'>
+            </Box>
+
+          </Grid>
+
+          <Grid item lg={5} md={3} sm={3} >
+
+            <Box className="muitech">
+
+              <CustomFormLabel className="nametech" htmlFor="address">FECHA Y HORA FINAL</CustomFormLabel>
+
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+                    <DateTimePicker className='DatePickerTech'
+                        renderInput={(props) => (
+                          
+                            <CustomTextField
+                                {...props}
+                                fullWidth
+                                size="small"
+                                
+                            />
+                        )} 
+                        value={valueFF}
+                        onChange={(newValue) => {
+                          setValueFF(newValue);
+                        }}
+                    />
+
+              </LocalizationProvider>
+
+            </Box>
+
+          </Grid>
+
+          <Grid item lg={2} md={2} sm={2} > 
+
+              <Button className='roundButton info' onClick={() => rePaintMap()} color="primary">
+                <ReplayRounded />
+              </Button>
+
+              <Button className='roundButton clean'cece color="primary">
+                <Close/>
+              </Button>
+
+          </Grid>
+
+
+        </Grid>
+
+    </Box>
+
+    <Box className="map-card">
+           
+      <GoogleMap
+              mapId="O86u6roz"
+              onLoad={(map) => setMapG(map)}
+              mapContainerStyle={defaultMapContainerStyle}
+              center={defaultMapCenter}
+              zoom={defaultMapZoom}
+              options={defaultMapOptions}>
+
+         {
                     
-                  <Box className="map-card">
-                    <Image src={"/images/profile/map.png"} alt="img" width={400} height={180} style={{width: '100%'}} />                    
-                  </Box>
+            waypoints.map((waypoint, index)=>
+            { 
+              return (
+              
+                <Marker 
+                  key={index}                          
+                  position={ waypoint} 
+                  options={
+                    { 
+                      icon: '/images/vehicleInit.webp', 
+                    }
+                  }
+                />
 
-                  <Box className="body-card">
-                    <Typography variant="h6">RENAULT SANDERO</Typography>
-                    <Typography variant="h5">ROUTE #3</Typography>   
-                    <Typography variant="p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor </Typography>            
-                  </Box>
+                             
+              )                           
+                          
+            }
 
-                  <Box className="group-btn-card">
-                    <Button className="lineal" onClick={handleClose} variant="contained" color="primary">
-                      CLOSE
-                    </Button>
-                    <Button variant="contained" color="primary">
-                      OPTION
-                    </Button>           
-                  </Box>
-
-
-                </AccordionDetails>
-
-            </Accordion>
-
-        </Popover>
-
-
-        <Dialog
-          className='dialog-form wipe np'
-          open={openMainModal}     
-          onClose={handleCloseMainModal}
-          aria-describedby="alert-dialog-slide-description"
-        >
+          )}
+                
+              
         
+              <DirectionsService
+                options={{
+                    destination: destination,
+                    origin: origen,
+                    //waypoints: dataTrack.slice(0,24),
+                    optimizeWaypoints: true, 
+                    travelMode: 'DRIVING'                    
+                }} 
+                callback={(e) => directionsCallback(e)}
+
+              />
+   
+
+            {directions !== null  && (
+                
+                <DirectionsRenderer
+                  options={{
+                    polylineOptions: {
+                      strokeColor: "#7B51D0", 
+                      strokeOpacity: 1,
+                      strokeWeight: 8
+                    },  
+                    suppressMarkers : true,
+                    optimizeWaypoints: true, 
+                    directions: directions, 
+                    preserveViewport: false,
+                              
+                  }}
+                />
+
+            )}          
+          
+      </GoogleMap> 
+
+    </Box>
+
+    <Box className="muitech-confirm np">
+                
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      size="large"
+                      fullWidth
+                      onClick={continuar}> 
+                
+                        CONTINUAR
+                
+                    </Button>
+                
+    </Box>
 
 
-        <DialogTitle variant="h4">{"HISTORIAL DE ACTIVIDAD"}</DialogTitle>
-                      
+    <Stepper activeStep={activeStep}>
+      {steps.map((label, index) => {
+        const stepProps = {};
+        const labelProps = {};
+        if (isStepOptional(index)) {
+          labelProps.optional = <Typography variant="caption">Optional</Typography>;
+        }
+      })}
+    </Stepper>  
+
+    {activeStep === steps.length ? (            
+      <>
             
-          <DialogContent className='DialogContentTech'>
-
-            <MapRoute plateNumber={infoMarker.plateNumber} id={infoMarker.id} />
-
-          </DialogContent>
-
-        </Dialog>
-
-
-      </div>
+          <Box className="BoxEnterTech">
+            
+                              <Box className="BoxInsideTech">
+            
+                                  <Typography variant="h5">Historial exportado con exito.</Typography>
+                                  
+                                  <svg width="160" height="153" viewBox="0 0 160 153" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g filter="url(#filter0_dd_601_634)">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M107.903 65.1666H114.021C114.394 67.3889 114.588 69.6718 114.588 72C114.588 74.7382 114.32 77.4137 113.808 80.0016L107.922 78.8372L102.036 77.6728C102.397 75.8477 102.588 73.9521 102.588 72C102.588 70.0479 102.397 68.1523 102.036 66.3272L107.903 65.1666ZM73.5884 31C76.3266 31 79.0021 31.2684 81.59 31.7804L80.4256 37.6663L79.2612 43.5523C77.4361 43.1912 75.5405 43 73.5884 43C71.6362 43 69.7407 43.1912 67.9156 43.5523L66.7512 37.6663L65.5867 31.7804C68.1747 31.2684 70.8502 31 73.5884 31ZM54.1461 42.8916L50.8081 37.9058C46.337 40.8991 42.4875 44.7486 39.4942 49.2197L44.48 52.5577L49.4658 55.8956C51.5865 52.7279 54.3163 49.9981 57.484 47.8774L54.1461 42.8916ZM32.5884 72C32.5884 69.2618 32.8568 66.5863 33.3688 63.9984L39.2547 65.1628L45.1406 66.3272C44.7796 68.1523 44.5884 70.0479 44.5884 72C44.5884 73.9521 44.7796 75.8477 45.1406 77.6728L39.2547 78.8372L33.3688 80.0016C32.8568 77.4137 32.5884 74.7382 32.5884 72ZM44.48 91.4423L39.4942 94.7802C42.4875 99.2513 46.337 103.101 50.8081 106.094L54.146 101.108L57.484 96.1226C54.3163 94.0019 51.5865 91.2721 49.4658 88.1044L44.48 91.4423ZM66.7511 106.334L65.5867 112.22C68.1747 112.732 70.8502 113 73.5884 113C76.3266 113 79.0021 112.732 81.59 112.22L80.4256 106.334L79.2612 100.448C77.4361 100.809 75.5405 101 73.5884 101C71.6362 101 69.7406 100.809 67.9156 100.448L66.7511 106.334ZM93.0307 101.108L96.3686 106.094C100.84 103.101 104.689 99.2514 107.683 94.7803L102.697 91.4423L97.7109 88.1044C95.5902 91.2721 92.8605 94.0019 89.6928 96.1226L93.0307 101.108Z" fill="url(#paint0_linear_601_634)"/>
+                                    </g>
+                                    <g filter="url(#filter1_dd_601_634)">
+                                    <path d="M56.7056 62.8983L73.186 79.2354L119.411 33.4119" stroke="url(#paint1_linear_601_634)" stroke-width="12" stroke-linecap="square"/>
+                                    </g>
+                                    <defs>
+                                    <filter id="filter0_dd_601_634" x="0.588379" y="7" width="146" height="146" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                    <feOffset dy="8"/>
+                                    <feGaussianBlur stdDeviation="16"/>
+                                    <feComposite in2="hardAlpha" operator="out"/>
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_601_634"/>
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                    <feOffset dy="4"/>
+                                    <feGaussianBlur stdDeviation="4"/>
+                                    <feComposite in2="hardAlpha" operator="out"/>
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0"/>
+                                    <feBlend mode="normal" in2="effect1_dropShadow_601_634" result="effect2_dropShadow_601_634"/>
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_601_634" result="shape"/>
+                                    </filter>
+                                    <filter id="filter1_dd_601_634" x="16.2202" y="0.926758" width="143.676" height="126.757" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                    <feOffset dy="8"/>
+                                    <feGaussianBlur stdDeviation="16"/>
+                                    <feComposite in2="hardAlpha" operator="out"/>
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"/>
+                                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_601_634"/>
+                                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                    <feOffset dy="4"/>
+                                    <feGaussianBlur stdDeviation="4"/>
+                                    <feComposite in2="hardAlpha" operator="out"/>
+                                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0"/>
+                                    <feBlend mode="normal" in2="effect1_dropShadow_601_634" result="effect2_dropShadow_601_634"/>
+                                    <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_601_634" result="shape"/>
+                                    </filter>
+                                    <linearGradient id="paint0_linear_601_634" x1="32.5884" y1="72" x2="114.233" y2="77.3848" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#593A97"/>
+                                    <stop offset="1" stop-color="#E83E33"/>
+                                    </linearGradient>
+                                    <linearGradient id="paint1_linear_601_634" x1="56.7056" y1="56.3236" x2="118.905" y2="61.9373" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#593A97"/>
+                                    <stop offset="1" stop-color="#E83E33"/>
+                                    </linearGradient>
+                                    </defs>
+                                  </svg>
+                              
+                                  <Box className="muitech-confirm">
+            
+                                    <Button
+                                      color="primary"
+                                      variant="contained"
+                                      size="large"
+                                      fullWidth
+                                      onClick={cerrar}> 
+            
+                                      CONTINUAR
+            
+                                    </Button>
+            
+                                  </Box>
+            
+                              </Box>
+            
+            
+          </Box> 
+            
+      </>
+            
+      ) : (
+            
+        <>
+            
+          {handleSteps(activeStep)}
+            
+        </>
+            
+      )}
 
     </>
 
@@ -570,4 +536,4 @@ return (
 
 };
 
-export { MapComponent };
+export { MapRoute };
