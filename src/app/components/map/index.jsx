@@ -16,8 +16,6 @@ import { FormControlLabel } from '@mui/material';
 import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox';
 import { MapRoute } from "@/app/components/map/route";
 
-
-
 import Parse from '../../../utils/parse';
 import { Stack } from '@mui/system';
 import { getVehicles } from '../../../utils/parse';
@@ -93,8 +91,6 @@ const MapComponent = () => {
 
   const [openMainModal, setOpenMainModal] = React.useState(false);
   
-   
- 
 
   const handleClickOpenMainModal = () => {
     setOpenMainModal(true);
@@ -228,7 +224,6 @@ const MapComponent = () => {
   }, []);
 
 
-
   useEffect(() => {
  
 
@@ -256,13 +251,7 @@ const MapComponent = () => {
     };
 
 }, [dataMarkers]);
-
-
-
-
-
-
-
+ 
 return (
 
     <>
