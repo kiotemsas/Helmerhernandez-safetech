@@ -314,6 +314,7 @@ const MapRoute = ({ id,plateNumber}) => {
                         )} 
                         value={valueFF}
                         onChange={(newValue) => {
+                          alert(newValue)
                           setValueFF(newValue);
                         }}
                     />
@@ -351,8 +352,31 @@ const MapRoute = ({ id,plateNumber}) => {
               zoom={defaultMapZoom}
               options={defaultMapOptions}>
 
+
+
+                <Marker 
+                  key={1}                          
+                  position={ origen} 
+                  options={
+                    { 
+                      icon: '/images/vehicleInit.webp', 
+                    }
+                  }
+                />
+
+
+                <Marker 
+                  key={2}                          
+                  position={ destination} 
+                  options={
+                    { 
+                      icon: '/images/vehicleEnd.webp', 
+                    }
+                  }
+                />
+
          {
-                    
+             /*       
             waypoints.map((waypoint, index)=>
             { 
               return (
@@ -372,7 +396,7 @@ const MapRoute = ({ id,plateNumber}) => {
                           
             }
 
-          )}
+          )*/}
                 
               
         
@@ -380,7 +404,7 @@ const MapRoute = ({ id,plateNumber}) => {
                 options={{
                     destination: destination,
                     origin: origen,
-                    //waypoints: dataTrack.slice(0,24),
+                    //waypoints: dataTrack,
                     optimizeWaypoints: true, 
                     travelMode: 'DRIVING'                    
                 }} 
