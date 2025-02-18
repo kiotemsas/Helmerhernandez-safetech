@@ -226,18 +226,14 @@ const MapComponent = () => {
 
   useEffect(() => {
  
-
     subscription.on('create', async (index) => { 
-
-      console.log(index)
-
+      
       setData(dataMarkers.map(user =>
         user.id === index.attributes.vehicle.id ? { ...user,  lat: index.attributes.resultObject.position.latitude,
           lng: index.attributes.resultObject.position.longitude,
           ignition: index.attributes.resultObject.position.attributes.ignition} : user
       )); 
       
-      setAnchorEl(null);
 
     });
 
@@ -403,6 +399,13 @@ return (
 
         {dataMarkers.map((dataMarker,index)=>
         {
+            if(index === 0){
+              map.panTo({
+                lat: parseFloat(dataMarkers[0].lat),
+                lng: parseFloat(dataMarkers[0].lng)
+              });
+            } 
+            
             return (<>
                               
                 {dataMarker.ignition ?
