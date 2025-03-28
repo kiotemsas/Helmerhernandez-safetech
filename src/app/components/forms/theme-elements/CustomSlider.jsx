@@ -3,20 +3,22 @@ import { Slider } from '@mui/material';
 
 const CustomSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-rail': {
-    height: '9px',
-    borderRadius: '9px',
+    height: '13px',
+    borderRadius: '13px',
     opacity: '1',
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: "#9E9E9E",
   },
   '& .MuiSlider-thumb': {
     borderRadius: '50%',
-    backgroundColor: () => theme.palette.secondary.main,
-    width: '23px',
-    height: '23px',
+    backgroundColor: "#E83E33",
+    width: '0',
+    height: '0',
   },
   '& .MuiSlider-track': {
-    height: '9px',
-    borderRadius: '9px',
+    height: '13px',
+    borderRadius: '13px',
+    background: 'linear-gradient(93.77deg, #593A97 3.09%, #E83E33 96.91%)',
+
   },
 }));
 

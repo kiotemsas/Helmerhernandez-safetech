@@ -16,8 +16,6 @@ import { FormControlLabel } from '@mui/material';
 import CustomCheckbox from '@/app/components/forms/theme-elements/CustomCheckbox';
 import { MapRoute } from "@/app/components/map/route";
 
-
-
 import Parse from '../../../utils/parse';
 import { Stack } from '@mui/system';
 import { getVehicles } from '../../../utils/parse';
@@ -93,8 +91,6 @@ const MapComponent = () => {
 
   const [openMainModal, setOpenMainModal] = React.useState(false);
   
-   
- 
 
   const handleClickOpenMainModal = () => {
     setOpenMainModal(true);
@@ -198,7 +194,7 @@ const MapComponent = () => {
         {
           response.result.map(async (key) => {
 
-            {key.lastEventPosition ?
+            {key.lastEventPosition && key.route !== null ?
 
               setData([
                 ...dataMarkers,
@@ -228,21 +224,16 @@ const MapComponent = () => {
   }, []);
 
 
-
   useEffect(() => {
  
-
     subscription.on('create', async (index) => { 
-
-      console.log(index)
-
+      
       setData(dataMarkers.map(user =>
         user.id === index.attributes.vehicle.id ? { ...user,  lat: index.attributes.resultObject.position.latitude,
           lng: index.attributes.resultObject.position.longitude,
           ignition: index.attributes.resultObject.position.attributes.ignition} : user
       )); 
       
-      setAnchorEl(null);
 
     });
 
@@ -256,13 +247,7 @@ const MapComponent = () => {
     };
 
 }, [dataMarkers]);
-
-
-
-
-
-
-
+ 
 return (
 
     <>
@@ -382,11 +367,6 @@ return (
                 </>
               }
 
-
-
-
-
-
             </List>
 
           )
@@ -404,6 +384,7 @@ return (
  
         <GoogleMap   
           mapId="8ooTi4y7" 
+          key= "8ooTi4y7"
           onLoad={(map) => setMap(map)}
           mapContainerStyle={defaultMapContainerStyle}
           center={defaultMapCenter}
@@ -412,41 +393,47 @@ return (
         > 
 
 
-        {dataMarkers.map((dataMarker,index)=>
-        {
-            return (<>
-                              
-                {dataMarker.ignition ?
+            {dataMarkers.map((dataMarker,index)=>
+              {
+                  if(index === 0){
+                    map.panTo({
+                      lat: parseFloat(dataMarkers[0].lat),
+                      lng: parseFloat(dataMarkers[0].lng)
+                    });
+                  } 
+                  
+                  return (<>
+                                    
+                      {dataMarker.ignition ?
 
-                        <Marker
-                        
-                          position={{
-                            lat: parseFloat(dataMarker.lat),
-                            lng: parseFloat(dataMarker.lng),
-                          }}
-                          onClick={(e) => handleMapClick(e, dataMarker)}
-                          options={{ icon: '/images/vehicleOn.webp' }}
-                        />
+                              <Marker
+                                key= {index}
+                                position={{
+                                  lat: parseFloat(dataMarker.lat),
+                                  lng: parseFloat(dataMarker.lng),
+                                }}
+                                onClick={(e) => handleMapClick(e, dataMarker)}
+                                options={{ icon: '/images/vehicleOn.webp' }}
+                              />
 
-                      :
+                            :
 
-                        <Marker
-                          
-                          position={{
-                            lat: parseFloat(dataMarker.lat),
-                            lng: parseFloat(dataMarker.lng),
-                          }}
-                          onClick={(e) => handleMapClick(e, dataMarker)}
-                          options={{ icon: '/images/vehicleOff.webp' }}
-                        />
+                              <Marker
+                                key= {index}
+                                position={{
+                                  lat: parseFloat(dataMarker.lat),
+                                  lng: parseFloat(dataMarker.lng),
+                                }}
+                                onClick={(e) => handleMapClick(e, dataMarker)}
+                                options={{ icon: '/images/vehicleOff.webp' }}
+                              />
 
 
-                } 
- 
-            </>)
-        }
-
-        )}
+                      } 
+      
+                  </>)
+              }
+            )}
 
         </GoogleMap> 
         
@@ -468,7 +455,7 @@ return (
                     className='accordionModal'
                     expandIcon={ <Typography>
                       <svg width="5" height="17" viewBox="0 0 5 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fillRule="evenodd" clip-rule="evenodd" d="M2.09993 4.56793C3.19688 4.56793 4.09439 3.67904 4.09439 2.59262C4.09439 1.5062 3.19688 0.61731 2.09993 0.61731C1.00298 0.61731 0.105469 1.5062 0.105469 2.59262C0.105469 3.67904 1.00298 4.56793 2.09993 4.56793ZM2.09993 6.54324C1.00298 6.54324 0.105469 7.43212 0.105469 8.51854C0.105469 9.60496 1.00298 10.4939 2.09993 10.4939C3.19688 10.4939 4.09439 9.60496 4.09439 8.51854C4.09439 7.43212 3.19688 6.54324 2.09993 6.54324ZM0.105469 14.4445C0.105469 13.3581 1.00298 12.4692 2.09993 12.4692C3.19688 12.4692 4.09439 13.3581 4.09439 14.4445C4.09439 15.5309 3.19688 16.4198 2.09993 16.4198C1.00298 16.4198 0.105469 15.5309 0.105469 14.4445Z" fill="#202022" />
+                        <path fillRule="evenodd" cliprule="evenodd" d="M2.09993 4.56793C3.19688 4.56793 4.09439 3.67904 4.09439 2.59262C4.09439 1.5062 3.19688 0.61731 2.09993 0.61731C1.00298 0.61731 0.105469 1.5062 0.105469 2.59262C0.105469 3.67904 1.00298 4.56793 2.09993 4.56793ZM2.09993 6.54324C1.00298 6.54324 0.105469 7.43212 0.105469 8.51854C0.105469 9.60496 1.00298 10.4939 2.09993 10.4939C3.19688 10.4939 4.09439 9.60496 4.09439 8.51854C4.09439 7.43212 3.19688 6.54324 2.09993 6.54324ZM0.105469 14.4445C0.105469 13.3581 1.00298 12.4692 2.09993 12.4692C3.19688 12.4692 4.09439 13.3581 4.09439 14.4445C4.09439 15.5309 3.19688 16.4198 2.09993 16.4198C1.00298 16.4198 0.105469 15.5309 0.105469 14.4445Z" fill="#202022" />
                       </svg>
                     </Typography>}
                     aria-controls="panel1a-content"

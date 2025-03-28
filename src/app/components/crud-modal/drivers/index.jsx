@@ -42,7 +42,7 @@ const Drivers = () => {
 
       </Button>
 
-      <Dialog  fullWidth={fullWidth} maxWidth={hideMenu ?  'xl' :  'lg'}  open={open} onClose={handleClose}>
+      <Dialog className={hideMenu ?  'crudModalTech open' :  'crudModalTech hidden'} fullWidth={fullWidth} maxWidth={hideMenu ?  'xl' :  'lg'}  open={open} onClose={handleClose}>
 
          <DialogContent className="crud-dialog">
 

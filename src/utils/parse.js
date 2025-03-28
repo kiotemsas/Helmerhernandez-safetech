@@ -190,6 +190,22 @@ export const getRouteByVehicle = async (Id, status, type, startDate, endDate, to
 };
 
 
+export const getVehicleTrackingDataByVendor = async (plateNumber, vendor, status, type, startDate, endDate, token) => {
+  return await fetchFromParse(
+    'http://3.137.134.27:8080/parse/functions/getVehicleTrackingDataByVendor',
+    'POST',
+    { 
+      plateNumber : plateNumber,
+      vendor: vendor,
+      status: status,
+      type : type,
+      startDate : startDate,
+      endDate : endDate },
+      token
+  );
+};
+
+
 
 
 
