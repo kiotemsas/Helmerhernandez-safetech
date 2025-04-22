@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'; 
 import { GoogleMap, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+
 import { useSession } from 'next-auth/react'; 
 import Link from 'next/link';
  
@@ -35,7 +36,7 @@ const defaultMapCenter = {
 };
 
 //Default zoom level, can be adjusted
-const defaultMapZoom = 14;
+const defaultMapZoom = 15;
 
 //Map options
 const defaultMapOptions = {
@@ -88,8 +89,8 @@ const MapRoute = ({id,plateNumber}) => {
   const isStepOptional = (step) => step === 1;
   const steps = ['Create', 'Confirm'];
 
-  const [valueFI, setValueFI] = React.useState(new Date("2025-03-31 11:00:00"));
-  const [valueFF, setValueFF] = React.useState(new Date("2025-03-31 11:30:00"));  
+  const [valueFI, setValueFI] = React.useState(new Date());
+  const [valueFF, setValueFF] = React.useState(new Date());  
 
 
   const [openExport, setOpenExport] = React.useState(false);  
@@ -122,12 +123,14 @@ const MapRoute = ({id,plateNumber}) => {
  
         setDataTrack(response.result.trackingHistory.map((key) => (
         { 
-          location:  { lat:  key.position.latitude, lng: key.position.longitude},
-          directions: (new google.maps.LatLng(key.position.latitude, key.position.longitude)),
-          stopover:true,
+          deviceId: key.device.uniqueId,
           device: key.device.name,
           contact: key.device.contact,
-          lastupdate: key.device.lastUpdate,
+          fecha: key.position.deviceTime,
+          location:  { lat:  key.position.latitude, lng: key.position.longitude}, 
+          ignition: key.position.attributes.ignition,
+          speed: key.position.speed,   
+
         }
         )));   
 
@@ -135,8 +138,7 @@ const MapRoute = ({id,plateNumber}) => {
           
           partWaypoints.push(new google.maps.LatLng(response.result.trackingHistory[i].position.latitude, response.result.trackingHistory[i].position.longitude));
         } 
-         
-        console.log(partWaypoints)
+          
         setConversationsLoaded(true);
         
       };
@@ -148,26 +150,28 @@ const MapRoute = ({id,plateNumber}) => {
 
  
   useEffect(() => {  
-
-         
+ 
  
     flightPath = new google.maps.Polyline({
       path: partWaypoints,
       strokeColor: "#FF0000",
-      strokeOpacity: 1.0,
-      strokeWeight: 4,
-      geodesic: false, 
+      strokeOpacity: 0.7,
+      strokeWeight: 6,
+      geodesic: true, 
+      polylineQuality:"HIGH_QUALITY"
     });
 
     flightPath.setMap(map);
     directionsRenderers.push(flightPath);
 
-    
+    if(partWaypoints.length){ 
+      map.panTo(partWaypoints[0]);
+    }  
+
+
     if (conversationsLoaded) {
 
-
-      for (var i = 0; i < partWaypoints.length; i++) {
-        
+      for (var i = 0; i < partWaypoints.length; i++) {       
         
         var waypoints = [];
         for (var j = 1; j < partWaypoints[i].length - 1; j++){
@@ -175,58 +179,13 @@ const MapRoute = ({id,plateNumber}) => {
             {
               location: parseFloat(partWaypoints[i][j].position.latitude) + ',' + parseFloat(partWaypoints[i][j].position.longitude),stopover: true}
           );  
-      }    
-      
- 
+        }  
 
-
-/*
-      service.route({
-        origin:  parseFloat(partWaypoints[i][0].position.latitude) + ',' + parseFloat(partWaypoints[i][0].position.longitude),
-        destination: parseFloat(partWaypoints[i][partWaypoints[i].length - 1].position.latitude) + ',' + parseFloat(partWaypoints[i][partWaypoints[i].length - 1].position.longitude),
-
-
-
-          waypoints: waypoints,        
-          travelMode: 'DRIVING'
-        })
-        .then((response) => {
-
-          if (response.status !== 'OK') {
-            return;
-          }
-          
-          const renderer = new google.maps.DirectionsRenderer;
-          renderer.setMap(map);
-          renderer.setOptions({
-            polylineOptions: {
-              strokeColor: "#7B51D0", 
-              strokeOpacity: 1,
-              strokeWeight: 8
-            },   
-            suppressMarkers : false, 
-            preserveViewport: true,                              
-          });
-
-          renderer.setDirections(response);   
-          directionsRenderers.push(renderer);
-
-        });
-
- 
-        if(i == 1){
-          setDataTrack(waypoints)
-          console.log(waypoints)
-          setCircleLoad(true);
-          return;
-        }  */
       } 
       
       setCircleLoad(true);
       
-      return () => {
-        //directionsRenderers.forEach(renderer => renderer.setMap(null));
-      };
+      return () => {};
 
     }
 
@@ -234,23 +193,25 @@ const MapRoute = ({id,plateNumber}) => {
 
   const clearAllRoutes = () => {
         
-    directionsRenderers.forEach((renderer) => {
-    
+    directionsRenderers.forEach((renderer) => {    
         renderer.setMap(null);
     });
     setDirectionsRenderers([]);
 };
 
   const handleDownload = () => {
-    const headers = ["Users", "Contacto", "Last Update", "Latitude", "Longitude"];
-    const rows = dataTrack.map(item => [
+    const headers = ["Id Dispositivo", "Nombre Dispositivo", "Contacto", "Fecha", "Latitud", "Longitud", "Encendido", "Velocidad"]; 
 
+
+    const rows = dataTrack.map(item => [
+        item.deviceId,
         item.device,
         item.contact,
-        item.lastUpdate,
+        item.fecha,
         item.location.lat,
         item.location.lng,
-        
+        item.ignition,
+        item.speed,
     ]);
 
 
@@ -435,32 +396,50 @@ const MapRoute = ({id,plateNumber}) => {
               zoom={defaultMapZoom}
               options={defaultMapOptions}>
 
-          {    
- 
-         
-     
- 
-          dataTrack.map((dataTracks, index)=>
-          {  
-                return (
-                
-                  <Marker 
-                    key={index}                          
-                    position={dataTracks.location} 
-                    options={
-                      { 
-                        icon: '/images/vehicleInit.webp', 
-                      }
-                    }
-                  />
+           
 
-                              
-                )                           
-                            
-          }
-          )
-      
-         }
+              {
+           
+              dataTrack.map((dataTracks, index)=>
+              {  
+                const rowLen = dataTrack.length
+
+                if(rowLen === index + 1) {
+                  return (                    
+                    <Marker 
+                      key={index}                          
+                      position={dataTracks.location} 
+                      options={
+                        { 
+                          icon: '/images/vehicleEnd.webp', 
+                        }
+                      }
+                    />        
+                  )      
+                } else {
+                  if(index === 0) {
+                    return (                    
+                      <Marker 
+                        key={index}                          
+                        position={dataTracks.location} 
+                        options={
+                          { 
+                            icon: '/images/vehicleInit.webp', 
+                          }
+                        }
+                      />        
+                    )      
+                  
+                  }
+                }
+
+                                        
+                                
+              }
+              )}
+
+
+
 
 
             {circleLoad == false  && (     
@@ -595,9 +574,9 @@ const MapRoute = ({id,plateNumber}) => {
             
         <Box className="BoxEnterTech">
             
-                              <Box className="BoxInsideTech">
+            <Box className="BoxInsideTech">
             
-                                  <Typography variant="h5">Historial exportado con exito.</Typography>
+                <Typography variant="h5">Historial exportado con exito.</Typography>
                                   
                                   <svg width="160" height="153" viewBox="0 0 160 153" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g filter="url(#filter0_dd_601_634)">
@@ -650,22 +629,22 @@ const MapRoute = ({id,plateNumber}) => {
                                     </defs>
                                   </svg>
                               
-                                  <Box className="muitech-confirm">
+                <Box className="muitech-confirm">
             
-                                    <Button
-                                      color="primary"
-                                      variant="contained"
-                                      size="large"
-                                      fullWidth
-                                      onClick={cerrar}> 
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        onClick={cerrar}> 
             
-                                      CONTINUAR
+                        CONTINUAR
             
-                                    </Button>
+                      </Button>
             
-                                  </Box>
+                </Box>
             
-                              </Box>
+            </Box>
             
             
         </Box> 

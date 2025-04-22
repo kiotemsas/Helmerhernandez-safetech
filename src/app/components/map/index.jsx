@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { GoogleMap, Marker, Polyline} from '@react-google-maps/api';
+import { GoogleMap, Marker, Polyline} from '@react-google-maps/api'; 
 
 
 import CustomOutlinedInput from '@/app/components/forms/theme-elements/CustomOutlinedInput';
@@ -90,8 +90,7 @@ const MapComponent = () => {
   const [inputTitle, setInputTitle] = useState('');     
 
   const [openMainModal, setOpenMainModal] = React.useState(false);
-  
-
+   
   const handleClickOpenMainModal = () => {
     setOpenMainModal(true);
     setAnchorEl(null);
@@ -118,6 +117,8 @@ const MapComponent = () => {
   const [active, setActive] = useState(false)
 
   const [search, setSerach] = useState('');
+ 
+ 
 
   const filterRoutes = (rotr, cSearch) => {
  
@@ -149,7 +150,6 @@ const MapComponent = () => {
     map.setZoom(14);
   };
   
-
   const handleMapClick = (e, data) => {
 
     const date = new Date(data.lastUpdate); 
@@ -177,7 +177,6 @@ const MapComponent = () => {
     }, 650);
 
   };
-
   
   useEffect(() => {
 
@@ -190,6 +189,7 @@ const MapComponent = () => {
         const token = session.accessToken;
         const response = await getVehicles(token);  
         
+        console.log(response.result)
         setData([])
 
         {
@@ -217,7 +217,7 @@ const MapComponent = () => {
 
         } 
  
- 
+
 
     };
 
@@ -227,7 +227,7 @@ const MapComponent = () => {
   }, []);
 
 
-  useEffect(() => { 
+  useEffect(() => {  
 
     subscription.on('create', async (index) => {  
  
@@ -241,7 +241,7 @@ const MapComponent = () => {
             lat: index.attributes.resultObject.position.latitude,
             lng: index.attributes.resultObject.position.longitude,
             ignition: index.attributes.resultObject.position.attributes.ignition,
-            
+            speed: index.attributes.resultObject.position.speed, 
             plateNumber: value.plateNumber, 
             lastUpdate: index.attributes.resultObject.device.lastUpdate,
           
@@ -408,10 +408,8 @@ return (
           center={defaultMapCenter}
           zoom={defaultMapZoom}
           options={defaultMapOptions}
-        > 
-
-          
-          
+        >  
+ 
 { 
      
             
@@ -428,7 +426,7 @@ return (
                                 position={{
                                   lat: parseFloat(dataMarker.lat),
                                   lng: parseFloat(dataMarker.lng),
-                                }}
+                                }} 
                                 onClick={(e) => handleMapClick(e, dataMarker)}
                                 options={{ icon: '/images/vehicleOn.webp' }}
                               />
@@ -452,7 +450,7 @@ return (
               }
             ) 
             
-            } 
+            }  
 
         </GoogleMap> 
         
