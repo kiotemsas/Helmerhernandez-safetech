@@ -1,18 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'; 
-import { GoogleMap, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, Marker} from '@react-google-maps/api';
 
 import { useSession } from 'next-auth/react'; 
 import Link from 'next/link';
  
 import CustomFormLabel from '@/app/components/forms/theme-elements/CustomFormLabel';
 import CustomTextField from '@/app/components/forms/theme-elements/CustomTextField';
-import { DateTimePicker, DatePicker, TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import ReplayRounded from '@mui/icons-material/ReplayRounded';
-import Close from '@mui/icons-material/Close';
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomSlider from '@/app/components/forms/theme-elements/CustomSlider';
 
@@ -20,8 +18,6 @@ import CustomSlider from '@/app/components/forms/theme-elements/CustomSlider';
 import { Typography, Stepper, Button,  Box, Grid, } from '@mui/material';
 
 import { getRouteByVehicle } from '../../../utils/parse';
-import { forEach } from 'lodash';
-import { Directions } from '@mui/icons-material';
 
 //Map's styling
 const defaultMapContainerStyle = {
@@ -89,26 +85,75 @@ const MapRoute = ({id,plateNumber}) => {
   const isStepOptional = (step) => step === 1;
   const steps = ['Create', 'Confirm'];
 
-  const [valueFI, setValueFI] = React.useState(new Date());
-  const [valueFF, setValueFF] = React.useState(new Date());  
+  const [valueFI, setValueFI] = React.useState(new Date("04/30/2025 12:00 am"));
+  const [valueFF, setValueFF] = React.useState(new Date("04/30/2025 10:00 am"));  
 
 
   const [openExport, setOpenExport] = React.useState(false);  
-  const [directionsRenderers, setDirectionsRenderers] = useState([]);  
-  const [dataTrack, setDataTrack] = useState([]); 
+  const [directionsRenderers, setDirectionsRenderers] = useState([]);   
 
+
+  const [dataTrack, setDataTrack] = useState([]);  
   
-  const [value3, setValue3] = React.useState(30);
+  const [sliderValue, setSliderValue] = React.useState(0);
   const handleChange6 = (event, newValue) => {
       setValue3(newValue);
   };
  
-  let service = new google.maps.DirectionsService; 
-  let flightPath = new google.maps.Polyline;
+  
+  const start = {
+        path: 'M9 0C4.02429 0 0 3.9125 0 8.75C0 15.3125 9 25 9 25C9 25 18 15.3125 18 8.75C18 3.9125 13.9757 0 9 0ZM9 11.875C7.22571 11.875 5.78571 10.475 5.78571 8.75C5.78571 7.025 7.22571 5.625 9 5.625C10.7743 5.625 12.2143 7.025 12.2143 8.75C12.2143 10.475 10.7743 11.875 9 11.875Z',
+        scale: 1.5, 
+        anchor: new google.maps.Point(10, 22),
+        fillColor: '#E83E33',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeOpacity: 1,
+        strokeWeight: 2
+  };
+
+
+  const ending = {
+        path: 'M9 0C4.02429 0 0 3.9125 0 8.75C0 15.3125 9 25 9 25C9 25 18 15.3125 18 8.75C18 3.9125 13.9757 0 9 0ZM9 11.875C7.22571 11.875 5.78571 10.475 5.78571 8.75C5.78571 7.025 7.22571 5.625 9 5.625C10.7743 5.625 12.2143 7.025 12.2143 8.75C12.2143 10.475 10.7743 11.875 9 11.875Z',
+        scale: 1.5, 
+        anchor: new google.maps.Point(10, 22),
+        fillColor: '#5B3089',
+        fillOpacity: 1,
+        strokeColor: '#fff',
+        strokeOpacity: 1,
+        strokeWeight: 2
+  };
+  
+
+
+  let polyline = new google.maps.Polyline({
+        path: [],
+        strokeColor: '#E83E33',
+         strokeOpacity: 0.8,
+        strokeWeight: 5,
+        geodesic: true,
+        icons: [
+            {
+                icon:  start,
+                fixedRotation:true,
+                offset: '0%',     
+                           
+            },
+            {
+                icon: ending,
+                fixedRotation:true,
+                offset: '100%',
+            },
+        ],
+    }); 
+
 
   const [conversationsLoaded, setConversationsLoaded] = useState(false); 
   const [circleLoad, setCircleLoad] = useState(false); 
-  
+  const [isActive, setIsActive] = useState(false); 
+  const [activeButton, setActiveButton] = useState(false)
+  const [activeSlider, setActiveSlider] = useState(false)
+
   useEffect(() => {  
 
     if (conversationsLoaded == false) {
@@ -118,8 +163,7 @@ const MapRoute = ({id,plateNumber}) => {
         partWaypoints.length = 0;
         const token = session.accessToken;
         const response = await getRouteByVehicle( id, "active", "position", valueFI.toISOString(),  valueFF.toISOString(), token);  
-
-        console.log(response)
+ 
  
         setDataTrack(response.result.trackingHistory.map((key) => (
         { 
@@ -150,41 +194,21 @@ const MapRoute = ({id,plateNumber}) => {
 
  
   useEffect(() => {  
- 
- 
-    flightPath = new google.maps.Polyline({
-      path: partWaypoints,
-      strokeColor: "#FF0000",
-      strokeOpacity: 0.7,
-      strokeWeight: 6,
-      geodesic: true, 
-      polylineQuality:"HIGH_QUALITY"
-    });
-
-    flightPath.setMap(map);
-    directionsRenderers.push(flightPath);
-
-    if(partWaypoints.length){ 
-      map.panTo(partWaypoints[0]);
-    }  
-
-
+    
     if (conversationsLoaded) {
+      
+      polyline.setPath(partWaypoints);
+      polyline.setMap(map)  
+       setDirectionsRenderers(polyline);
 
-      for (var i = 0; i < partWaypoints.length; i++) {       
-        
-        var waypoints = [];
-        for (var j = 1; j < partWaypoints[i].length - 1; j++){
-          waypoints.push(
-            {
-              location: parseFloat(partWaypoints[i][j].position.latitude) + ',' + parseFloat(partWaypoints[i][j].position.longitude),stopover: true}
-          );  
-        }  
-
-      } 
+      if(partWaypoints.length){ 
+        map.panTo(partWaypoints[0]);
+      }  
       
       setCircleLoad(true);
-      
+      setActiveButton(true);
+      setActiveSlider(true);
+
       return () => {};
 
     }
@@ -192,14 +216,11 @@ const MapRoute = ({id,plateNumber}) => {
   }, [conversationsLoaded]);
 
   const clearAllRoutes = () => {
-        
-    directionsRenderers.forEach((renderer) => {    
-        renderer.setMap(null);
-    });
-    setDirectionsRenderers([]);
-};
+    directionsRenderers.setMap(null);        
+  };
 
   const handleDownload = () => {
+
     const headers = ["Id Dispositivo", "Nombre Dispositivo", "Contacto", "Fecha", "Latitud", "Longitud", "Encendido", "Velocidad"]; 
 
 
@@ -234,11 +255,75 @@ const MapRoute = ({id,plateNumber}) => {
   
   };
 
-  const reRequestRoute = () => {
+  let lineOffset = 0;
+  let iconSpeed = 0.2;
+  let lineIcon = 0;      
+ 
+  let [index, setIndex] = useState(0);
+
+  const handleStart = () => {
+    setIsActive(true)
+    setActiveSlider(true);
+  }; 
+
+  const handlePause = () => {
+    setIsActive(false); 
+    setActiveSlider(true);
+  };   
+
+  const handleStop = () => {
+    setIsActive(false)  
+    directionsRenderers.setMap(null);
+    polyline.setPath(partWaypoints);
+    polyline.setMap(map) 
+    setDirectionsRenderers(polyline);
+    setIndex(0)
+  };
+
+  const handleChange = (event, newValue) => {
+
+      setSliderValue(newValue);  
+      
+      lineIcon = directionsRenderers.get('icons');
+      lineOffset = newValue
+      lineOffset = (lineOffset + iconSpeed) % 200           
+      lineIcon[0].offset = lineOffset / 2 + '%';
+      directionsRenderers.set('icons', lineIcon);
+      
+      setIndex(lineOffset)
+
+  };
+
+  useEffect(() => { 
     
+    let intervalId;
+
+    if (isActive) {
+       
+      lineOffset = index;
+      setActiveSlider(false);
+
+      intervalId = setInterval(() => { 
+
+         lineIcon = directionsRenderers.get('icons');
+         lineOffset = (lineOffset + iconSpeed) % 200           
+         lineIcon[0].offset = lineOffset / 2 + '%';
+         directionsRenderers.set('icons', lineIcon);
+         
+      }, 20);
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      setIndex(lineOffset)
+    };
+  }, [isActive]);
+ 
+  const reRequestRoute = () => {
+
     setConversationsLoaded(false);  
-    setCircleLoad(false); 
+    setCircleLoad(false);
     clearAllRoutes();
+
   };
 
   const continuar = async (e) => {      
@@ -390,6 +475,7 @@ const MapRoute = ({id,plateNumber}) => {
            
       <GoogleMap
               mapId="O86u6roz11"
+              key= "O86u6roz11"
               onLoad={(map) => setMapG(map)}
               mapContainerStyle={defaultMapContainerStyle}
               center={defaultMapCenter}
@@ -398,7 +484,7 @@ const MapRoute = ({id,plateNumber}) => {
 
            
 
-              {
+              {/*
            
               dataTrack.map((dataTracks, index)=>
               {  
@@ -436,10 +522,26 @@ const MapRoute = ({id,plateNumber}) => {
                                         
                                 
               }
-              )}
+              )*/}
 
 
 
+
+
+ {/*polylinePath !== null && polylineOptions !== null  && (
+                              
+                             <Polyline path={polylinePath}
+                             
+                             options={polylineOptions}
+                             
+                             
+                             />
+
+              
+                          )*/}     
+ 
+           
+ 
 
 
             {circleLoad == false  && (     
@@ -464,18 +566,18 @@ const MapRoute = ({id,plateNumber}) => {
       </GoogleMap> 
 
     </Box>
-
-
-
+    
     {/* FILTRO FECHAS */}
 
-    <CustomSlider aria-label="Volume" value={value3} onChange={handleChange6} />
+    <CustomSlider disabled={!activeSlider} aria-label="Volume" value={sliderValue} onChange={handleChange} />
 
     <Box display="flex" >
 
         <Box className="players" display="flex" justifyContent="flex-end" alignItems="flex-end">
 
-                  <Button className="btn-transparent"> 
+
+                   {/* STOP */}
+                  <Button disabled={!activeButton} className="btn-transparent" onClick={handleStop}> 
 
                     <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_601_353)">
@@ -497,7 +599,9 @@ const MapRoute = ({id,plateNumber}) => {
 
                   </Button>
 
-                  <Button className="btn-transparent">   
+
+                  {/* PAUSE */}
+                  <Button disabled={!activeButton} className="btn-transparent" onClick={handlePause}>   
 
                     <svg width="28" height="35" viewBox="0 0 28 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g filter="url(#filter0_d_601_352)">
@@ -518,15 +622,18 @@ const MapRoute = ({id,plateNumber}) => {
                     </svg>
                 
                   </Button>
+
+
+                  {/* PLAY */}
                       
-                  <Button className="btn-transparent"> 
+                  <Button disabled={!activeButton} className="btn-transparent" onClick={handleStart}> 
                   
                     <svg width="32" height="35" viewBox="0 0 32 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g filter="url(#filter0_d_601_354)">
                             <path d="M3 2V29L27 15.5L3 2Z" fill="#202022"/>
                             </g>
                             <defs>
-                            <filter id="filter0_d_601_354" x="0" y="0" width="32" height="35" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <filter id="filter0_d_601_354" x="0" y="0" width="32" height="35" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                             <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                             <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                             <feOffset dx="1" dy="2"/>
@@ -586,7 +693,7 @@ const MapRoute = ({id,plateNumber}) => {
                                     <path d="M56.7056 62.8983L73.186 79.2354L119.411 33.4119" stroke="url(#paint1_linear_601_634)" stroke-width="12" stroke-linecap="square"/>
                                     </g>
                                     <defs>
-                                    <filter id="filter0_dd_601_634" x="0.588379" y="7" width="146" height="146" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <filter id="filter0_dd_601_634" x="0.588379" y="7" width="146" height="146" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                                     <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                                     <feOffset dy="8"/>
@@ -602,7 +709,7 @@ const MapRoute = ({id,plateNumber}) => {
                                     <feBlend mode="normal" in2="effect1_dropShadow_601_634" result="effect2_dropShadow_601_634"/>
                                     <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_601_634" result="shape"/>
                                     </filter>
-                                    <filter id="filter1_dd_601_634" x="16.2202" y="0.926758" width="143.676" height="126.757" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                    <filter id="filter1_dd_601_634" x="16.2202" y="0.926758" width="143.676" height="126.757" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                                     <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                                     <feOffset dy="8"/>

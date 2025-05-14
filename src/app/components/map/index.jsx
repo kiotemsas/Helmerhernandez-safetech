@@ -529,7 +529,7 @@ return (
 
                 <AccordionDetails className='card-flex'>
                     
-                  <Box className="map-card">
+                  <Box>
                     <Image src={"/images/profile/map.png"} alt="img" width={400} height={180} style={{width: '100%'}} />                    
                   </Box>
 
