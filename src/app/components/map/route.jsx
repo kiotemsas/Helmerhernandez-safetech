@@ -32,7 +32,7 @@ const defaultMapCenter = {
 };
 
 //Default zoom level, can be adjusted
-const defaultMapZoom = 15;
+const defaultMapZoom = 14;
 
 //Map options
 const defaultMapOptions = {
@@ -285,7 +285,7 @@ const MapRoute = ({id,plateNumber}) => {
       setSliderValue(newValue);  
       
       lineIcon = directionsRenderers.get('icons');
-      lineOffset = newValue
+      lineOffset = newValue * 2;
       lineOffset = (lineOffset + iconSpeed) % 200           
       lineIcon[0].offset = lineOffset / 2 + '%';
       directionsRenderers.set('icons', lineIcon);
@@ -304,7 +304,8 @@ const MapRoute = ({id,plateNumber}) => {
       setActiveSlider(false);
 
       intervalId = setInterval(() => { 
-
+        
+         setSliderValue(parseInt(lineOffset)/2); 
          lineIcon = directionsRenderers.get('icons');
          lineOffset = (lineOffset + iconSpeed) % 200           
          lineIcon[0].offset = lineOffset / 2 + '%';
