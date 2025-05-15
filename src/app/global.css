@@ -385,6 +385,7 @@
 
 .dialog-form.np .MuiDialog-paper .DialogContentTech{
     padding: 0; 
+    overflow: hidden;
 }
  
 .dialog-form .MuiDialog-paper {
